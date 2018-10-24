@@ -1,9 +1,10 @@
 import * as puppeteer from 'puppeteer';
 import Database from './Database';
-import ForProgrammers from './sites/forProgrammers';
-import NoFulffJobs from './sites/noFluffJobs';
-import JustJoinIt from './sites/justjoin';
+import ForProgrammers from './sites/ForProgrammers';
+import NoFulffJobs from './sites/NoFluffJobs';
+import JustJoinIt from './sites/JustJoinIT';
 import Jobviously from './sites/Jobviously';
+import Pracuj from './sites/Pracuj';
 
 export default class JobFetcher {
   browser: puppeteer.Browser;
@@ -13,9 +14,9 @@ export default class JobFetcher {
     this.browser = browser;
     if (sites) {
       this.sitesToFetch = sites;
-    }
-    else {
+    } else {
       this.sitesToFetch = [
+        new Pracuj(this.browser),
         new Jobviously(),
         new JustJoinIt(),
         new ForProgrammers(this.browser),
@@ -25,7 +26,14 @@ export default class JobFetcher {
   }
 
   async start() {
-    this.sitesToFetch.forEach(async (site) => this.fetchJobOffers(site));
+    let downloads: Promise<void>[] = [];
+
+    this.sitesToFetch.forEach(async site => {
+      downloads.push(this.fetchJobOffers(site));
+    });
+
+    await Promise.all(downloads);
+    this.browser.close();
   }
 
   private async fetchJobOffers(site: Site) {
@@ -34,6 +42,8 @@ export default class JobFetcher {
     jobOffers.forEach(job => {
       Database.upsertJob(job);
     });
-    console.log(`Inserted ${jobOffers.length} records from the ${site.name} to the db`);
+    console.log(
+      `Inserted ${jobOffers.length} records from the ${site.name} to the db`
+    );
   }
 }

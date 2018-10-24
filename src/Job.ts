@@ -4,7 +4,7 @@ interface Job {
     company: string;
     companyLogo?: string;
     location: string;
-    salaryRange?: {from: number, to: number, currency: string};
+    salaryRange?: {from?: number, to?: number, currency?: string};
     link: string;
     addedDate?: Date | null;
     dateCrawled: Date;

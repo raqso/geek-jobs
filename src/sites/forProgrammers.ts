@@ -41,7 +41,6 @@ export default class ForProgrammers implements Site {
 
       isLast = await this.isLastPage();
     }
-    this.browser.close();
 
     return jobOffers;
   }

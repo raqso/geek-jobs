@@ -4,19 +4,19 @@
     {
       "type": "node",
       "request": "launch",
-      "name": "Debug Project",
+      "name": "Debug SearchIT",
       // we test in `build` to make cleanup fast and easy
       "cwd": "${workspaceFolder}/build",
       // Replace this with your project root. If there are multiple, you can
       // automatically run the currently visible file with: "program": ${file}"
-      "program": "${workspaceFolder}/src/cli/cli.ts",
+      "program": "${workspaceFolder}/src/index.ts",
       // "args": ["--no-install"],
       "outFiles": ["${workspaceFolder}/build/main/**/*.js"],
       "skipFiles": [
         "<node_internals>/**/*.js",
         "${workspaceFolder}/node_modules/**/*.js"
       ],
-      "preLaunchTask": "npm: build",
+      // "preLaunchTask": "npm: build",
       "stopOnEntry": true,
       "smartStep": true,
       "runtimeArgs": ["--nolazy"],
