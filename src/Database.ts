@@ -2,11 +2,10 @@ import mongoose from 'mongoose';
 import JobOffer from './models/job';
 
 export default class Database {
+  static readonly DB_URL = 'mongodb://localhost/jobs';
   static upsertJob(jobObj: Job) {
-    const DB_URL = 'mongodb://localhost/jobs';
-
     if (mongoose.connection.readyState === 0) {
-      mongoose.connect(DB_URL);
+      mongoose.connect(this.DB_URL);
     }
 
     // if this email exists, update the entry, don't insert
@@ -21,5 +20,12 @@ export default class Database {
         if (err) throw err;
       }
     );
+  }
+
+  static async clearJobOffers() {
+    if (mongoose.connection.readyState === 0) {
+      await mongoose.connect(this.DB_URL);
+      mongoose.connection.db.dropDatabase();
+    }
   }
 }

@@ -1,10 +1,11 @@
 import * as puppeteer from 'puppeteer';
 import Database from './Database';
-import ForProgrammers from './sites/ForProgrammers';
+/* import ForProgrammers from './sites/ForProgrammers';
 import NoFulffJobs from './sites/NoFluffJobs';
 import JustJoinIt from './sites/JustJoinIT';
 import Jobviously from './sites/Jobviously';
-import Pracuj from './sites/Pracuj';
+import Pracuj from './sites/Pracuj'; */
+import BulldogJob from './sites/BulldogJob';
 
 export default class JobFetcher {
   browser: puppeteer.Browser;
@@ -16,11 +17,12 @@ export default class JobFetcher {
       this.sitesToFetch = sites;
     } else {
       this.sitesToFetch = [
-        new Pracuj(this.browser),
+        new BulldogJob(this.browser),
+        /* new Pracuj(this.browser),
         new Jobviously(),
         new JustJoinIt(),
         new ForProgrammers(this.browser),
-        new NoFulffJobs()
+        new NoFulffJobs() */
       ];
     }
   }
@@ -28,6 +30,7 @@ export default class JobFetcher {
   async start() {
     let downloads: Promise<void>[] = [];
 
+    Database.clearJobOffers();
     this.sitesToFetch.forEach(site => {
       downloads.push(this.fetchJobOffers(site));
     });
