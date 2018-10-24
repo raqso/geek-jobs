@@ -9,3 +9,6 @@ coverage
 *.log
 
 yarn.lock
+
+.*
+!/.gitignore
