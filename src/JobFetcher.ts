@@ -28,7 +28,7 @@ export default class JobFetcher {
   async start() {
     let downloads: Promise<void>[] = [];
 
-    this.sitesToFetch.forEach(async site => {
+    this.sitesToFetch.forEach(site => {
       downloads.push(this.fetchJobOffers(site));
     });
 
