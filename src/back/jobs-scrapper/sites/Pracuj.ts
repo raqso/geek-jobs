@@ -72,7 +72,6 @@ export default class Pracuj implements Site {
     const lastPageButtonSelector =
       '#returnUrl > ul.desktopPagin.clearfix > li:last-child > a';
     if (lastPageButtonSelector) {
-      console.log('Going next page...');
       await this.page.click(lastPageButtonSelector);
     }
   }

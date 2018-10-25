@@ -1,5 +1,5 @@
 import mongoose from 'mongoose';
-import JobOffer from './models/job';
+import JobOffer from '../../models/job';
 
 export default class Database {
   static readonly DB_URL = 'mongodb://localhost/jobs';
