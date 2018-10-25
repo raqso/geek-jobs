@@ -45,7 +45,7 @@ export default class BulldogJob implements Site {
     // await this.setFetchingHtmlOnly();
   }
 
-  private async setFetchingHtmlOnly() {
+  /* private async setFetchingHtmlOnly() {
     await this.page.setRequestInterception(true);
     this.page.on('request', (req: any) => {
       if (
@@ -58,7 +58,7 @@ export default class BulldogJob implements Site {
         req.continue();
       }
     });
-  }
+  } */
 
   private async isLastPage() {
     const offersListSelector = '#search-result > div > section > ul';
@@ -178,7 +178,7 @@ export default class BulldogJob implements Site {
 
   private getTechnologiesArray(text: string) {
     if (text) {
-        return text.split('  ');
+        return text.split(' ');
     }
     else {
         return [];
