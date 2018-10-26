@@ -18,14 +18,14 @@ export class OffersController {
         this.DB_URL,
         { useNewUrlParser: true }
       );
-      JobOffer.find({}, (err: Error, result: string) => {
-        if (err) {
-          res.send(error);
-        } else {
-          res.json(result);
-        }
-      });
     }
+    JobOffer.find({}, (err: Error, result: string) => {
+      if (err) {
+        res.send(error);
+      } else {
+        res.json(result);
+      }
+    });
   }
 }
 

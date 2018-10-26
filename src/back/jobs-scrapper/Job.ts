@@ -1,7 +1,7 @@
 interface Job {
     position: string;
     technology?: string[];
-    company: string;
+    company?: string;
     companyLogo?: string;
     location: string;
     salaryRange?: {from?: number, to?: number, currency?: string};

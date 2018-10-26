@@ -28,4 +28,11 @@ export default class Database {
       mongoose.connection.db.dropDatabase();
     }
   }
+
+  static async setTextIndex() {
+    if (mongoose.connection.readyState === 0) {
+      await mongoose.connect(this.DB_URL, { useNewUrlParser: true });
+      mongoose.connection.db.createIndex('text', { position: 'text', location: 'text' } );
+    }
+  }
 }
