@@ -115,8 +115,8 @@ export default class Olx implements Site {
           location: location,
           position: position,
           salaryRange: {
-              from: this.getSalary(salaryFrom),
-              to: this.getSalary(salaryTo)
+            from: this.getSalary(salaryFrom),
+            to: this.getSalary(salaryTo)
           },
           website: this.name
         });
@@ -142,82 +142,88 @@ export default class Olx implements Site {
   private getSalary(salaryText: string) {
     let salary = '';
     if (salaryText && salaryText.split(' ').length) {
-        const splitted = salaryText.split(' ');
-        splitted.forEach( (part) => {
-            if (!isNaN(Number(part))) {
-                salary += part;
-            }
-        });
+      const splitted = salaryText.split(' ');
+      splitted.forEach(part => {
+        if (!isNaN(Number(part))) {
+          salary += part;
+        }
+      });
     }
     return salary ? Number(salary) : undefined;
   }
 
   private getOfferDate(created: string) {
     if (created && isString(created)) {
-        // @TODO if wczoraj / dzisiaj
-      const day = Number(created.split(' ')[0]);
-      const monthCode = created.split(' ')[1];
-      let todayDate = new Date();
+      const splittedString = created.split(' ');
+      const day = Number(splittedString[0]);
+      const monthCode = splittedString[1];
       let month: number;
+      let todayDate = new Date();
 
-      switch (monthCode) {
-        case 'sty': {
-          month = 0;
-          break;
+      if (splittedString[0] === 'dzisiaj') {
+        return todayDate;
+      } else if (splittedString[0] === 'wczoraj') {
+        return todayDate.setDate(todayDate.getDate() - 1);
+      } else {
+        switch (monthCode) {
+          case 'sty': {
+            month = 0;
+            break;
+          }
+          case 'lut': {
+            month = 1;
+            break;
+          }
+          case 'mar': {
+            month = 2;
+            break;
+          }
+          case 'kwi': {
+            month = 3;
+            break;
+          }
+          case 'maj': {
+            month = 4;
+            break;
+          }
+          case 'cze': {
+            month = 5;
+            break;
+          }
+          case 'lip': {
+            month = 6;
+            break;
+          }
+          case 'sie': {
+            month = 7;
+            break;
+          }
+          case 'wrz': {
+            month = 8;
+            break;
+          }
+          case 'paź': {
+            month = 9;
+            break;
+          }
+          case 'lis': {
+            month = 10;
+            break;
+          }
+          case 'gru': {
+            month = 11;
+            break;
+          }
+          default: {
+            return null;
+            break;
+          }
         }
-        case 'lut': {
-          month = 1;
-          break;
-        }
-        case 'mar': {
-          month = 2;
-          break;
-        }
-        case 'kwi': {
-          month = 3;
-          break;
-        }
-        case 'maj': {
-          month = 4;
-          break;
-        }
-        case 'cze': {
-          month = 5;
-          break;
-        }
-        case 'lip': {
-          month = 6;
-          break;
-        }
-        case 'sie': {
-          month = 7;
-          break;
-        }
-        case 'wrz': {
-          month = 8;
-          break;
-        }
-        case 'paź': {
-          month = 9;
-          break;
-        }
-        case 'lis': {
-          month = 10;
-          break;
-        }
-        case 'gru': {
-          month = 11;
-          break;
-        }
-        default: {
-          return null;
-          break;
-        }
+
+        todayDate.setMonth(month);
+        todayDate.setDate(day);
+        return todayDate;
       }
-
-      todayDate.setMonth(month);
-      todayDate.setDate(day);
-      return todayDate;
     } else {
       return null;
     }
