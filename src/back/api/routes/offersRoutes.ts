@@ -1,15 +1,21 @@
-'use strict';
-module.exports = function(app) {
-  const offers = require('../controllers/offersController');
+import * as express from 'express';
+import { offersController } from '../controllers/offersController';
 
-  // offers Routes
-  app.route('/tasks')
-    .get(offers.list_all_tasks)
-    .post(offers.create_a_task);
+class OffersRoutes {
 
+    public router: express.Router = express.Router();
+    constructor() {
+      this.config();
+    }
 
-  app.route('/tasks/:taskId')
-    .get(offers.read_a_task)
-    .put(offers.update_a_task)
-    .delete(offers.delete_a_task);
-};
+    private config(): void {
+      this.router.get('/', (req: express.Request, res: express.Response) =>
+        offersController.root(req, res)
+      );
+      this.router.get('/offers', (req: express.Request, res: express.Response) =>
+        offersController.allOffers(req, res)
+      );
+    }
+  }
+
+export const offersRoutes = new OffersRoutes().router;
