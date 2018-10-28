@@ -16,12 +16,13 @@ interface OfferProps {
 }
 
 export class Offer extends React.Component<OfferProps, any> {
+  private readonly defaultCompanyLogo = 'https://www.gsr-technology.co.uk/wp-content/uploads/2015/10/partner-logo-placeholder-300x150.jpg';
   public render() {
     return (
       <li className={'offer'}>
         <a href={this.props.link}>
           <div className={'company-logo'}>
-            <img src={this.props.companyLogo} alt={'Company logo'} />
+            <img src={this.props.companyLogo ? this.props.companyLogo : this.defaultCompanyLogo} alt={'Company logo'} />
           </div>
           <div className={'offer-content'}>
             <p className={'position'}>{this.props.position}</p>
