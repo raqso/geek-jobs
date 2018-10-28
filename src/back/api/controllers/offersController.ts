@@ -36,7 +36,7 @@ export class OffersController {
       );
     }
     // {$and: [{position: /developer/}, {location: /Wrocław/}]}
-    JobOffer.find({location: /Wrocław/}, (err: Error, result: string) => {
+    JobOffer.find({location: /Wrocław/}, null, {sort: {addedDate: -1}}, (err: any, result: any) => {
       if (err) {
         res.send(error);
       } else {

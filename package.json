@@ -9,8 +9,10 @@
   "license": "MIT",
   "keywords": [],
   "scripts": {
-    "apidev": "nodemon -L",
-    "apistart": "node ./dist/server.js",
+    "apiStartMongoDb": "md mongo-db & \"C:/Program Files/MongoDb/Server/4.1/bin/mongod.exe\" --dbpath mongo-db",
+    "apiStartServer": "nodemon -L",
+    "frontStart": "npm run --prefix src/front start",
+    "downloadJobOffers": "node build/main/index.js",
     "info": "npm-scripts-info",
     "build": "run-s clean && run-p build:*",
     "build:main": "tsc -p tsconfig.json",
