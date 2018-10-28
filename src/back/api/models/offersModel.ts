@@ -1,10 +1,11 @@
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
 
 let jobSchema = new mongoose.Schema({
   website: String,
   position: String,
   company: String,
   companyLogo: String,
+  portalLogo: String,
   location: String,
   technologies: [
     {

@@ -3,6 +3,7 @@ import { isString } from 'util';
 
 export default class Olx implements Site {
   name = 'Olx';
+  logoImage = 'https://static-olxeu.akamaized.net/static/olxpl/packed/font/2f4f22766be42e5eac379976b5237b92ca.svg';
   address = 'https://olx.pl';
   endpointAddress = 'https://www.olx.pl/praca/informatyka/';
   browser: Browser;
@@ -118,7 +119,8 @@ export default class Olx implements Site {
             from: this.getSalary(salaryFrom),
             to: this.getSalary(salaryTo)
           },
-          website: this.name
+          website: this.name,
+          portalLogo: this.logoImage
         });
       }
     }
@@ -163,7 +165,8 @@ export default class Olx implements Site {
       if (splittedString[0] === 'dzisiaj') {
         return todayDate;
       } else if (splittedString[0] === 'wczoraj') {
-        return todayDate.setDate(todayDate.getDate() - 1);
+        todayDate.setDate(todayDate.getDate() - 1);
+        return todayDate;
       } else {
         switch (monthCode) {
           case 'sty': {

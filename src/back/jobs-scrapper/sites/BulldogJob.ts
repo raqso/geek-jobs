@@ -2,6 +2,7 @@ import { Browser } from 'puppeteer';
 
 export default class BulldogJob implements Site {
   readonly name = 'BulldogJob';
+  readonly logoImage = 'https://cdn.bulldogjob.com/assets/logo-6d85aa7138552c5b466f9a4fb26785893cceb34e7b344915bba0392dd125287a.png';
   readonly address = 'https://bulldogjob.pl/';
   readonly endpointAddress =
     'https://bulldogjob.pl/companies/jobs?mode=plain&page=';
@@ -149,7 +150,8 @@ export default class BulldogJob implements Site {
           position: position,
           technology: this.getTechnologiesArray(technologies),
           salaryRange: {},
-          website: this.name
+          website: this.name,
+          portalLogo: this.logoImage
         });
       }
     }

@@ -2,6 +2,7 @@ import { GetData } from '../GetData';
 
 export default class NoFulffJobs implements Site {
     name = 'no fluff {jobs}';
+    logoImage = 'https://nofluffjobs.com/images/logo_NFJ.png';
     address = 'https://nofluffjobs.com';
     endpointAddress = 'https://nofluffjobs.com/api/posting';
 
@@ -30,7 +31,8 @@ export default class NoFulffJobs implements Site {
             position: `${job.title} ${job.level}`,
             salaryRange: { from: 0, to: 0, currency: '' },
             technology: ( job.technology ? [job.technology] : [] ),
-            website: this.name
+            website: this.name,
+            portalLogo: this.logoImage
         };
     }
 }

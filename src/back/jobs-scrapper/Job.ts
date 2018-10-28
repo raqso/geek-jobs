@@ -9,4 +9,5 @@ interface Job {
     addedDate?: Date | null;
     dateCrawled: Date;
     website: string;
+    portalLogo?: string;
 }

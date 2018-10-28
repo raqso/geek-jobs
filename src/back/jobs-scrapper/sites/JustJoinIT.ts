@@ -2,6 +2,7 @@ import { GetData } from '../GetData';
 
 export default class JustJoinIt implements Site {
   name = 'Just Join IT';
+  logoImage = 'https://bucket.justjoin.it/companies/logos/original/a558c98b3368639ef93fa5c6a1cc94d6ce3b1693.png?1527165365';
   address = 'https://justjoin.it';
   endpointAddress = 'https://justjoin.it/api/offers';
 
@@ -35,7 +36,8 @@ export default class JustJoinIt implements Site {
         currency: job.salary_currency
       },
       technology: this.getTechnologiesArray(job.skills),
-      website: this.name
+      website: this.name,
+      portalLogo: this.logoImage
     };
   }
 

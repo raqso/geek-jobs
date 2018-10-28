@@ -2,6 +2,7 @@ import { GetData } from '../GetData';
 
 export default class Jobviously implements Site {
   name = '<jobvious/y>';
+  logoImage = 'https://media.licdn.com/dms/image/C4D0BAQEU_RwMdGh7aQ/company-logo_200_200/0?e=1548892800&v=beta&t=reqPbkxezNhXmsqMjwdyi4xF2eZb6mCQSlE-oIA7jvk';
   address = 'https://jobviously.pl';
   endpointAddress = 'https://jobviously.pl/api/offers?count=all&type=all&page=';
 
@@ -45,7 +46,8 @@ export default class Jobviously implements Site {
         currency: ''
       },
       technology: this.getTechnologiesArray(job.technologies),
-      website: this.name
+      website: this.name,
+      portalLogo: this.logoImage
     };
   }
 

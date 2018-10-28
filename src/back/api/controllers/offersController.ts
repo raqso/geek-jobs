@@ -27,6 +27,25 @@ export class OffersController {
       }
     });
   }
+
+  public async testOffers(_req: express.Request, res: express.Response) {
+    if (mongoose.connection.readyState === 0) {
+      await mongoose.connect(
+        this.DB_URL,
+        { useNewUrlParser: true }
+      );
+    }
+    // {$and: [{position: /developer/}, {location: /Wrocław/}]}
+    JobOffer.find({location: /Wrocław/}, (err: Error, result: string) => {
+      if (err) {
+        res.send(error);
+      } else {
+        res.header('Access-Control-Allow-Origin', '*');
+        res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
+        res.json(result);
+      }
+    });
+  }
 }
 
 export const offersController = new OffersController();

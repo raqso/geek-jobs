@@ -15,6 +15,9 @@ class OffersRoutes {
       this.router.get('/offers', (req: express.Request, res: express.Response) =>
         offersController.allOffers(req, res)
       );
+      this.router.get('/test', (req: express.Request, res: express.Response) =>
+      offersController.testOffers(req, res)
+    );
     }
   }
 

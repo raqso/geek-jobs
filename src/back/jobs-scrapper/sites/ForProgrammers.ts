@@ -3,6 +3,7 @@ import { isString } from 'util';
 
 export default class ForProgrammers implements Site {
   name = '4Programmers.net';
+  logoImage = 'https://static.4programmers.net/img/logo.png';
   address = 'https://4programmers.net';
   endpointAddress = 'https://4programmers.net/Praca';
   browser: Browser;
@@ -152,7 +153,8 @@ export default class ForProgrammers implements Site {
           position: position,
           technology: this.getTechnologiesArray(technologies),
           salaryRange: this.getSalary(salary),
-          website: this.name
+          website: this.name,
+          portalLogo: this.logoImage
         });
       }
     }
