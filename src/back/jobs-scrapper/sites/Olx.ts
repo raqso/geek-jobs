@@ -3,7 +3,7 @@ import { isString } from 'util';
 
 export default class Olx implements Site {
   name = 'Olx';
-  logoImage = 'https://cdn.uc.assets.prezly.com/f29caf1f-0421-451f-a6e1-b61ad67e1341/-/preview/400x400/-/quality/best/';
+  logoImage = 'https://upload.wikimedia.org/wikipedia/commons/thumb/2/28/OLX_Logo.jpg/720px-OLX_Logo.jpg';
   address = 'https://olx.pl';
   endpointAddress = 'https://www.olx.pl/praca/informatyka/';
   browser: Browser;
