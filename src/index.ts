@@ -8,6 +8,8 @@ async function run() {
   });
 
   await new JobFetcher(browser).start();
+  browser.close();
+  process.exit();
 }
 
 try {

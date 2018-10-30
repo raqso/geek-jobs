@@ -40,7 +40,6 @@ export default class JobFetcher {
 
     await Promise.all(downloads);
     console.log(`Fetched ${this.fetchedOffers} offers from ${this.sitesToFetch.length} sites. 😎`);
-    this.browser.close();
   }
 
   private async fetchJobOffers(site: Site) {
