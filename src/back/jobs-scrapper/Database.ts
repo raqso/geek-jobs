@@ -16,7 +16,7 @@ export default class Database {
       conditions,
       jobObj,
       options,
-      (err: Error, _result: string) => {
+      (err: any, _doc: any,  _result: string) => {
         if (err) throw err;
       }
     );
@@ -26,13 +26,6 @@ export default class Database {
     if (mongoose.connection.readyState === 0) {
       await mongoose.connect(this.DB_URL, { useNewUrlParser: true });
       mongoose.connection.db.dropDatabase();
-    }
-  }
-
-  static async setTextIndex() {
-    if (mongoose.connection.readyState === 0) {
-      await mongoose.connect(this.DB_URL, { useNewUrlParser: true });
-      mongoose.connection.db.createIndex('text', { position: 'text', location: 'text' } );
     }
   }
 }

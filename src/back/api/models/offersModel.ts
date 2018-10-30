@@ -18,6 +18,7 @@ let jobSchema = new mongoose.Schema({
   dateCrawled: Date
 });
 
+jobSchema.index({ position: 'text', location: 'text' });
 let JobOffer = mongoose.model('Job', jobSchema);
 
 export default JobOffer;
