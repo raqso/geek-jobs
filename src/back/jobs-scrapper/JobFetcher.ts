@@ -39,12 +39,12 @@ export default class JobFetcher {
     });
 
     await Promise.all(downloads);
-    console.log(`Fetched ${this.fetchedOffers} offers from ${this.sitesToFetch.length} sites.`);
+    console.log(`Fetched ${this.fetchedOffers} offers from ${this.sitesToFetch.length} sites. 😎`);
     this.browser.close();
   }
 
   private async fetchJobOffers(site: Site) {
-    console.log(`Started fetching from the ${site.name}...`);
+    console.log(` ⬇️ Started fetching from the ${site.name}`);
     let jobOffers = await site.getJobs();
     console.log(`Fetched ${jobOffers.length} records from the ${site.name}`);
     this.fetchedOffers += jobOffers.length;
@@ -52,8 +52,7 @@ export default class JobFetcher {
       await Database.upsertJob(job);
     });
     console.log(
-      `Inserted ${jobOffers.length} records from the ${site.name} to the db`
+      `✔️ Inserted ${jobOffers.length} records from the ${site.name} to the db`
     );
-    await Database.setTextIndex();
   }
 }
