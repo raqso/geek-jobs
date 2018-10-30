@@ -26,7 +26,7 @@ export default class NoFulffJobs implements Site {
             company: job.name,
             companyLogo: this.address + job.logo,
             dateCrawled: new Date(),
-            link: this.address + '/' + job.url,
+            link: this.address + '/job/' + job.url,
             location: job.essentials.mainLocation.city,
             position: `${job.title} ${job.level}`,
             salaryRange: { from: 0, to: 0, currency: '' },
