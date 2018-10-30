@@ -1,7 +1,7 @@
 import * as React from 'react';
 import './App.css';
-import {Offer} from './components/Offer'
-import OfferSearchBox from './components/OfferSearchBox';
+import { Offer } from './components/Offer';
+import SearchBox from './components/SearchBox';
 
 interface AppState {
   offers: any[];
@@ -9,6 +9,7 @@ interface AppState {
 
 class App extends React.Component<any, AppState> {
   private readonly offersApiAddress = 'http://localhost:3000/test';
+  private offersList: HTMLElement;
 
   constructor(props: any) {
     super(props);
@@ -18,32 +19,59 @@ class App extends React.Component<any, AppState> {
   }
 
   public componentWillMount() {
-    fetch(this.offersApiAddress)
+    /* fetch(this.offersApiAddress)
       .then(response => response.json())
-      .then(offers => this.setState({ offers }));
+      .then(offers => this.setState({ offers })); */
   }
 
   public render() {
     return (
       <div className="App">
-        <h2>IT Search</h2>
-        <OfferSearchBox />
-        <ul id='offers'>
-          {this.renderOffers()}
-        </ul>
+        <section id="top">
+          <SearchBox
+            onClick={ () => this.searchOffers()}
+            positionPlaceholder="Stanowisko, np: Programista C#"
+            locationPlaceholder="Lokalizacja, np: Wrocław"
+            searchButtonText="Szukaj"
+          />
+        </section>
+        <section id="offers-section" ref={(el: any) => (this.offersList = el)}>
+          <ul id="offers">{this.renderOffers()}</ul>
+        </section>
+        <section id="footer" />
       </div>
     );
   }
 
   private renderOffers() {
     const offers: any[] = [];
-    this.state.offers.forEach( (offer) => {
+    this.state.offers.forEach(offer => {
       offers.push(
-        <Offer position={offer.position} location={offer.location} company={offer.company} companyLogo={offer.companyLogo} portalImage={offer.portalLogo} link={offer.link} addedDate={new Date(offer.addedDate)} salary={offer.salary} />
+        <Offer
+          position={offer.position}
+          location={offer.location}
+          company={offer.company}
+          companyLogo={offer.companyLogo}
+          portalImage={offer.portalLogo}
+          link={offer.link}
+          addedDate={new Date(offer.addedDate)}
+          salary={offer.salary}
+          key={offer._id}
+        />
       );
     });
     return offers;
   }
-} 
+
+  private async searchOffers() {
+    await fetch(this.offersApiAddress)
+      .then(response => response.json())
+      .then(offers => this.setState({ offers }));
+    
+    if (this.offersList) {
+      this.offersList.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  }
+}
 
 export default App;
