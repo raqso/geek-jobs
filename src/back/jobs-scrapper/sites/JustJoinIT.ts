@@ -1,4 +1,5 @@
 import { GetData } from '../GetData';
+import Job from '../Job';
 
 export default class JustJoinIt implements Site {
   name = 'Just Join IT';
@@ -30,15 +31,15 @@ export default class JustJoinIt implements Site {
       link: this.address + '/offers/' + job.id,
       location: job.city,
       position: job.title,
-      salaryRange: {
+      salary: {
         from: job.salary_from,
         to: job.salary_to,
         currency: job.salary_currency
       },
-      technology: this.getTechnologiesArray(job.skills),
+      technologies: this.getTechnologiesArray(job.skills),
       website: this.name,
       portalLogo: this.logoImage
-    };
+    } as Job;
   }
 
   private getTechnologiesArray(skills: Skill[]) {

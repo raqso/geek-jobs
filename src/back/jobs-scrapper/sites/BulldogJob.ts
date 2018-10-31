@@ -1,4 +1,5 @@
 import { Browser } from 'puppeteer';
+import Job from '../Job';
 
 export default class BulldogJob implements Site {
   readonly name = 'BulldogJob';
@@ -148,11 +149,10 @@ export default class BulldogJob implements Site {
           link: offerLink,
           location: location,
           position: position,
-          technology: this.getTechnologiesArray(technologies),
-          salaryRange: {},
+          technologies: this.getTechnologiesArray(technologies),
           website: this.name,
           portalLogo: this.logoImage
-        });
+        } as Job);
       }
     }
     return jobOffers;

@@ -1,4 +1,5 @@
 import { Browser } from 'puppeteer';
+import Job from '../Job';
 
 export default class Pracuj implements Site {
   readonly categoryIdItAdministration = '5015';
@@ -154,10 +155,9 @@ export default class Pracuj implements Site {
           link: offerLink,
           location: this.getCity(location),
           position: position,
-          salaryRange: {},
           website: this.name,
           portalLogo: this.logoImage
-        });
+        } as Job);
       }
     }
     return jobOffers;

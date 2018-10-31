@@ -1,9 +1,10 @@
 import mongoose from 'mongoose';
-import JobOffer from '../api/models/offersModel';
+import {JobOffer} from '../api/models/offersModel';
+import Job from './Job';
 
 export default class Database {
   static readonly DB_URL = 'mongodb://localhost/jobs';
-  static upsertJob(jobObj: any) {
+  static upsertJob(jobObj: Job) {
     if (mongoose.connection.readyState === 0) {
       mongoose.connect(this.DB_URL, { useNewUrlParser: true });
     }

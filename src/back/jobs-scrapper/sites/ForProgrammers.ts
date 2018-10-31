@@ -1,5 +1,6 @@
 import { Browser } from 'puppeteer';
 import { isString } from 'util';
+import Job from '../Job';
 
 export default class ForProgrammers implements Site {
   name = '4Programmers.net';
@@ -32,10 +33,10 @@ export default class ForProgrammers implements Site {
 
   private async openNewBrowserPage() {
     this.page = await this.browser.newPage();
-    // await this.setFetchingHtmlOnly();
+    await this.setFetchingHtmlOnly();
   }
 
-  /* private async setFetchingHtmlOnly() {
+  private async setFetchingHtmlOnly() {
     await this.page.setRequestInterception(true);
     this.page.on('request', (req: any) => {
       if (
@@ -48,7 +49,7 @@ export default class ForProgrammers implements Site {
         req.continue();
       }
     });
-  } */
+  }
 
   async goToNextPage() {
     await Promise.all([
@@ -151,17 +152,17 @@ export default class ForProgrammers implements Site {
           link: offerLink,
           location: location,
           position: position,
-          technology: this.getTechnologiesArray(technologies),
-          salaryRange: this.getSalary(salary),
+          technologies: this.getTechnologiesArray(technologies),
+          salary: this.getSalary(salary),
           website: this.name,
           portalLogo: this.logoImage
-        });
+        } as Job);
       }
     }
     return jobOffers;
   }
 
-  private getSalary(salaryText: string): Job['salaryRange'] {
+  private getSalary(salaryText: string): Job['salary'] {
     if (salaryText && salaryText.split(' - ').length === 2) {
       const splittedText = salaryText.split(' - ');
       return {
@@ -222,8 +223,7 @@ export default class ForProgrammers implements Site {
           break;
         }
       }
-    }
-    else {
+    } else {
       return null;
     }
   }
@@ -232,7 +232,6 @@ export default class ForProgrammers implements Site {
     lastPageButtonSelector:
       '#job-main-content > main > nav.pull-left > ul > li:last-child',
     lengthSelectorClass: '#box-jobs > table > tbody > tr',
-    // '#box-jobs > table > tbody > tr:nth-child(
     listPositionSelector:
       '#box-jobs > table > tbody > tr:nth-child(INDEX) > td.col-body > h2 > a',
     listCompanySelector:

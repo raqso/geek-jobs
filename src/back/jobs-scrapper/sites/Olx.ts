@@ -1,5 +1,6 @@
 import { Browser } from 'puppeteer';
 import { isString } from 'util';
+import Job from '../Job';
 
 export default class Olx implements Site {
   name = 'Olx';
@@ -115,13 +116,13 @@ export default class Olx implements Site {
           link: offerLink,
           location: location,
           position: position,
-          salaryRange: {
+          salary: {
             from: this.getSalary(salaryFrom),
             to: this.getSalary(salaryTo)
           },
           website: this.name,
           portalLogo: this.logoImage
-        });
+        } as Job);
       }
     }
     return jobOffers;

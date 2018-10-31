@@ -1,4 +1,5 @@
 import { GetData } from '../GetData';
+import Job from '../Job';
 
 export default class Jobviously implements Site {
   name = '<jobvious/y>';
@@ -40,15 +41,15 @@ export default class Jobviously implements Site {
       link: this.generateOfferLink(job.id, job.slug),
       location: job.address ? job.address.city : '',
       position: job.position,
-      salaryRange: {
+      salary: {
         from: job.salary_from,
         to: job.salary_to,
         currency: ''
       },
-      technology: this.getTechnologiesArray(job.technologies),
+      technologies: this.getTechnologiesArray(job.technologies),
       website: this.name,
       portalLogo: this.logoImage
-    };
+    } as Job;
   }
 
   private generateOfferLink(offerId: number, slug: string) {

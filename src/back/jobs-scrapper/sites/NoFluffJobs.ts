@@ -1,4 +1,5 @@
 import { GetData } from '../GetData';
+import Job from '../Job';
 
 export default class NoFulffJobs implements Site {
     name = 'no fluff {jobs}';
@@ -29,11 +30,11 @@ export default class NoFulffJobs implements Site {
             link: this.address + '/job/' + job.url,
             location: job.essentials.mainLocation.city,
             position: `${job.title} ${job.level}`,
-            salaryRange: { from: 0, to: 0, currency: '' },
-            technology: ( job.technology ? [job.technology] : [] ),
+            salary: { from: 0, to: 0, currency: '' },
+            technologies: ( job.technology ? [job.technology] : [] ),
             website: this.name,
             portalLogo: this.logoImage
-        };
+        } as Job;
     }
 }
 
