@@ -1,6 +1,6 @@
 import * as express from 'express';
 import mongoose from 'mongoose';
-import JobOffer from '../models/offersModel';
+import { JobOffer } from '../models/offersModel';
 import { error } from 'util';
 
 export class SuggestController {

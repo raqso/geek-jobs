@@ -12,9 +12,17 @@ class OffersRoutes {
     this.router.get('/', (req: express.Request, res: express.Response) =>
       offersController.root(req, res)
     );
-    this.router.get('/offers', (req: express.Request, res: express.Response) =>
-      offersController.allOffers(req, res)
+    this.router.get(
+      '/offers',
+      (req: express.Request, res: express.Response) => {
+        if (req.query.position || req.query.location) {
+          offersController.offers(req.query.position, req.query.location, req, res);
+        } else {
+          offersController.allOffers(req, res);
+        }
+      }
     );
+
     this.router.get('/test', (req: express.Request, res: express.Response) =>
       offersController.testOffers(req, res)
     );
