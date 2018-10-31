@@ -1,4 +1,4 @@
-import { Schema, Model, model} from 'mongoose';
+import { Schema, Model, model } from 'mongoose';
 import Job from '../../jobs-scrapper/Job';
 
 let jobSchema = new Schema({
@@ -9,7 +9,11 @@ let jobSchema = new Schema({
   portalLogo: String,
   location: String,
   technologies: [String],
-  salary: String,
+  salary: {
+    from: Number,
+    to: Number,
+    currency: String
+  },
   link: String,
   addedDate: Date,
   dateCrawled: Date
@@ -17,4 +21,4 @@ let jobSchema = new Schema({
 
 jobSchema.index({ position: 'text', location: 'text' });
 
-export const JobOffer: Model<Job>  = model<Job>('Job', jobSchema);
+export const JobOffer: Model<Job> = model<Job>('Job', jobSchema);

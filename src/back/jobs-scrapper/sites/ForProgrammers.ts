@@ -171,7 +171,7 @@ export default class ForProgrammers implements Site {
         currency: this.clearSalaryString(splittedText[1].split(' ')[1])
       };
     } else {
-      return {};
+      return undefined;
     }
   }
 
