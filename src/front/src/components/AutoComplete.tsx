@@ -7,6 +7,7 @@ const positionSuggestionsEndpoint =
 interface AutoCompleteProps {
   placeholder: string;
   maxSuggestions: number;
+  onChange(value: any): void;
 }
 
 interface AutoCompletePropsState {
@@ -27,6 +28,10 @@ export default class AutoComplete extends React.Component<
       suggestions: [],
       value: ''
     };
+  }
+
+  public onChange(value: any) {
+    return value;
   }
 
   public render() {
@@ -52,6 +57,7 @@ export default class AutoComplete extends React.Component<
   private handleChange(event: React.ChangeEvent<HTMLInputElement>) {
     this.setState({ value: event.target.value });
     this.getSuggestions();
+    this.props.onChange(event.target.value);
   }
 
   private async getSuggestions() {

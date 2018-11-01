@@ -30,8 +30,8 @@ export default class SearchBox extends React.Component<
             <legend>Znajdź pracę w IT</legend>
           </fieldset>
           <div className="inner-form">
-            <AutoComplete placeholder={this.props.positionPlaceholder} maxSuggestions={10} />
-            <AutoComplete placeholder={this.props.locationPlaceholder} maxSuggestions={5} />
+            <AutoComplete placeholder={this.props.positionPlaceholder} maxSuggestions={10} onChange={(value) => {this.setState({positionValue: value})}} />
+            <AutoComplete placeholder={this.props.locationPlaceholder} maxSuggestions={5} onChange={(value) => {this.setState({locationValue: value})}} />
             <div className="input-field third-wrap">
               <button
                 className="btn-search"
@@ -47,8 +47,11 @@ export default class SearchBox extends React.Component<
     );
   }
 
-  /* private handleLocationChange(event: React.ChangeEvent<HTMLInputElement>) {
-    this.setState({ locationValue: event.target.value });
-    console.log(event.target.value);
-  } */
+  public getPosition() {
+    return this.state.positionValue;
+  }
+
+  public getLocation() {
+    return this.state.locationValue;
+  }
 }

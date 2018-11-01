@@ -67,17 +67,21 @@ a {
 }
 
 .company-logo {
-  padding-right: 55px;
+  padding-right: 90px;
   width: 75px;
   position: relative;
 }
 
 .company-logo img {
   max-width: 75px;
-  max-height: 60px;
+  max-height: 90%;
   position: absolute;               
   top: 50%;                        
   transform: translate(0, -50%);
+}
+
+.salary {
+  min-width: 190px;
 }
 
 .portal-logo {

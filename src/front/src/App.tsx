@@ -8,20 +8,15 @@ interface AppState {
 }
 
 class App extends React.Component<any, AppState> {
-  private readonly offersApiAddress = 'http://localhost:3000/test';
-  private offersList: HTMLElement;
+  private readonly offersApiAddress = 'http://localhost:3000/offers';
+  private offersList: HTMLElement; 
+  private searchbox: SearchBox;
 
   constructor(props: any) {
     super(props);
     this.state = {
       offers: []
     };
-  }
-
-  public componentWillMount() {
-    /* fetch(this.offersApiAddress)
-      .then(response => response.json())
-      .then(offers => this.setState({ offers })); */
   }
 
   public render() {
@@ -33,6 +28,7 @@ class App extends React.Component<any, AppState> {
             positionPlaceholder="Stanowisko, np: Programista C#"
             locationPlaceholder="Lokalizacja, np: Wrocław"
             searchButtonText="Szukaj"
+            ref={ (el:SearchBox) => (this.searchbox = el)}
           />
         </section>
         <section id="offers-section" ref={(el: any) => (this.offersList = el)}>
@@ -64,7 +60,9 @@ class App extends React.Component<any, AppState> {
   }
 
   private async searchOffers() {
-    await fetch(this.offersApiAddress)
+    const address = `${this.offersApiAddress}?position=${this.searchbox.getPosition()}&location=${this.searchbox.getLocation()}`;
+
+    await fetch(address)
       .then(response => response.json())
       .then(offers => this.setState({ offers }));
     
