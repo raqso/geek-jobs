@@ -4,9 +4,9 @@ import Job from './Job';
 
 export default class Database {
   static readonly DB_URL = 'mongodb://localhost/jobs';
-  static upsertJob(jobObj: Job) {
+  static async upsertJob(jobObj: Job) {
     if (mongoose.connection.readyState === 0) {
-      mongoose.connect(this.DB_URL, { useNewUrlParser: true });
+      await mongoose.connect(this.DB_URL, { useNewUrlParser: true });
     }
 
     // if this email exists, update the entry, don't insert

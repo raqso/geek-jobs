@@ -1,4 +1,5 @@
-interface Site {
+import Job from './Job';
+export default interface Site {
     name: string;
     logoImage: string;
     address: string;
