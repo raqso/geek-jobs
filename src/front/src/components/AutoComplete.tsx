@@ -1,12 +1,9 @@
 import * as React from 'react';
 
-const positionSuggestionsEndpoint =
-'http://localhost:3000/suggest?position=';
-// const locationSuggestionsEndpoint = 'http://localhost:3000/suggest?location=';
-
 interface AutoCompleteProps {
   placeholder: string;
   maxSuggestions: number;
+  suggestionsEndpoint: string,
   onChange(value: any): void;
 }
 
@@ -61,7 +58,7 @@ export default class AutoComplete extends React.Component<
   }
 
   private async getSuggestions() {
-    await fetch(positionSuggestionsEndpoint + this.state.value)
+    await fetch(this.props.suggestionsEndpoint + this.state.value)
       .then(response => response.json())
       .then(suggestions =>
         this.setState({
