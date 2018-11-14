@@ -1,5 +1,6 @@
 import { Browser } from 'puppeteer';
 import Job from '../Job';
+import Site from '../Site';
 
 export default class Pracuj implements Site {
   readonly categoryIdItAdministration = '5015';

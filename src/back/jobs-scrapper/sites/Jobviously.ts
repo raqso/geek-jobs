@@ -1,5 +1,6 @@
 import { GetData } from '../GetData';
 import Job from '../Job';
+import Site from '../Site';
 
 export default class Jobviously implements Site {
   name = '<jobvious/y>';

@@ -1,6 +1,7 @@
 import { Browser } from 'puppeteer';
 import { isString } from 'util';
 import Job from '../Job';
+import Site from '../Site';
 
 export default class Olx implements Site {
   name = 'Olx';
@@ -33,10 +34,10 @@ export default class Olx implements Site {
 
   private async openNewBrowserPage() {
     this.page = await this.browser.newPage();
-    await this.setFetchingHtmlOnly();
+    /* await this.setFetchingHtmlOnly(); */
   }
 
-  private async setFetchingHtmlOnly() {
+  /* private async setFetchingHtmlOnly() {
     await this.page.setRequestInterception(true);
     this.page.on('request', (req: any) => {
       if (
@@ -49,7 +50,7 @@ export default class Olx implements Site {
         req.continue();
       }
     });
-  }
+  } */
 
   private async getJobsForThePage() {
     let listLength = await this.page.evaluate((sel: string) => {
