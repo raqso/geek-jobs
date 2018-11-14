@@ -3,7 +3,7 @@ import * as React from 'react';
 interface AutoCompleteProps {
   placeholder: string;
   maxSuggestions: number;
-  suggestionsEndpoint: string,
+  suggestionsEndpoint: string;
   onChange(value: any): void;
 }
 
@@ -17,7 +17,6 @@ export default class AutoComplete extends React.Component<
   AutoCompleteProps,
   AutoCompletePropsState
 > {
-
   constructor(props: AutoCompleteProps) {
     super(props);
     this.state = {
@@ -33,18 +32,17 @@ export default class AutoComplete extends React.Component<
 
   public render() {
     return (
-      <div className="input-field first-wrap" onFocus={() => this.setState({ isFocus: true })} onBlur={() => {
-        this.setState({ isFocus: false });
-        console.log('div out!');
-    }}>
+      <div
+        className="input-field first-wrap searchbox"
+        onFocus={() => this.setState({ isFocus: true })}
+        onBlur={(event) => this.handleBlur(event)}
+      >
         <input
           id="position"
           type="text"
           placeholder={this.props.placeholder}
           onChange={event => this.handleChange(event)}
-          
           value={this.state.value}
-          
         />
         {this.renderSuggestions()}
       </div>
@@ -55,6 +53,16 @@ export default class AutoComplete extends React.Component<
     this.setState({ value: event.target.value });
     this.getSuggestions();
     this.props.onChange(event.target.value);
+  }
+
+  private handleBlur(event: React.FocusEvent) {
+    const currentTarget = event.currentTarget;
+
+    setTimeout(() => {
+      if (!currentTarget.contains(document.activeElement)) {
+        this.setState({ isFocus: false });
+      }
+    }, 0);
   }
 
   private async getSuggestions() {
@@ -68,14 +76,18 @@ export default class AutoComplete extends React.Component<
   }
 
   private renderSuggestions() {
-      return (
-        <ul hidden={!this.state.isFocus}>
-          {this.state.suggestions.map(suggestion => (
-            <li key={suggestion} value={suggestion} onClick={() => this.setState({value: suggestion})} >
-              {suggestion}
-            </li>
-          ))}
-        </ul>
-      );
+    return (
+      <ul hidden={!this.state.isFocus}>
+        {this.state.suggestions.map(suggestion => (
+          <li
+            key={suggestion}
+            value={suggestion}
+            onClick={() => this.setState({ value: suggestion })}
+          >
+            {suggestion}
+          </li>
+        ))}
+      </ul>
+    );
   }
 }
