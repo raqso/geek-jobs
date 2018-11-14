@@ -46,6 +46,7 @@ class App extends React.Component<any, AppState> {
         <Offer
           position={offer.position}
           location={offer.location}
+          technologies={offer.technologies}
           company={offer.company}
           companyLogo={offer.companyLogo}
           portalImage={offer.portalLogo}

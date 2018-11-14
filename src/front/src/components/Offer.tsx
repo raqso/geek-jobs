@@ -13,19 +13,35 @@ interface OfferProps {
     to: number;
     currency: string;
   };
+  technologies?: string[];
 }
 
 export class Offer extends React.Component<OfferProps, any> {
-  private readonly defaultCompanyLogo = 'https://www.gsr-technology.co.uk/wp-content/uploads/2015/10/partner-logo-placeholder-300x150.jpg';
+  private readonly defaultCompanyLogo =
+    'https://www.gsr-technology.co.uk/wp-content/uploads/2015/10/partner-logo-placeholder-300x150.jpg';
   public render() {
     return (
       <li className={'offer'}>
         <a href={this.props.link}>
           <div className={'company-logo'}>
-            <img src={this.props.companyLogo ? this.props.companyLogo : this.defaultCompanyLogo} alt={'Company logo'} />
+            <img
+              src={
+                this.props.companyLogo
+                  ? this.props.companyLogo
+                  : this.defaultCompanyLogo
+              }
+              alt={'Company logo'}
+            />
           </div>
           <div className={'offer-content'}>
             <p className={'position'}>{this.props.position}</p>
+            <ul className="technologies">
+              {this.props.technologies
+                ? this.props.technologies.map(technology => {
+                    return <li key={technology.toString()}>{technology}</li>;
+                  })
+                : null}
+            </ul>
             <span className="location">{this.props.location}</span>{' '}
             {this.getNiceDate(this.props.addedDate)}
           </div>
@@ -58,7 +74,9 @@ export class Offer extends React.Component<OfferProps, any> {
     currency: string;
   }) {
     if (salary && salary.from && salary.to) {
-      return `${salary.from} - ${salary.to}${salary.currency ? salary.currency : ''}`;
+      return `${salary.from} - ${salary.to}${
+        salary.currency ? salary.currency : ''
+      }`;
     } else {
       return '';
     }

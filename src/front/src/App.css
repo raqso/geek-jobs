@@ -72,6 +72,20 @@ a {
   padding-right: 10px;
 }
 
+.technologies {
+  list-style: none;
+  display: flex;
+  padding: 0;
+}
+
+.technologies li {
+  padding: 2px;
+  box-shadow: 0 3px 5px rgba(125, 147, 178, .25);
+  margin: 2px;
+  height: 28px;
+  font-size: x-small;
+}
+
 .position {
   font-weight: 300;
   font-size: 24px;
