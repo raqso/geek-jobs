@@ -58,7 +58,7 @@ export class Offer extends React.Component<OfferProps, any> {
     currency: string;
   }) {
     if (salary && salary.from && salary.to) {
-      return `${salary.from} - ${salary.to}${salary.currency}`;
+      return `${salary.from} - ${salary.to}${salary.currency ? salary.currency : ''}`;
     } else {
       return '';
     }

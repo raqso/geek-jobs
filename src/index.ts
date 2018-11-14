@@ -3,7 +3,7 @@ import JobFetcher from './back/jobs-scrapper/JobFetcher';
 
 async function run() {
   const browser = await puppeteer.launch({
-    // headless: false
+    // headless: false,
     // devtools: true
   });
 
