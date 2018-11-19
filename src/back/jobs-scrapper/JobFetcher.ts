@@ -2,15 +2,16 @@ import * as puppeteer from 'puppeteer';
 import https from 'https';
 import Database from './Database';
 import Site from './Site';
-/* import ForProgrammers from './sites/ForProgrammers';
+import ForProgrammers from './sites/ForProgrammers';
 import NoFulffJobs from './sites/NoFluffJobs';
 import JustJoinIt from './sites/JustJoinIT';
 import Jobviously from './sites/Jobviously';
 import Pracuj from './sites/Pracuj';
 import BulldogJob from './sites/BulldogJob';
 import Olx from './sites/Olx';
-import StackOverflow from './sites/StackOverflow'; */
+import StackOverflow from './sites/StackOverflow';
 import CrossWeb from './sites/CrossWeb';
+import InfoPraca from './sites/InfoPraca';
 
 export default class JobFetcher {
   browser: puppeteer.Browser;
@@ -23,15 +24,16 @@ export default class JobFetcher {
       this.sitesToFetch = sites;
     } else {
       this.sitesToFetch = [
+        new InfoPraca(this.browser),
         new CrossWeb(this.browser),
-        /* new StackOverflow(this.browser),
+        new StackOverflow(this.browser),
         new BulldogJob(this.browser),
         new Pracuj(this.browser),
         new Jobviously(),
         new JustJoinIt(),
         new ForProgrammers(this.browser),
         new NoFulffJobs(),
-        new Olx(this.browser) */
+        new Olx(this.browser)
       ];
     }
   }
