@@ -4,5 +4,5 @@ export default interface Site {
     logoImage: string;
     address: string;
     endpointAddress: string;
-    getJobs(position?: string, location?: string, technology?: string[]): Job[] | Promise<Job[]>;
+    getJobs(): Job[] | Promise<Job[]>;
 }

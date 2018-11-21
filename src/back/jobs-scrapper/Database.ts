@@ -9,9 +9,8 @@ export default class Database {
       await mongoose.connect(this.DB_URL, { useNewUrlParser: true });
     }
 
-    // if this email exists, update the entry, don't insert
-    let conditions = { position: jobObj.position, company: jobObj.company };
-    let options = { upsert: true, new: true, setDefaultsOnInsert: true, useFindAndModify: false };
+    const conditions = { position: jobObj.position, company: jobObj.company };
+    const options = { upsert: true, new: true, setDefaultsOnInsert: true, useFindAndModify: false };
 
     JobOffer.findOneAndUpdate(
       conditions,
