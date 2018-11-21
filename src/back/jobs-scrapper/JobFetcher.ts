@@ -58,6 +58,7 @@ export default class JobFetcher {
 
   private async fetchJobOffers(site: Site) {
     console.log(` ⬇️ Started fetching from the ${site.name}`);
+    console.time(site.name);
     try {
       const jobOffers = await site.getJobs();
 
@@ -76,6 +77,7 @@ export default class JobFetcher {
         `Error during getting job offers from the ${site.name} site!` + error
       );
     }
+    console.timeEnd(site.name);
   }
 
   private async isSiteOnline(site: Site) {
