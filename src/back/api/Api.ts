@@ -3,7 +3,7 @@ import * as bodyParser from 'body-parser';
 import { offersRoutes } from './routes/offersRoutes';
 import mongoose from 'mongoose';
 
-class App {
+class Api {
     public app: express.Application;
     public readonly mongoUrl: string = 'mongodb://localhost/jobs';
 
@@ -26,8 +26,8 @@ class App {
             extended: false
         }));
 
-        this.app.use('/', offersRoutes);
+        this.app.use('/api', offersRoutes);
     }
 }
 
-export default new App().app;
+export default new Api().app;

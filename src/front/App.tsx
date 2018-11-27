@@ -8,9 +8,9 @@ interface AppState {
 }
 
 class App extends React.Component<any, AppState> {
-  private readonly offersApiAddress = 'http://localhost:3000/offers';
-  private offersList: HTMLElement; 
-  private searchbox: SearchBox;
+  private readonly offersApiAddress = 'api/offers';
+  private offersList!: HTMLElement;
+  private searchbox!: SearchBox;
 
   constructor(props: any) {
     super(props);
@@ -21,20 +21,20 @@ class App extends React.Component<any, AppState> {
 
   public render() {
     return (
-      <div className="App">
-        <section id="top">
+      <div className='App'>
+        <section id='top'>
           <SearchBox
             onClick={ () => this.searchOffers()}
-            positionPlaceholder="Stanowisko, np: Programista C#"
-            locationPlaceholder="Lokalizacja, np: Wrocław"
-            searchButtonText="Szukaj"
-            ref={ (el:SearchBox) => (this.searchbox = el)}
+            positionPlaceholder='Stanowisko, np: Programista C#'
+            locationPlaceholder='Lokalizacja, np: Wrocław'
+            searchButtonText='Szukaj'
+            ref={ (el: SearchBox) => (this.searchbox = el)}
           />
         </section>
-        <section id="offers-section" ref={(el: any) => (this.offersList = el)}>
-          <ul id="offers">{this.renderOffers()}</ul>
+        <section id='offers-section' ref={(el: any) => (this.offersList = el)}>
+          <ul id='offers'>{this.renderOffers()}</ul>
         </section>
-        <section id="footer" />
+        <section id='footer' />
       </div>
     );
   }
@@ -66,7 +66,7 @@ class App extends React.Component<any, AppState> {
     await fetch(address)
       .then(response => response.json())
       .then(offers => this.setState({ offers }));
-    
+
     if (this.offersList) {
       this.offersList.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }

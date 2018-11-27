@@ -8,7 +8,7 @@ export class OffersController {
 
   public root(_req: express.Request, res: express.Response) {
     res.status(200).send({
-      message: 'GET request successful!!'
+      message: 'API is working'
     });
   }
 

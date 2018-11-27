@@ -44,7 +44,7 @@ export default class JobFetcher {
     Database.clearJobOffers();
     this.sitesToFetch.forEach(site => {
       if (this.isSiteOnline(site)) {
-      downloads.push(this.fetchJobOffers(site));
+        downloads.push(this.fetchJobOffers(site));
       }
     });
 
@@ -81,12 +81,14 @@ export default class JobFetcher {
   }
 
   private async isSiteOnline(site: Site) {
-    await https.get(site.endpointAddress, () => {
-      console.info(`🌐 ${site.name} is online`);
-      return true;
-    }).on('error', () => {
-      console.warn(`🔻 ${site.name} is offline`);
-      return false;
-    });
+    await https
+      .get(site.endpointAddress, () => {
+        console.info(`🌐 ${site.name} is online`);
+        return true;
+      })
+      .on('error', () => {
+        console.warn(`🔻 ${site.name} is offline`);
+        return false;
+      });
   }
 }

@@ -24,18 +24,18 @@ export default class SearchBox extends React.Component<
 
   public render() {
     return (
-      <div className="s01">
+      <div className='s01'>
         <form>
           <fieldset>
             <legend>Znajdź pracę w IT</legend>
           </fieldset>
-          <div className="inner-form">
-            <AutoComplete placeholder={this.props.positionPlaceholder} maxSuggestions={10} onChange={(value) => {this.setState({positionValue: value})}} suggestionsEndpoint={'http://localhost:3000/suggest?position='} />
-            <AutoComplete placeholder={this.props.locationPlaceholder} maxSuggestions={5} onChange={(value) => {this.setState({locationValue: value})}} suggestionsEndpoint={'http://localhost:3000/suggest?location='} />
-            <div className="input-field third-wrap">
+          <div className='inner-form'>
+            <AutoComplete placeholder={this.props.positionPlaceholder} maxSuggestions={10} onChange={(value) => {this.setState({positionValue: value}); }} suggestionsEndpoint={'api/suggest?position='} />
+            <AutoComplete placeholder={this.props.locationPlaceholder} maxSuggestions={5} onChange={(value) => {this.setState({locationValue: value}); }} suggestionsEndpoint={'api/suggest?location='} />
+            <div className='input-field third-wrap'>
               <button
-                className="btn-search"
-                type="button"
+                className='btn-search'
+                type='button'
                 onClick={this.props.onClick}
               >
                 {this.props.searchButtonText}
