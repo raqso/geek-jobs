@@ -37,7 +37,8 @@
     "puppeteer": "^1.10.0",
     "react": "^16.6.3",
     "react-dom": "^16.6.3",
-    "sha.js": "^2.4.11"
+    "sha.js": "^2.4.11",
+    "vscode": "^1.1.22"
   },
   "devDependencies": {
     "@types/body-parser": "^1.17.0",

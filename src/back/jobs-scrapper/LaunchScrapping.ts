@@ -4,6 +4,7 @@ import JobFetcher from './JobFetcher';
 export default async function launchScrapping() {
   try {
     const browser = await puppeteer.launch({
+        args: ['--no-sandbox', '--disable-setuid-sandbox'],
       // headless: false
       // devtools: true
     });

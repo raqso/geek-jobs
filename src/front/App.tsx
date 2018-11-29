@@ -4,7 +4,7 @@ import { Offer } from './components/Offer';
 import SearchBox from './components/SearchBox';
 
 interface AppState {
-  offers: any[];
+  offers: any[]; 
 }
 
 class App extends React.Component<any, AppState> {
@@ -23,6 +23,7 @@ class App extends React.Component<any, AppState> {
     return (
       <div className='App'>
         <section id='top'>
+          <div id='#header'></div>
           <SearchBox
             onClick={ () => this.searchOffers()}
             positionPlaceholder='Stanowisko, np: Programista C#'
