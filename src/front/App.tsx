@@ -23,7 +23,7 @@ class App extends React.Component<any, AppState> {
     return (
       <div className='App'>
         <section id='top'>
-          <div id='#header'></div>
+          <div id='header'></div>
           <SearchBox
             onClick={ () => this.searchOffers()}
             positionPlaceholder='Stanowisko, np: Programista C#'
