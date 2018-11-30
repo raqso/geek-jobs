@@ -11,7 +11,7 @@
   "scripts": {
     "build": "webpack --mode production",
     "start": "npm run build && node dist/back/server.js",
-    "client": "webpack-dev-server --mode development --devtool inline-source-map --hot",
+    "client": "concurrently \"webpack --mode development --watch\" \"webpack-dev-server --mode development --devtool inline-source-map --hot\"",
     "server": "nodemon dist/back/server.js",
     "dev": "concurrently \"npm run server\" \"npm run client\""
   },
