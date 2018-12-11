@@ -33,13 +33,13 @@ export default class AutoComplete extends React.Component<
   public render() {
     return (
       <div
-        className="input-field first-wrap searchbox"
+        className='input-field first-wrap searchbox'
         onFocus={() => this.setState({ isFocus: true })}
-        onBlur={(event) => this.handleBlur(event)}
+        onBlur={event => this.handleBlur(event)}
       >
         <input
-          id="position"
-          type="text"
+          id='position'
+          type='text'
           placeholder={this.props.placeholder}
           onChange={event => this.handleChange(event)}
           value={this.state.value}
@@ -68,11 +68,13 @@ export default class AutoComplete extends React.Component<
   private async getSuggestions() {
     await fetch(this.props.suggestionsEndpoint + this.state.value)
       .then(response => response.json())
-      .then(suggestions =>
-        this.setState({
-          suggestions: suggestions.slice(0, this.props.maxSuggestions)
-        })
-      );
+      .then(suggestions => {
+        if (suggestions) {
+          this.setState({
+            suggestions: suggestions.slice(0, this.props.maxSuggestions)
+          });
+        }
+      });
   }
 
   private renderSuggestions() {

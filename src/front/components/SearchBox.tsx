@@ -21,7 +21,6 @@ export default class SearchBox extends React.Component<
   constructor(props: SearchBoxProps) {
     super(props);
     this.state = { locationValue: '', positionValue: '' };
-    console.log(this.props);
   }
 
   public render() {

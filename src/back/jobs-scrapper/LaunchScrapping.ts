@@ -1,17 +1,17 @@
 import puppeteer from 'puppeteer';
 import JobFetcher from './JobFetcher';
-import ForProgrammers from './sites/ForProgrammers';
+/* import ForProgrammers from './sites/ForProgrammers'; */
 
 export default async function launchScrapping() {
   try {
     const browser = await puppeteer.launch({
         args: ['--no-sandbox', '--disable-setuid-sandbox'],
-      headless: false
+      // headless: false
       // devtools: true
     });
-    const testedSite = new ForProgrammers(browser);
+    // const testedSite = new ForProgrammers(browser);
 
-    await new JobFetcher(browser, [testedSite]).start();
+    await new JobFetcher(browser).start();
     browser.close();
   } catch (error) {
     console.warn('Error has been occured! ', error);

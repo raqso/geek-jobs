@@ -4,7 +4,7 @@ import { Offer } from './components/Offer';
 import SearchBox from './components/SearchBox';
 
 interface AppState {
-  offers: any[]; 
+  offers: any[];
 }
 
 class App extends React.Component<any, AppState> {

@@ -70,10 +70,14 @@ const frontConfig = {
 
 const backConfig = {
   target: 'node',
-  entry: ["./src/back/server.ts"],
+  entry: {
+    server: "./src/back/server.ts",
+    cron: "./src/back/Cron.ts",
+    scrapper: "./src/back/jobs-scrapper/LaunchScrapping.ts"
+  },
   output: {
     path: path.join(__dirname, serverOutputDirectory),
-    filename: 'server.js'
+    filename: '[name].js',
   },
   externals: [nodeExternals()],
   devtool: "source-map",
