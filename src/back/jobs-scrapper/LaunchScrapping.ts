@@ -1,6 +1,5 @@
 import puppeteer from 'puppeteer';
 import JobFetcher from './JobFetcher';
-/* import ForProgrammers from './sites/ForProgrammers'; */
 
 export default async function launchScrapping() {
   try {
@@ -9,7 +8,6 @@ export default async function launchScrapping() {
       // headless: false
       // devtools: true
     });
-    // const testedSite = new ForProgrammers(browser);
 
     await new JobFetcher(browser).start();
     browser.close();

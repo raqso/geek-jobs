@@ -40,7 +40,7 @@ export default class JobFetcher {
 
   async start() {
     let downloads: Promise<void>[] = [];
-
+    console.log(`Started fetching at ${new Date().toLocaleString()}`);
     Database.clearJobOffers();
     this.sitesToFetch.forEach(site => {
       if (this.isSiteOnline(site)) {
@@ -50,7 +50,7 @@ export default class JobFetcher {
 
     await Promise.all(downloads);
     console.log(
-      `Fetched ${this.fetchedOffers} offers from ${
+      `${new Date().toLocaleString()}: Fetched ${this.fetchedOffers} offers from ${
         this.sitesToFetch.length
       } sites. 😎`
     );
