@@ -62,13 +62,13 @@ export default class AutoComplete extends React.Component<
       if (!currentTarget.contains(document.activeElement)) {
         this.setState({ isFocus: false });
       }
-    }, 0);
+    }, 150);
   }
 
   private async getSuggestions() {
     await fetch(this.props.suggestionsEndpoint + this.state.value)
       .then(response => response.json())
-      .then(suggestions => {
+      .then((suggestions: string[]) => {
         if (suggestions) {
           this.setState({
             suggestions: suggestions.slice(0, this.props.maxSuggestions)
@@ -80,11 +80,13 @@ export default class AutoComplete extends React.Component<
   private renderSuggestions() {
     return (
       <ul hidden={!this.state.isFocus}>
-        {this.state.suggestions.map(suggestion => (
+        {this.state.suggestions.map((suggestion: string) => (
           <li
             key={suggestion}
             value={suggestion}
-            onClick={() => this.setState({ value: suggestion })}
+            onClick={() => {
+              this.setState({ value: suggestion });
+            }}
           >
             {suggestion}
           </li>
