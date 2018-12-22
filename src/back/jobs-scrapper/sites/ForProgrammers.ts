@@ -4,10 +4,10 @@ import Job from '../Job';
 import Site from '../Site';
 
 export default class ForProgrammers implements Site {
-  name = '4Programmers.net';
-  logoImage = 'https://static.4programmers.net/img/logo.png';
-  address = 'https://4programmers.net';
-  endpointAddress = 'https://4programmers.net/Praca';
+  readonly name = '4Programmers.net';
+  readonly logoImage = 'https://static.4programmers.net/img/logo.png';
+  readonly address = 'https://4programmers.net';
+  readonly endpointAddress = 'https://4programmers.net/Praca';
   browser: Browser;
   page: any;
 
@@ -15,7 +15,7 @@ export default class ForProgrammers implements Site {
     this.browser = browserObject;
   }
 
-  async getJobs() {
+  public async getJobs() {
     let jobOffers: Job[] = [];
 
     await this.openNewBrowserPage();
@@ -60,8 +60,8 @@ export default class ForProgrammers implements Site {
   }
 
   private async isLastPage() {
-    let lastButtonValue = await this.page.evaluate((sel: string) => {
-      let element = document.querySelector(sel) as HTMLUListElement;
+    const lastButtonValue = await this.page.evaluate((sel: string) => {
+      const element = document.querySelector(sel) as HTMLUListElement;
       return element ? element.innerText : '';
     }, this.selectors.lastPageButtonSelector);
 
@@ -69,7 +69,7 @@ export default class ForProgrammers implements Site {
   }
 
   private async getJobsForThePage() {
-    let listLength = await this.page.evaluate((sel: string) => {
+    const listLength = await this.page.evaluate((sel: string) => {
       return document.querySelectorAll(sel).length;
     }, this.selectors.lengthSelectorClass);
 
@@ -104,45 +104,45 @@ export default class ForProgrammers implements Site {
         i.toString()
       );
 
-      let position = await this.page.evaluate((sel: string) => {
-        let element = document.querySelector(sel) as HTMLAnchorElement;
+      const position = await this.page.evaluate((sel: string) => {
+        const element = document.querySelector(sel) as HTMLAnchorElement;
         return element ? element.innerText : null;
       }, positionSelector);
 
       if (position) {
-        let offerLink = await this.page.evaluate((sel: string) => {
-          let element = document.querySelector(sel) as HTMLAnchorElement;
+        const offerLink = await this.page.evaluate((sel: string) => {
+          const element = document.querySelector(sel) as HTMLAnchorElement;
           return element ? element.href : null;
         }, positionSelector);
 
-        let company = await this.page.evaluate((sel: string) => {
-          let element = document.querySelector(sel) as HTMLAnchorElement;
+        const company = await this.page.evaluate((sel: string) => {
+          const element = document.querySelector(sel) as HTMLAnchorElement;
           return element ? element.innerText : null;
         }, companySelector);
 
-        let companyLogo = await this.page.evaluate((sel: string) => {
-          let element = document.querySelector(sel) as HTMLImageElement;
+        const companyLogo = await this.page.evaluate((sel: string) => {
+          const element = document.querySelector(sel) as HTMLImageElement;
           return element ? element.src : null;
         }, companyLogoSelector);
 
-        let location = await this.page.evaluate((sel: string) => {
-          let element = document.querySelector(sel) as HTMLAnchorElement;
+        const location = await this.page.evaluate((sel: string) => {
+          const element = document.querySelector(sel) as HTMLAnchorElement;
           return element ? element.innerText : null;
         }, citySelector);
 
-        let salary = await this.page.evaluate((sel: string) => {
-          let element = document.querySelector(sel) as HTMLElement;
+        const salary = await this.page.evaluate((sel: string) => {
+          const element = document.querySelector(sel) as HTMLElement;
           return element ? element.innerText : null;
         }, salarySelector);
 
-        let technologies = await this.page.evaluate((sel: string) => {
-          let element = document.querySelector(sel) as HTMLUListElement;
+        const technologies = await this.page.evaluate((sel: string) => {
+          const element = document.querySelector(sel) as HTMLUListElement;
           return element ? element.innerText : null;
         }, technologiesSelector);
 
-        let addedDate = await this.page.evaluate((sel: string) => {
-          let element = document.querySelector(sel) as HTMLElement;
-          return element ? element.innerText : null;
+        const addedDate = await this.page.evaluate((sel: string) => {
+          const element = document.querySelector(sel) as HTMLTableDataCellElement;
+          return element ? element.innerText.trim() : null;
         }, addedDateSelector);
 
         jobOffers.push({
@@ -193,7 +193,10 @@ export default class ForProgrammers implements Site {
   }
 
   private getOfferDate(created: string) {
-    if (created && isString(created)) {
+    if (created === 'Nowe') {
+      return new Date();
+    }
+    else if (created && isString(created)) {
       const howMany = Number(created.split(' ')[0]);
       const unit: 'godziny' | 'dni' | 'tygodnie' | string = created.split(
         ' '
@@ -240,11 +243,11 @@ export default class ForProgrammers implements Site {
     listCompanyLogoSelector:
       '#box-jobs > table > tbody > tr:nth-child(INDEX) > td.col-logo > a > img',
     listCitySelector:
-      '#box-jobs > table > tbody > tr:nth-child(INDEX) > td.col-body > p:nth-child(3) > a',
+      '#box-jobs > table > tbody > tr:nth-child(INDEX) > td.col-body > p:nth-child(3) > small > a',
     listSalarySelector:
       '#box-jobs > table > tbody > tr:nth-child(INDEX) > td.col-salary.hidden-xs.hidden-xxs > p > strong',
     listAddedDateSelector:
-      '#box-jobs > table > tbody > tr:nth-child(INDEX) > td.col-time.hidden-sm.hidden-xs.hidden-xxs > small',
+      '#box-jobs > table > tbody > tr:nth-child(INDEX) > td.col-time',
     listTechnologiesSelector:
       '#box-jobs > table > tbody > tr:nth-child(INDEX) > td.col-body > ul'
   };
