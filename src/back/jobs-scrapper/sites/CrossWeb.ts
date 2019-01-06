@@ -8,8 +8,8 @@ export default class CrossWeb implements Site {
     'https://crossweb.pl/job/wp-content/themes/kariera/img/crossjob-logo-podstawowe.png';
   readonly address = 'https://crossweb.pl';
   readonly endpointAddress = 'https://crossweb.pl/job/oferty-pracy';
-  readonly browser: Browser;
-  readonly page: any;
+  browser: Browser;
+  page: any;
 
   constructor(browserObject: Browser) {
     this.browser = browserObject;
