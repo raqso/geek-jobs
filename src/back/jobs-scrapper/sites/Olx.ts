@@ -53,7 +53,7 @@ export default class Olx implements Site {
   } */
 
   private async getJobsForThePage() {
-    let listLength = await this.page.evaluate((sel: string) => {
+    const listLength = await this.page.evaluate((sel: string) => {
       return document.querySelectorAll(sel).length;
     }, this.selectors.lengthSelectorClass);
 
@@ -80,34 +80,34 @@ export default class Olx implements Site {
         i.toString()
       );
 
-      let position = await this.page.evaluate((sel: string) => {
-        let element = document.querySelector(sel) as HTMLAnchorElement;
+      const position = await this.page.evaluate((sel: string) => {
+        const element = document.querySelector(sel) as HTMLAnchorElement;
         return element ? element.innerText : null;
       }, positionSelector);
 
       if (position) {
-        let offerLink = await this.page.evaluate((sel: string) => {
-          let element = document.querySelector(sel) as HTMLAnchorElement;
+        const offerLink = await this.page.evaluate((sel: string) => {
+          const element = document.querySelector(sel) as HTMLAnchorElement;
           return element ? element.href : null;
         }, positionSelector);
 
-        let location = await this.page.evaluate((sel: string) => {
-          let element = document.querySelector(sel) as HTMLSpanElement;
+        const location = await this.page.evaluate((sel: string) => {
+          const element = document.querySelector(sel) as HTMLSpanElement;
           return element ? element.innerText : null;
         }, citySelector);
 
-        let salaryFrom = await this.page.evaluate((sel: string) => {
-          let element = document.querySelector(sel) as HTMLSpanElement;
+        const salaryFrom = await this.page.evaluate((sel: string) => {
+          const element = document.querySelector(sel) as HTMLSpanElement;
           return element ? element.innerText : null;
         }, salaryFromSelector);
 
-        let salaryTo = await this.page.evaluate((sel: string) => {
-          let element = document.querySelector(sel) as HTMLSpanElement;
+        const salaryTo = await this.page.evaluate((sel: string) => {
+          const element = document.querySelector(sel) as HTMLSpanElement;
           return element ? element.innerText : null;
         }, salaryToSelector);
 
-        let addedDate = await this.page.evaluate((sel: string) => {
-          let element = document.querySelector(sel) as HTMLSpanElement;
+        const addedDate = await this.page.evaluate((sel: string) => {
+          const element = document.querySelector(sel) as HTMLSpanElement;
           return element ? element.innerText : null;
         }, addedDateSelector);
 
@@ -138,7 +138,7 @@ export default class Olx implements Site {
 
   private async isLastPage() {
     return await this.page.evaluate((sel: string) => {
-      let element = document.querySelector(sel) as HTMLAnchorElement;
+      const element = document.querySelector(sel) as HTMLAnchorElement;
       return element ? false : true;
     }, this.selectors.lastPageButtonSelector + ' > a');
   }
@@ -225,6 +225,9 @@ export default class Olx implements Site {
           }
         }
 
+        if (month > todayDate.getMonth()) {
+          todayDate.setFullYear( todayDate.getFullYear() - 1);
+        }
         todayDate.setMonth(month);
         todayDate.setDate(day);
         return todayDate;
