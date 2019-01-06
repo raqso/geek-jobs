@@ -19,7 +19,9 @@ export default class ForProgrammers implements Site {
     let jobOffers: Job[] = [];
 
     await this.openNewBrowserPage();
-    await this.page.goto(this.endpointAddress);
+    await this.page.goto(this.endpointAddress, {
+      waitUntil: 'domcontentloaded'
+    });
 
     let isLast = await this.isLastPage();
     while (!isLast) {
@@ -40,21 +42,18 @@ export default class ForProgrammers implements Site {
   /* private async setFetchingHtmlOnly() {
     await this.page.setRequestInterception(true);
     this.page.on('request', (req: any) => {
-      if (
-        req.resourceType() === 'stylesheet' ||
-        req.resourceType() === 'font' ||
-        req.resourceType() === 'image'
-      ) {
-        req.abort();
-      } else {
+      if (req.resourceType() === 'document') {
         req.continue();
+      }
+      else {
+        req.abort();
       }
     });
   } */
 
   async goToNextPage() {
     await Promise.all([
-      this.page.waitForNavigation(),
+      this.page.waitForNavigation({ waitUntil: 'domcontentloaded' }),
       this.page.click(this.selectors.lastPageButtonSelector)
     ]);
   }
@@ -141,7 +140,9 @@ export default class ForProgrammers implements Site {
         }, technologiesSelector);
 
         const addedDate = await this.page.evaluate((sel: string) => {
-          const element = document.querySelector(sel) as HTMLTableDataCellElement;
+          const element = document.querySelector(
+            sel
+          ) as HTMLTableDataCellElement;
           return element ? element.innerText.trim() : null;
         }, addedDateSelector);
 
@@ -195,8 +196,7 @@ export default class ForProgrammers implements Site {
   private getOfferDate(created: string) {
     if (created === 'Nowe') {
       return new Date();
-    }
-    else if (created && isString(created)) {
+    } else if (created && isString(created)) {
       const howMany = Number(created.split(' ')[0]);
       const unit: 'godziny' | 'dni' | 'tygodnie' | string = created.split(
         ' '
