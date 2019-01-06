@@ -4,10 +4,10 @@ import Job from '../Job';
 import Site from '../Site';
 
 export default class Olx implements Site {
-  name = 'Olx';
-  logoImage = 'https://upload.wikimedia.org/wikipedia/commons/thumb/2/28/OLX_Logo.jpg/720px-OLX_Logo.jpg';
-  address = 'https://olx.pl';
-  endpointAddress = 'https://www.olx.pl/praca/informatyka/';
+  readonly name = 'Olx';
+  readonly logoImage = 'https://upload.wikimedia.org/wikipedia/commons/thumb/2/28/OLX_Logo.jpg/720px-OLX_Logo.jpg';
+  readonly address = 'https://olx.pl';
+  readonly endpointAddress = 'https://www.olx.pl/praca/informatyka/';
   browser: Browser;
   page: any;
 
