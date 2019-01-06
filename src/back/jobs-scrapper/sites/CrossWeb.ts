@@ -3,13 +3,13 @@ import Job from '../Job';
 import Site from '../Site';
 
 export default class CrossWeb implements Site {
-  name = 'CrossWeb';
-  logoImage =
+  readonly name = 'CrossWeb';
+  readonly logoImage =
     'https://crossweb.pl/job/wp-content/themes/kariera/img/crossjob-logo-podstawowe.png';
-  address = 'https://crossweb.pl';
-  endpointAddress = 'https://crossweb.pl/job/oferty-pracy';
-  browser: Browser;
-  page: any;
+  readonly address = 'https://crossweb.pl';
+  readonly endpointAddress = 'https://crossweb.pl/job/oferty-pracy';
+  readonly browser: Browser;
+  readonly page: any;
 
   constructor(browserObject: Browser) {
     this.browser = browserObject;
@@ -29,71 +29,71 @@ export default class CrossWeb implements Site {
 
   private async openNewBrowserPage() {
     this.page = await this.browser.newPage();
+    this.page.setDefaultNavigationTimeout(50000); // @TEMPORARY!
     await this.setFetchingHtmlOnly();
   }
 
   private async setFetchingHtmlOnly() {
     await this.page.setRequestInterception(true);
     this.page.on('request', (req: any) => {
-      if (
-        req.resourceType() === 'stylesheet' ||
-        req.resourceType() === 'font' ||
-        req.resourceType() === 'image'
-      ) {
-        req.abort();
-      } else {
+      if (req.resourceType() === 'document') {
         req.continue();
+      }
+      else {
+        req.abort();
       }
     });
   }
 
   private async getJobsForThePage() {
-    let listLength = await this.page.evaluate((sel: string) => {
+    const listLength: number = await this.page.evaluate((sel: string) => {
       return document.querySelectorAll(sel).length;
-    }, this.selectors.lengthSelectorClass);
-
+    }, this.selectors.lengthClass);
     let jobOffers: Job[] = [];
+
     for (let i = 1; i <= listLength; i++) {
-      const positionSelector = this.selectors.listPositionSelector.replace(
+      const positionSelector = this.selectors.listPosition.replace(
         'INDEX',
         i.toString()
       );
-      const citySelector = this.selectors.listCitySelector.replace(
-        'INDEX',
-        i.toString()
-      );
-
-      const companySelector = this.selectors.listCompanyLogoSelector.replace(
-        'INDEX',
-        i.toString()
-      );
-      const technologiesSelector = this.selectors.listTechnologiesSelector.replace(
+      const citySelector = this.selectors.listCity.replace(
         'INDEX',
         i.toString()
       );
 
-      let position = await this.page.evaluate((sel: string) => {
-        let element = document.querySelector(sel + ' > div') as HTMLDivElement;
+      const companySelector = this.selectors.listCompanyLogo.replace(
+        'INDEX',
+        i.toString()
+      );
+      const technologiesSelector = this.selectors.listTechnologies.replace(
+        'INDEX',
+        i.toString()
+      );
+
+      const position = await this.page.evaluate((sel: string) => {
+        const element = document.querySelector(
+          sel + ' > div'
+        ) as HTMLDivElement;
         return element ? element.innerText : null;
       }, positionSelector);
 
       if (position) {
-        let offerLink = await this.page.evaluate((sel: string) => {
-          let element = document.querySelector(sel) as HTMLAnchorElement;
+        const offerLink = await this.page.evaluate((sel: string) => {
+          const element = document.querySelector(sel) as HTMLAnchorElement;
           return element ? element.href : null;
         }, positionSelector);
 
-        let location = await this.page.evaluate((sel: string) => {
-          let element = document.querySelector(sel) as HTMLDivElement;
+        const location = await this.page.evaluate((sel: string) => {
+          const element = document.querySelector(sel) as HTMLDivElement;
           return element ? element.innerText.trim() : null;
         }, citySelector);
 
-        let companyLogo = await this.page.evaluate((sel: string) => {
-          let element = document.querySelector(sel) as HTMLImageElement;
+        const companyLogo = await this.page.evaluate((sel: string) => {
+          const element = document.querySelector(sel) as HTMLImageElement;
           return element ? element.src : null;
         }, companySelector);
 
-        let technologies = await this.page.evaluate((sel: string) => {
+        const technologies = await this.page.evaluate((sel: string) => {
           const element = document.querySelector(sel) as HTMLDivElement;
           return element ? element.innerText : null;
         }, technologiesSelector);
@@ -111,6 +111,8 @@ export default class CrossWeb implements Site {
         } as Job);
       }
     }
+
+    await this.fillOfferDetails(jobOffers);
     return jobOffers;
   }
 
@@ -120,7 +122,7 @@ export default class CrossWeb implements Site {
       const splitted = logoUrl.split('/');
       if (splitted.length) {
         const fileName = splitted[splitted.length - 1];
-        let companyName = regexPattern.exec(fileName);
+        const companyName = regexPattern.exec(fileName);
         if (companyName && companyName.length) {
           return companyName[0].replace('_', '');
         }
@@ -131,21 +133,102 @@ export default class CrossWeb implements Site {
   }
 
   private getTechnologies(technologiesText: string) {
-      if (technologiesText) {
-        return technologiesText.split(', ');
+    if (technologiesText) {
+      return technologiesText.split(', ');
+    }
+    return [];
+  }
+
+  private async fillOfferDetails(jobOffers: Job[]) {
+    for (let fetchedOffer of jobOffers) {
+
+      if (fetchedOffer.link) {
+        try {
+          const detailsFromOfferPage = await this.getOfferDetails(
+            fetchedOffer.link
+          );
+
+          if (detailsFromOfferPage) {
+            fetchedOffer.addedDate = detailsFromOfferPage.addedDate;
+            fetchedOffer.salary = detailsFromOfferPage.salary;
+          }
+        } catch (error) {
+          console.log('Upss...');
+          // sweep under the carpet
+        }
       }
-      return [];
+    }
+  }
+
+  private async getOfferDetails(
+    offerLink: string
+  ): Promise<{ addedDate: Job['addedDate']; salary: Job['salary'] | undefined }> {
+    await this.page.goto(offerLink, {
+      waitUntil: 'domcontentloaded'
+    });
+
+    const addedDateText: string = await this.page.evaluate((sel: string) => {
+      const element = document.querySelector(sel) as HTMLDivElement;
+      return element ? element.innerText : null;
+    }, this.selectors.detailsAddedDate);
+    const salaryText: string = await this.page.evaluate((sel: string) => {
+      const element = document.querySelector(sel) as HTMLSpanElement;
+      return element ? element.innerText : null;
+    }, this.selectors.detailsSalary);
+
+    return {
+      addedDate: this.getAddedDateObject(addedDateText),
+      salary: this.getSalaryArray(salaryText)
+    };
+  }
+
+  private getAddedDateObject(addedDateText: string) {
+    if (addedDateText) {
+      const splittedText = addedDateText.split(' ');
+      const today = new Date();
+
+      if (splittedText.length > 3 && splittedText[2] === 'dni') {
+        const days = splittedText[1];
+        today.setDate(today.getDate() - parseInt(days));
+        return today;
+      } else {
+        today.setMonth(today.getMonth() - 1);
+        return today;
+      }
+    } else {
+      return null;
+    }
+  }
+
+  private getSalaryArray(salaryText: string): Job['salary'] {
+    if (salaryText) {
+      const money = salaryText
+        .split('zł')[0]
+        .trim()
+        .split('-');
+
+      return {
+        from: !Number.isNaN( Number(money[0]) ) ? Number(money[0]) : undefined,
+        to: !Number.isNaN( Number(money[1]) ) ? Number(money[1]) : undefined,
+        currency: 'zł'
+      };
+    }
+    else {
+      return undefined;
+    }
   }
 
   readonly selectors = {
-    lengthSelectorClass: '#container > div.tabRow',
-    listPositionSelector: '#container > div.tabRow:nth-child(INDEX) > a',
-    listCitySelector: '#container > div.tabRow:nth-child(INDEX) > div.city',
-    listAddedDateSelector:
-      '#mainbar > div.js-search-results.flush-left > div > div.-item:nth-child(INDEX) > div.-job-summary > div.-title > span:nth-child(3)',
-    listCompanyLogoSelector:
+    lengthClass: '#container > div.tabRow',
+    listPosition: '#container > div.tabRow:nth-child(INDEX) > a',
+    listCity: '#container > div.tabRow:nth-child(INDEX) > div.city',
+    listCompanyLogo:
       '#container > div.tabRow:nth-child(INDEX) > div.logo > img',
-    listTechnologiesSelector:
-      '#container > div.tabRow:nth-child(INDEX) > div.technology'
+    listTechnologies:
+      '#container > div.tabRow:nth-child(INDEX) > div.technology',
+
+    detailsAddedDate: '#content > div.param-add',
+    detailsSalary:
+      '#content > section:nth-child(11) > div.param > div:nth-child(2) > span'
   };
 }
