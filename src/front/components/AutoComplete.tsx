@@ -69,7 +69,7 @@ export default class AutoComplete extends React.Component<
     await fetch(this.props.suggestionsEndpoint + this.state.value)
       .then(response => response.json())
       .then((suggestions: string[]) => {
-        if (suggestions) {
+        if (suggestions && Array.isArray(suggestions)) {
           this.setState({
             suggestions: suggestions.slice(0, this.props.maxSuggestions)
           });
