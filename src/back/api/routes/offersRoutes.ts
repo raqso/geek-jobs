@@ -15,8 +15,9 @@ class OffersRoutes {
     this.router.get(
       '/offers',
       (req: express.Request, res: express.Response) => {
-        if (req.query.position || req.query.location) {
-          offersController.offers(req.query.position, req.query.location, req, res);
+        if (req.query && Object.entries(req.query).length) {
+          const notEmptyParams = this.filterEmptyParams(req.query);
+          offersController.offers(notEmptyParams, req, res);
         } else {
           offersController.allOffers(req, res);
         }
@@ -39,6 +40,19 @@ class OffersRoutes {
         }
       }
     );
+  }
+
+  filterEmptyParams(parameters: any) {
+    const filteredParameters = Object.assign(parameters);
+    Object.entries(parameters).forEach(
+      ([key, value]) => {
+        if (!value || value === {}) {
+          delete filteredParameters[key];
+        }
+      }
+    );
+
+    return filteredParameters;
   }
 }
 
