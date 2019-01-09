@@ -1,122 +1,78 @@
-import { Browser } from 'puppeteer';
-import { isString } from 'util';
 import Job from '../Job';
-import Site from '../Site';
+import RenderedSite from '../RenderedSite';
 
-export default class StackOverflow implements Site {
-  name = 'StackOverflow';
-  logoImage =
+export default class StackOverflow extends RenderedSite {
+  readonly name = 'StackOverflow';
+  readonly logoImage =
     'https://cdn.sstatic.net/Sites/stackoverflow/company/img/logos/so/so-logo.png';
-  address = 'https://stackoverflow.com';
-  endpointAddress = 'https://stackoverflow.com/jobs?l=Poland';
-  browser: Browser;
+  readonly address = 'https://stackoverflow.com';
+  readonly endpointAddress = 'https://stackoverflow.com/jobs?l=Poland';
   page: any;
 
-  constructor(browserObject: Browser) {
-    this.browser = browserObject;
-  }
-
-  async getJobs() {
-    let jobOffers: Job[] = [];
-
-    await this.openNewBrowserPage();
-    await this.page.goto(this.endpointAddress);
-
-    let isLast = await this.isLastPage();
-    while (!isLast) {
-      jobOffers.push(...(await this.getJobsForThePage()));
-      await this.goToNextPage();
-      isLast = await this.isLastPage();
-    }
-
-    await this.page.close();
-    return jobOffers;
-  }
-
-  private async openNewBrowserPage() {
-    this.page = await this.browser.newPage();
-    await this.setFetchingHtmlOnly();
-  }
-
-  private async setFetchingHtmlOnly() {
-    await this.page.setRequestInterception(true);
-    this.page.on('request', (req: any) => {
-      if (
-        req.resourceType() === 'stylesheet' ||
-        req.resourceType() === 'font' ||
-        req.resourceType() === 'image'
-      ) {
-        req.abort();
-      } else {
-        req.continue();
-      }
-    });
-  }
-
-  private async getJobsForThePage() {
-    let listLength = await this.page.evaluate((sel: string) => {
+  protected async getJobsForThePage() {
+    const listLength = await this.page.evaluate((sel: string) => {
       return document.querySelectorAll(sel).length;
-    }, this.selectors.lengthSelectorClass);
+    }, this.selectors.lengthClass);
 
     let jobOffers: Job[] = [];
     for (let i = 1; i <= listLength; i++) {
-      const positionSelector = this.selectors.listPositionSelector.replace(
+      const positionSelector = this.selectors.listPosition.replace(
         'INDEX',
         i.toString()
       );
-      const citySelector = this.selectors.listCitySelector.replace(
+      const citySelector = this.selectors.listCity.replace(
         'INDEX',
         i.toString()
       );
-      const salarySelector = this.selectors.listSalarySelector.replace(
+      const salarySelector = this.selectors.listSalary.replace(
         'INDEX',
         i.toString()
       );
-      const addedDateSelector = this.selectors.listAddedDateSelector.replace(
+      const addedDateSelector = this.selectors.listAddedDate.replace(
         'INDEX',
         i.toString()
       );
-      const companySelector = this.selectors.listCompanySelector.replace(
+      const companySelector = this.selectors.listCompany.replace(
         'INDEX',
         i.toString()
       );
-      const technologiesSelector = this.selectors.listTechnologiesSelector.replace(
+      const technologiesSelector = this.selectors.listTechnologies.replace(
         'INDEX',
         i.toString()
       );
 
-      let position = await this.page.evaluate((sel: string) => {
-        let element = document.querySelector(sel) as HTMLAnchorElement;
+      const position = await this.page.evaluate((sel: string) => {
+        const element = document.querySelector(sel) as HTMLAnchorElement;
         return element ? element.innerText : null;
       }, positionSelector);
 
       if (position) {
-        let offerLink = await this.page.evaluate((sel: string) => {
-          let element = document.querySelector(sel) as HTMLAnchorElement;
+        const offerLink = await this.page.evaluate((sel: string) => {
+          const element = document.querySelector(sel) as HTMLAnchorElement;
           return element ? element.href : null;
         }, positionSelector);
 
-        let location = await this.page.evaluate((sel: string) => {
-          let element = document.querySelector(sel) as HTMLSpanElement;
+        const location = await this.page.evaluate((sel: string) => {
+          const element = document.querySelector(sel) as HTMLSpanElement;
           return element ? element.innerText.replace('-', '').trim() : null;
         }, citySelector);
 
-        let salary = await this.page.evaluate((sel: string) => {
-          let element = document.querySelector(sel) as HTMLSpanElement;
+        const salary = await this.page.evaluate((sel: string) => {
+          const element = document.querySelector(sel) as HTMLSpanElement;
           return element ? element.innerText.trim() : null;
         }, salarySelector);
 
-        let addedDate = await this.page.evaluate((sel: string) => {
-          let element = document.querySelector(sel) as HTMLSpanElement;
+        const addedDate = await this.page.evaluate((sel: string) => {
+          const element = document.querySelector(sel) as HTMLSpanElement;
           return element ? element.innerText : null;
         }, addedDateSelector);
 
-        let company = await this.page.evaluate((sel: string) => {
-          let element = document.querySelector(sel) as HTMLSpanElement;
+        const company = await this.page.evaluate((sel: string) => {
+          const element = document.querySelector(sel) as HTMLSpanElement;
           return element ? element.innerText : null;
         }, companySelector);
 
-        let technologies = await this.page.evaluate((sel: string) => {
+        const technologies = await this.page.evaluate((sel: string) => {
           const elements = document.querySelectorAll(sel) as any;
           return elements ? [...elements].map(el => el.innerText) : null;
         }, technologiesSelector);
@@ -142,7 +98,7 @@ export default class StackOverflow implements Site {
     const nextPageLink = await this.page.evaluate((sel: string) => {
       const element = document.querySelector(sel) as HTMLAnchorElement;
       return element ? element.href : null;
-    }, this.selectors.lastPageButtonSelector);
+    }, this.selectors.lastPageButton);
 
     await Promise.all([
       this.page.goto(nextPageLink, { waitUntil: 'networkidle0' }),
@@ -150,11 +106,11 @@ export default class StackOverflow implements Site {
     ]);
   }
 
-  private async isLastPage() {
+  protected async isLastPage() {
     return await this.page.evaluate((sel: string) => {
-      let element = document.querySelector(sel) as HTMLAnchorElement;
+      const element = document.querySelector(sel) as HTMLAnchorElement;
       return element ? false : true;
-    }, this.selectors.lastPageButtonSelector);
+    }, this.selectors.lastPageButton);
   }
 
   private getSalary(salaryText: string) {
@@ -189,7 +145,7 @@ export default class StackOverflow implements Site {
   }
 
   private getOfferDate(created: string) {
-    if (created && isString(created)) {
+    if (created && (typeof created === 'string') ) {
       let todayDate = new Date();
 
       if (created === 'today') {
@@ -232,21 +188,21 @@ export default class StackOverflow implements Site {
   }
 
   readonly selectors = {
-    lastPageButtonSelector:
+    lastPageButton:
       '#mainbar > div.jobsfooter.js-footer.mb32.pt32 > div > div:nth-child(1) > div > a.prev-next.job-link.test-pagination-next',
-    lengthSelectorClass:
+    lengthClass:
       '#mainbar > div.js-search-results.flush-left > div > div',
-    listPositionSelector:
+    listPosition:
       '#mainbar > div.js-search-results.flush-left > div > div.-item:nth-child(INDEX) > div.-job-summary > div.-title > h2 > a',
-    listCitySelector:
+    listCity:
       '#mainbar > div.js-search-results.flush-left > div > div.-item:nth-child(INDEX) > div.-job-summary > div.-company > span:nth-child(2)',
-    listSalarySelector:
+    listSalary:
       '#mainbar > div.js-search-results.flush-left > div > div.-item:nth-child(INDEX) > div.-job-summary > div.mt2.-perks > span',
-    listAddedDateSelector:
+    listAddedDate:
       '#mainbar > div.js-search-results.flush-left > div > div.-item:nth-child(INDEX) > div.-job-summary > div.-title > span:nth-child(3)',
-    listCompanySelector:
+    listCompany:
       '#mainbar > div.js-search-results.flush-left > div > div.-item:nth-child(INDEX) > div.-job-summary > div.-company > span:nth-child(1)',
-    listTechnologiesSelector:
+    listTechnologies:
       '#mainbar > div.js-search-results.flush-left > div > div.-item:nth-child(INDEX) > div.-job-summary > div.-tags > a'
   };
 }
