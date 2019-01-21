@@ -66,8 +66,8 @@ export default class BulldogJob implements Site {
   private async isLastPage() {
     const offersListSelector = '#search-result > div > section > ul';
 
-    let offersOnPage = await this.page.evaluate((sel: string) => {
-      let element = document.querySelector(sel) as HTMLUListElement;
+    const offersOnPage = await this.page.evaluate((sel: string) => {
+      const element = document.querySelector(sel) as HTMLUListElement;
       return element ? element.childElementCount : 0;
     }, offersListSelector);
 
@@ -75,7 +75,7 @@ export default class BulldogJob implements Site {
   }
 
   private async getJobsForThePage() {
-    let listLength = await this.page.evaluate((sel: string) => {
+    const listLength = await this.page.evaluate((sel: string) => {
       return document.querySelectorAll(sel).length;
     }, this.selectors.lengthSelectorClass);
 
@@ -106,39 +106,39 @@ export default class BulldogJob implements Site {
         i.toString()
       );
 
-      let position = await this.page.evaluate((sel: string) => {
-        let element = document.querySelector(sel) as HTMLAnchorElement;
+      const position = await this.page.evaluate((sel: string) => {
+        const element = document.querySelector(sel) as HTMLAnchorElement;
         return element ? element.innerText : null;
       }, positionSelector);
 
       if (position) {
-        let offerLink = await this.page.evaluate((sel: string) => {
-          let element = document.querySelector(sel) as HTMLAnchorElement;
+        const offerLink = await this.page.evaluate((sel: string) => {
+          const element = document.querySelector(sel) as HTMLAnchorElement;
           return element ? element.href : null;
         }, positionSelector);
 
-        let company = await this.page.evaluate((sel: string) => {
-          let element = document.querySelector(sel) as HTMLSpanElement;
+        const company = await this.page.evaluate((sel: string) => {
+          const element = document.querySelector(sel) as HTMLSpanElement;
           return element ? element.innerText : null;
         }, companySelector);
 
-        let companyLogo = await this.page.evaluate((sel: string) => {
-          let element = document.querySelector(sel) as HTMLImageElement;
+        const companyLogo = await this.page.evaluate((sel: string) => {
+          const element = document.querySelector(sel) as HTMLImageElement;
           return element ? element.src : null;
         }, companyLogoSelector);
 
-        let location = await this.page.evaluate((sel: string) => {
-          let element = document.querySelector(sel) as HTMLSpanElement;
+        const location = await this.page.evaluate((sel: string) => {
+          const element = document.querySelector(sel) as HTMLSpanElement;
           return element ? element.innerText : null;
         }, citySelector);
 
-        let technologies = await this.page.evaluate((sel: string) => {
-            let element = document.querySelector(sel) as HTMLUListElement;
+        const technologies = await this.page.evaluate((sel: string) => {
+            const element = document.querySelector(sel) as HTMLUListElement;
             return element ? element.innerText : null;
           }, technologiesSelector);
 
-        let addedDate = await this.page.evaluate((sel: string) => {
-          let element = document.querySelector(sel) as HTMLSpanElement;
+        const addedDate = await this.page.evaluate((sel: string) => {
+          const element = document.querySelector(sel) as HTMLSpanElement;
           return element ? element.innerText.trim() : null;
         }, addedDateSelector);
 
