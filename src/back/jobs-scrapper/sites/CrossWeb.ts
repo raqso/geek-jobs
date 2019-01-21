@@ -1,74 +1,41 @@
-import { Browser } from 'puppeteer';
 import Job from '../Job';
-import Site from '../Site';
+import RenderedSite from '../RenderedSite';
 
-export default class CrossWeb implements Site {
+export default class CrossWeb extends RenderedSite {
   readonly name = 'CrossWeb';
   readonly logoImage =
     'https://crossweb.pl/job/wp-content/themes/kariera/img/crossjob-logo-podstawowe.png';
   readonly address = 'https://crossweb.pl';
   readonly endpointAddress = 'https://crossweb.pl/job/oferty-pracy';
-  browser: Browser;
+  private isLast = false;
   page: any;
 
-  constructor(browserObject: Browser) {
-    this.browser = browserObject;
-  }
-
-  async getJobs() {
-    let jobOffers: Job[] = [];
-
-    await this.openNewBrowserPage();
+  protected async goToNextPage() {
+    this.isLast = true; // this portal has only one page with offers
     await this.page.goto(this.endpointAddress);
-
-    jobOffers.push(...(await this.getJobsForThePage()));
-
-    await this.page.close();
-    return jobOffers;
+  }
+  protected async isLastPage() {
+    return this.isLast;
   }
 
-  private async openNewBrowserPage() {
-    this.page = await this.browser.newPage();
-    this.page.setDefaultNavigationTimeout(50000); // @TEMPORARY!
-    await this.setFetchingHtmlOnly();
-  }
-
-  private async setFetchingHtmlOnly() {
-    await this.page.setRequestInterception(true);
-    this.page.on('request', (req: any) => {
-      if (req.resourceType() === 'document') {
-        req.continue();
-      }
-      else {
-        req.abort();
-      }
-    });
-  }
-
-  private async getJobsForThePage() {
+  protected async getJobsForThePage() {
     const listLength: number = await this.page.evaluate((sel: string) => {
       return document.querySelectorAll(sel).length;
     }, this.selectors.lengthClass);
     let jobOffers: Job[] = [];
 
     for (let i = 1; i <= listLength; i++) {
-      const positionSelector = this.selectors.listPosition.replace(
-        'INDEX',
-        i.toString()
-      );
-      const citySelector = this.selectors.listCity.replace(
-        'INDEX',
-        i.toString()
-      );
-
-      const companySelector = this.selectors.listCompanyLogo.replace(
-        'INDEX',
-        i.toString()
-      );
-      const technologiesSelector = this.selectors.listTechnologies.replace(
-        'INDEX',
-        i.toString()
-      );
+      const [
+        positionSelector,
+        citySelector,
+        companySelector,
+        technologiesSelector
+      ] = this.replaceTextToIndex([
+        this.selectors.listPosition,
+        this.selectors.listCity,
+        this.selectors.listCompanyLogo,
+        this.selectors.listTechnologies
+      ], i);
 
       const position = await this.page.evaluate((sel: string) => {
         const element = document.querySelector(
@@ -141,7 +108,6 @@ export default class CrossWeb implements Site {
 
   private async fillOfferDetails(jobOffers: Job[]) {
     for (let fetchedOffer of jobOffers) {
-
       if (fetchedOffer.link) {
         try {
           const detailsFromOfferPage = await this.getOfferDetails(
@@ -153,8 +119,7 @@ export default class CrossWeb implements Site {
             fetchedOffer.salary = detailsFromOfferPage.salary;
           }
         } catch (error) {
-          console.log('Upss...');
-          // sweep under the carpet
+          console.warn('Upss...');
         }
       }
     }
@@ -162,7 +127,10 @@ export default class CrossWeb implements Site {
 
   private async getOfferDetails(
     offerLink: string
-  ): Promise<{ addedDate: Job['addedDate']; salary: Job['salary'] | undefined }> {
+  ): Promise<{
+    addedDate: Job['addedDate'];
+    salary: Job['salary'] | undefined;
+  }> {
     await this.page.goto(offerLink, {
       waitUntil: 'domcontentloaded'
     });
@@ -208,12 +176,11 @@ export default class CrossWeb implements Site {
         .split('-');
 
       return {
-        from: !Number.isNaN( Number(money[0]) ) ? Number(money[0]) : undefined,
-        to: !Number.isNaN( Number(money[1]) ) ? Number(money[1]) : undefined,
+        from: !Number.isNaN(Number(money[0])) ? Number(money[0]) : undefined,
+        to: !Number.isNaN(Number(money[1])) ? Number(money[1]) : undefined,
         currency: 'zł'
       };
-    }
-    else {
+    } else {
       return undefined;
     }
   }

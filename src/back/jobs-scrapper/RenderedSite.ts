@@ -41,6 +41,16 @@ abstract class RenderedSite implements Site {
     return jobOffers;
   }
 
+  protected replaceTextToIndex(selectors: string[], index: number) {
+    let changedSelectors: string[] = [];
+
+    selectors.forEach(selector =>
+      changedSelectors.push(selector.replace('INDEX', index.toString()))
+    );
+
+    return changedSelectors;
+  }
+
   private async openNewBrowserPage() {
     this.page = await this.browser.newPage();
     await this.setFetchingHtmlOnly();

@@ -10,36 +10,20 @@ export default class StackOverflow extends RenderedSite {
   page: any;
 
   protected async getJobsForThePage() {
-    const listLength = await this.page.evaluate((sel: string) => {
-      return document.querySelectorAll(sel).length;
+    const listLength = await this.page.evaluate((selector: string) => {
+      return document.querySelectorAll(selector).length;
     }, this.selectors.lengthClass);
 
     let jobOffers: Job[] = [];
     for (let i = 1; i <= listLength; i++) {
-      const positionSelector = this.selectors.listPosition.replace(
-        'INDEX',
-        i.toString()
-      );
-      const citySelector = this.selectors.listCity.replace(
-        'INDEX',
-        i.toString()
-      );
-      const salarySelector = this.selectors.listSalary.replace(
-        'INDEX',
-        i.toString()
-      );
-      const addedDateSelector = this.selectors.listAddedDate.replace(
-        'INDEX',
-        i.toString()
-      );
-      const companySelector = this.selectors.listCompany.replace(
-        'INDEX',
-        i.toString()
-      );
-      const technologiesSelector = this.selectors.listTechnologies.replace(
-        'INDEX',
-        i.toString()
-      );
+      const [positionSelector, citySelector, salarySelector, addedDateSelector, companySelector, technologiesSelector] = this.replaceTextToIndex([
+        this.selectors.listPosition,
+        this.selectors.listCity,
+        this.selectors.listSalary,
+        this.selectors.listAddedDate,
+        this.selectors.listCompany,
+        this.selectors.listTechnologies
+      ], i);
 
       const position = await this.page.evaluate((sel: string) => {
         const element = document.querySelector(sel) as HTMLAnchorElement;
