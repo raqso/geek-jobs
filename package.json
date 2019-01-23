@@ -26,6 +26,7 @@
     "node": ">=8.9"
   },
   "dependencies": {
+    "@material-ui/core": "^3.9.0",
     "@types/node-cron": "^2.0.0",
     "@types/react": "^16.7.18",
     "@types/react-dom": "^16.0.11",

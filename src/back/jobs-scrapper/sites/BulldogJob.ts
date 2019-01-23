@@ -1,144 +1,100 @@
 import { Browser } from 'puppeteer';
 import Job from '../Job';
-import Site from '../Site';
+import RenderedSite from '../RenderedSite';
 
-export default class BulldogJob implements Site {
+export default class BulldogJob extends RenderedSite {
   readonly name = 'BulldogJob';
   readonly logoImage = 'https://cdn.bulldogjob.com/assets/logo-6d85aa7138552c5b466f9a4fb26785893cceb34e7b344915bba0392dd125287a.png';
   readonly address = 'https://bulldogjob.pl/';
   readonly endpointAddress =
     'https://bulldogjob.pl/companies/jobs?mode=plain&page=';
-  browser: Browser;
   page: any;
 
-  constructor(browserObject: Browser) {
-    this.browser = browserObject;
-  }
-
-  async getJobs() {
-    let jobOffers: Job[] = [];
-    let pageNumber = 1;
-
-    await this.openNewBrowserPage();
-    await this.goToNextPage(pageNumber);
-
-    let isLast = await this.isLastPage();
-    while (!isLast) {
-      jobOffers.push(...(await this.getJobsForThePage()));
-      pageNumber++;
-      const [] = await Promise.all([
-        this.page.waitForNavigation(),
-        this.goToNextPage(pageNumber)
-      ]);
-
-      isLast = await this.isLastPage();
-    }
-
-    await this.page.close();
-    return jobOffers;
-  }
+  pageNumber = 1;
 
   async goToNextPage(pageNumber: number) {
     await this.page.waitFor(2 * 1000);
     await this.page.goto(this.endpointAddress + pageNumber);
+    pageNumber++;
   }
 
-  private async openNewBrowserPage() {
-    this.page = await this.browser.newPage();
-    // await this.setFetchingHtmlOnly();
-  }
-
-  /* private async setFetchingHtmlOnly() {
-    await this.page.setRequestInterception(true);
-    this.page.on('request', (req: any) => {
-      if (
-        req.resourceType() === 'stylesheet' ||
-        req.resourceType() === 'font' ||
-        req.resourceType() === 'image'
-      ) {
-        req.abort();
-      } else {
-        req.continue();
-      }
-    });
-  } */
-
-  private async isLastPage() {
+  protected async isLastPage() {
     const offersListSelector = '#search-result > div > section > ul';
 
-    let offersOnPage = await this.page.evaluate((sel: string) => {
-      let element = document.querySelector(sel) as HTMLUListElement;
+    const offersOnPage = await this.page.evaluate((sel: string) => {
+      const element = document.querySelector(sel) as HTMLUListElement;
       return element ? element.childElementCount : 0;
     }, offersListSelector);
 
     return offersOnPage === 0;
   }
 
-  private async getJobsForThePage() {
-    let listLength = await this.page.evaluate((sel: string) => {
+  protected async getJobsForThePage() {
+    const listLength = await this.page.evaluate((sel: string) => {
       return document.querySelectorAll(sel).length;
-    }, this.selectors.lengthSelectorClass);
+    }, this.selectors.lengthClass);
 
     let jobOffers: Job[] = [];
     for (let i = 1; i <= listLength; i++) {
-      const positionSelector = this.selectors.listPositionSelector.replace(
+      // const [positionSelector, companySelector, companyLogoSelector, citySelector, technologiesSelector, addedDateSelector] =
+      const positionSelector = this.selectors.listPosition.replace(
         'INDEX',
         i.toString()
       );
-      const companySelector = this.selectors.listCompanySelector.replace(
+      const companySelector = this.selectors.listCompany.replace(
         'INDEX',
         i.toString()
       );
-      const companyLogoSelector = this.selectors.listCompanyLogoSelector.replace(
+      const companyLogoSelector = this.selectors.listCompanyLogSelector.replace(
         'INDEX',
         i.toString()
       );
-      const citySelector = this.selectors.listCitySelector.replace(
+      const citySelector = this.selectors.listCity.replace(
         'INDEX',
         i.toString()
       );
-      const technologiesSelector = this.selectors.listTechnologiesSelector.replace(
+      const technologiesSelector = this.selectors.listTechnologies.replace(
         'INDEX',
         i.toString()
       );
-      const addedDateSelector = this.selectors.listAddedDateSelector.replace(
+      const addedDateSelector = this.selectors.listAddedDate.replace(
         'INDEX',
         i.toString()
       );
 
-      let position = await this.page.evaluate((sel: string) => {
-        let element = document.querySelector(sel) as HTMLAnchorElement;
+      const position = await this.page.evaluate((sel: string) => {
+        const element = document.querySelector(sel) as HTMLAnchorElement;
         return element ? element.innerText : null;
       }, positionSelector);
 
       if (position) {
-        let offerLink = await this.page.evaluate((sel: string) => {
-          let element = document.querySelector(sel) as HTMLAnchorElement;
+        const offerLink = await this.page.evaluate((sel: string) => {
+          const element = document.querySelector(sel) as HTMLAnchorElement;
           return element ? element.href : null;
         }, positionSelector);
 
-        let company = await this.page.evaluate((sel: string) => {
-          let element = document.querySelector(sel) as HTMLSpanElement;
+        const company = await this.page.evaluate((sel: string) => {
+          const element = document.querySelector(sel) as HTMLSpanElement;
           return element ? element.innerText : null;
         }, companySelector);
 
-        let companyLogo = await this.page.evaluate((sel: string) => {
-          let element = document.querySelector(sel) as HTMLImageElement;
+        const companyLogo = await this.page.evaluate((sel: string) => {
+          const element = document.querySelector(sel) as HTMLImageElement;
           return element ? element.src : null;
         }, companyLogoSelector);
 
-        let location = await this.page.evaluate((sel: string) => {
-          let element = document.querySelector(sel) as HTMLSpanElement;
+        const location = await this.page.evaluate((sel: string) => {
+          const element = document.querySelector(sel) as HTMLSpanElement;
           return element ? element.innerText : null;
         }, citySelector);
 
-        let technologies = await this.page.evaluate((sel: string) => {
-            let element = document.querySelector(sel) as HTMLUListElement;
+        const technologies = await this.page.evaluate((sel: string) => {
+            const element = document.querySelector(sel) as HTMLUListElement;
             return element ? element.innerText : null;
           }, technologiesSelector);
 
-        let addedDate = await this.page.evaluate((sel: string) => {
-          let element = document.querySelector(sel) as HTMLSpanElement;
+        const addedDate = await this.page.evaluate((sel: string) => {
+          const element = document.querySelector(sel) as HTMLSpanElement;
           return element ? element.innerText.trim() : null;
         }, addedDateSelector);
 
@@ -189,17 +145,17 @@ export default class BulldogJob implements Site {
   }
 
   readonly selectors = {
-    listPositionSelector:
+    listPosition:
       '#search-result > div > section > ul > li:nth-child(INDEX) > div.description > h2 > a',
-    listCompanySelector:
+    listCompany:
       '#search-result > div > section > ul > li:nth-child(INDEX) > div.description > div > p > span.pop.desktop',
-    listCompanyLogoSelector:
+    listCompanyLogSelector:
       '#search-result > div > section > ul > li:nth-child(INDEX) > div.image > a > img',
-    listCitySelector:
+    listCity:
       '#search-result > div > section > ul > li:nth-child(13) > div.description > div > p > span.pop-mobile',
-    listAddedDateSelector:
+    listAddedDate:
       '#search-result > div > section > ul > li:nth-child(INDEX) > div.description > div > p > span.inline-block',
-    listTechnologiesSelector: '#search-result > div > section > ul > li:nth-child(INDEX) > div.description > div > ul',
-      lengthSelectorClass: '#search-result > div > section > ul > li'
+    listTechnologies: '#search-result > div > section > ul > li:nth-child(INDEX) > div.description > div > ul',
+      lengthClass: '#search-result > div > section > ul > li'
   };
 }
