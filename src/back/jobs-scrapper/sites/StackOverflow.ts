@@ -8,7 +8,7 @@ export default class StackOverflow extends RenderedSite {
   readonly address = 'https://stackoverflow.com';
   readonly endpointAddress = 'https://stackoverflow.com/jobs?l=Poland';
 
-  protected goToNextPage = async () => this.goToNextPageViaLink(this.selectors.lastPageButton);
+  protected goToNextPage = async () => await this.goToNextPageViaLink(this.selectors.lastPageButton);
 
   protected async isLastPage() {
     return await this.page.evaluate((sel: string) => {

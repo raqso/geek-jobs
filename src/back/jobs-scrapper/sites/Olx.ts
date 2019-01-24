@@ -7,7 +7,7 @@ export default class Olx extends RenderedSite {
   readonly address = 'https://olx.pl';
   readonly endpointAddress = 'https://www.olx.pl/praca/informatyka/';
 
-  protected goToNextPage = async () => this.goToNextPageViaLink(this.selectors.lastPageButton);
+  protected goToNextPage = async () => await this.goToNextPageViaLink(this.selectors.lastPageButton);
 
   protected async isLastPage() {
     return await this.page.evaluate((sel: string) => {
