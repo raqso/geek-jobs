@@ -38,7 +38,12 @@ abstract class RenderedSite implements Site {
       isLast = await this.isLastPage();
     }
 
-    this.page.close();
+    try {
+      this.page.close();
+    }
+    catch (error) {
+      // Propably no needed
+    }
     return jobOffers;
   }
 
