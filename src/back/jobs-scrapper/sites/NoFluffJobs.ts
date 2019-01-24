@@ -15,9 +15,8 @@ export default class NoFulffJobs implements Site {
 
         if (result && result.postings && result.postings.length) {
             result.postings.forEach((job) => {
-                if (job.essentials) {
-                    jobOffers.push(this.createJobOffer(job));
-                }
+                if (job.location && job.location.places.length && job.location.places[0].city)
+                jobOffers.push(this.createJobOffer(job));
             });
         }
 
@@ -31,8 +30,8 @@ export default class NoFulffJobs implements Site {
             companyLogo: this.address + job.logo,
             dateCrawled: new Date(),
             link: this.address + '/job/' + job.url,
-            location: job.essentials.mainLocation.city,
-            position: `${job.title} ${job.level}`,
+            location: job.location.places[0].city,
+            position: job.title,
             salary: { from: 0, to: 0, currency: '' },
             technologies: ( job.technology ? [job.technology] : [] ),
             website: this.name,
@@ -50,7 +49,7 @@ interface Posting {
     name:                   string;
     locationCount:          number;
     notRemoteLocationCount: number;
-    essentials:             Essentials;
+    location:             Location;
     posted:                 number;
     renewed?:               number;
     title:                  string;
@@ -81,12 +80,12 @@ enum Category {
     UX = 'ux',
 }
 
-interface Essentials {
-    mainLocation:    MainLocation;
-    otherLocations?: OtherLocation[];
+interface Location {
+    fullyRemote: boolean;
+    places: Place[];
 }
 
-interface MainLocation {
+interface Place {
     country:     Country;
     city:        string;
     street:      string;
@@ -125,12 +124,6 @@ enum Name {
 interface GeoLocation {
     latitude?:  number;
     longitude?: number;
-}
-
-interface OtherLocation {
-    city:         string;
-    street?:      string;
-    geoLocation?: GeoLocation;
 }
 
 enum Level {
