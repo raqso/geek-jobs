@@ -1,102 +1,39 @@
-import { Browser } from 'puppeteer';
 import Job from '../Job';
-import Site from '../Site';
-import { isString } from 'util';
+import RenderedSite from '../RenderedSite';
 
-export default class InfoPraca implements Site {
-  name = 'InfoPraca';
-  address = 'https://www.infopraca.pl';
-  endpointAddress =
+export default class InfoPraca extends RenderedSite {
+  readonly name = 'InfoPraca';
+  readonly address = 'https://www.infopraca.pl';
+  readonly endpointAddress =
     'https://www.infopraca.pl/praca?ct=it-programowanie-analizy';
-  logoImage =
+  readonly logoImage =
     'https://static.infopraca.pl/static/vee086020901d/pl/pl/new/img/logos/header.png';
-  browser: Browser;
-  page: any;
 
-  constructor(browserObject: Browser) {
-    this.browser = browserObject;
-  }
+  protected goToNextPage = async () => await this.goToNextPageViaLink(this.selectors.lastPageButton);
 
-  async getJobs() {
-    let jobOffers: Job[] = [];
-
-    await this.openNewBrowserPage();
-    await this.page.goto(this.endpointAddress);
-
-    let isLast = await this.isLastPage();
-    while (!isLast) {
-      jobOffers.push(...(await this.getJobsForThePage()));
-      await this.goToNextPage();
-      isLast = await this.isLastPage();
-    }
-
-    await this.page.close();
-    return jobOffers;
-  }
-
-  private async openNewBrowserPage() {
-    this.page = await this.browser.newPage();
-    /* await this.setFetchingHtmlOnly(); */
-  }
-
-  /* private async setFetchingHtmlOnly() {
-        await this.page.setRequestInterception(true);
-        this.page.on('request', (req: any) => {
-          if (
-            req.resourceType() === 'stylesheet' ||
-            req.resourceType() === 'font' ||
-            req.resourceType() === 'image'
-          ) {
-            req.abort();
-          } else {
-            req.continue();
-          }
-        });
-      } */
-
-  async goToNextPage() {
-    await Promise.all([
-      this.page.waitForNavigation(),
-      this.page.click(this.selectors.lastPageButtonSelector)
-    ]);
-  }
-
-  private async isLastPage() {
+  protected async isLastPage() {
     const lastButtonValue = await this.page.evaluate((sel: string) => {
       const element = document.querySelector(sel) as HTMLUListElement;
       return element ? element.innerText : '';
-    }, this.selectors.lastPageButtonSelector);
+    }, this.selectors.lastPageButton);
 
     return lastButtonValue !== 'Dalej';
   }
 
-  private async getJobsForThePage() {
+  protected async getJobsForThePage() {
     const listLength = await this.page.evaluate((sel: string) => {
       return document.querySelectorAll(sel).length;
-    }, this.selectors.lengthSelectorClass);
+    }, this.selectors.lengthClass);
 
     let jobOffers: Job[] = [];
     for (let i = 1; i <= listLength; i++) {
-      const positionSelector = this.selectors.listPositionSelector.replace(
-        'INDEX',
-        i.toString()
-      );
-      const companySelector = this.selectors.listCompanySelector.replace(
-        'INDEX',
-        i.toString()
-      );
-      const companyLogoSelector = this.selectors.listCompanyLogoSelector.replace(
-        'INDEX',
-        i.toString()
-      );
-      const citySelector = this.selectors.listCitySelector.replace(
-        'INDEX',
-        i.toString()
-      );
-      const addedDateSelector = this.selectors.listAddedDateSelector.replace(
-        'INDEX',
-        i.toString()
-      );
+      const [positionSelector, companySelector, companyLogoSelector, citySelector, addedDateSelector] = this.replaceTextToIndex([
+        this.selectors.listPosition,
+        this.selectors.listCompany,
+        this.selectors.listCompanyLogo,
+        this.selectors.listCity,
+        this.selectors.listAddedDate
+      ], i);
 
       const position = await this.page.evaluate((sel: string) => {
         const element = document.querySelector(sel) as HTMLAnchorElement;
@@ -146,7 +83,7 @@ export default class InfoPraca implements Site {
   }
 
   private getOfferDate(created: string) {
-    if (created && isString(created)) {
+    if (created && typeof created === 'string') {
       const splitted = created.split(':');
       created = splitted[splitted.length - 1].trim();
 
@@ -193,20 +130,20 @@ export default class InfoPraca implements Site {
   }
 
   readonly selectors = {
-    lastPageButtonSelector:
+    lastPageButton:
       '#page-content > div > div > div > ul.pagination > li:last-child > a',
-    lengthSelectorClass: '#results-list > li.container',
-    listPositionSelector:
+    lengthClass: '#results-list > li.container',
+    listPosition:
       '#results-list > li:nth-child(INDEX) > div > div.container > div.container.joboffer-main-details > h2.p-job-title > a',
-    listCompanySelector:
+    listCompany:
       '#results-list > li:nth-child(INDEX) > div > div.container > div.container.joboffer-main-details > h3 > a',
-    listCompanyLogoSelector:
+    listCompanyLogo:
       '#results-list > li:nth-child(INDEX) > div.job-offer-content > div > div.serp-company-logo > a > img',
-    listCitySelector:
+    listCity:
       '#results-list > li:nth-child(INDEX) > div > div.container > div.container.joboffer-main-details > h4.serp-one-location > span.p-locality',
-    listAddedDateSelector:
+    listAddedDate:
       '#results-list > li:nth-child(INDEX) > div > div.position-footer > span.last-update',
-    listTechnologiesSelector:
+    listTechnologies:
       '#box-jobs > table > tbody > tr:nth-child(INDEX) > td.col-body > ul'
   };
 }

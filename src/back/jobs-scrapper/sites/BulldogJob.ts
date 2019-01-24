@@ -1,110 +1,45 @@
-import { Browser } from 'puppeteer';
 import Job from '../Job';
-import Site from '../Site';
+import RenderedSite from '../RenderedSite';
 
-export default class BulldogJob implements Site {
+export default class BulldogJob extends RenderedSite {
   readonly name = 'BulldogJob';
   readonly logoImage = 'https://cdn.bulldogjob.com/assets/logo-6d85aa7138552c5b466f9a4fb26785893cceb34e7b344915bba0392dd125287a.png';
   readonly address = 'https://bulldogjob.pl/';
   readonly endpointAddress =
     'https://bulldogjob.pl/companies/jobs?mode=plain&page=';
-  browser: Browser;
-  page: any;
 
-  constructor(browserObject: Browser) {
-    this.browser = browserObject;
-  }
+  protected pageNumber = 1;
 
-  async getJobs() {
-    let jobOffers: Job[] = [];
-    let pageNumber = 1;
-
-    await this.openNewBrowserPage();
-    await this.goToNextPage(pageNumber);
-
-    let isLast = await this.isLastPage();
-    while (!isLast) {
-      jobOffers.push(...(await this.getJobsForThePage()));
-      pageNumber++;
-      const [] = await Promise.all([
-        this.page.waitForNavigation(),
-        this.goToNextPage(pageNumber)
-      ]);
-
-      isLast = await this.isLastPage();
-    }
-
-    await this.page.close();
-    return jobOffers;
-  }
-
-  async goToNextPage(pageNumber: number) {
+  protected async goToNextPage() {
     await this.page.waitFor(2 * 1000);
-    await this.page.goto(this.endpointAddress + pageNumber);
+    this.pageNumber++;
+    await this.page.goto(this.endpointAddress + this.pageNumber);
   }
 
-  private async openNewBrowserPage() {
-    this.page = await this.browser.newPage();
-    // await this.setFetchingHtmlOnly();
-  }
-
-  /* private async setFetchingHtmlOnly() {
-    await this.page.setRequestInterception(true);
-    this.page.on('request', (req: any) => {
-      if (
-        req.resourceType() === 'stylesheet' ||
-        req.resourceType() === 'font' ||
-        req.resourceType() === 'image'
-      ) {
-        req.abort();
-      } else {
-        req.continue();
-      }
-    });
-  } */
-
-  private async isLastPage() {
-    const offersListSelector = '#search-result > div > section > ul';
-
+  protected async isLastPage() {
     const offersOnPage = await this.page.evaluate((sel: string) => {
       const element = document.querySelector(sel) as HTMLUListElement;
       return element ? element.childElementCount : 0;
-    }, offersListSelector);
+    }, this.selectors.offersList);
 
     return offersOnPage === 0;
   }
 
-  private async getJobsForThePage() {
+  protected async getJobsForThePage() {
     const listLength = await this.page.evaluate((sel: string) => {
       return document.querySelectorAll(sel).length;
-    }, this.selectors.lengthSelectorClass);
+    }, this.selectors.lengthClass);
 
     let jobOffers: Job[] = [];
     for (let i = 1; i <= listLength; i++) {
-      const positionSelector = this.selectors.listPositionSelector.replace(
-        'INDEX',
-        i.toString()
-      );
-      const companySelector = this.selectors.listCompanySelector.replace(
-        'INDEX',
-        i.toString()
-      );
-      const companyLogoSelector = this.selectors.listCompanyLogoSelector.replace(
-        'INDEX',
-        i.toString()
-      );
-      const citySelector = this.selectors.listCitySelector.replace(
-        'INDEX',
-        i.toString()
-      );
-      const technologiesSelector = this.selectors.listTechnologiesSelector.replace(
-        'INDEX',
-        i.toString()
-      );
-      const addedDateSelector = this.selectors.listAddedDateSelector.replace(
-        'INDEX',
-        i.toString()
-      );
+      const [positionSelector, companySelector, companyLogoSelector, citySelector, technologiesSelector, addedDateSelector] = this.replaceTextToIndex([
+        this.selectors.listPosition,
+        this.selectors.listCompany,
+        this.selectors.listCompanyLogSelector,
+        this.selectors.listCity,
+        this.selectors.listTechnologies,
+        this.selectors.listAddedDate
+      ], i);
 
       const position = await this.page.evaluate((sel: string) => {
         const element = document.querySelector(sel) as HTMLAnchorElement;
@@ -189,17 +124,18 @@ export default class BulldogJob implements Site {
   }
 
   readonly selectors = {
-    listPositionSelector:
+    listPosition:
       '#search-result > div > section > ul > li:nth-child(INDEX) > div.description > h2 > a',
-    listCompanySelector:
+    listCompany:
       '#search-result > div > section > ul > li:nth-child(INDEX) > div.description > div > p > span.pop.desktop',
-    listCompanyLogoSelector:
+    listCompanyLogSelector:
       '#search-result > div > section > ul > li:nth-child(INDEX) > div.image > a > img',
-    listCitySelector:
+    listCity:
       '#search-result > div > section > ul > li:nth-child(13) > div.description > div > p > span.pop-mobile',
-    listAddedDateSelector:
+    listAddedDate:
       '#search-result > div > section > ul > li:nth-child(INDEX) > div.description > div > p > span.inline-block',
-    listTechnologiesSelector: '#search-result > div > section > ul > li:nth-child(INDEX) > div.description > div > ul',
-      lengthSelectorClass: '#search-result > div > section > ul > li'
+    listTechnologies: '#search-result > div > section > ul > li:nth-child(INDEX) > div.description > div > ul',
+      lengthClass: '#search-result > div > section > ul > li',
+    offersList: '#search-result > div > section > ul'
   };
 }

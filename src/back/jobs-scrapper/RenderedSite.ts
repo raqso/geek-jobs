@@ -7,8 +7,8 @@ abstract class RenderedSite implements Site {
   abstract address: string;
   abstract logoImage: string;
   abstract endpointAddress: string;
-  abstract page: any;
   abstract selectors: Object;
+  protected page: any;
   protected abstract isLastPage(): Promise<boolean>;
   protected abstract getJobsForThePage(): Promise<Job[]>;
   protected abstract goToNextPage(): Promise<void>;
@@ -38,7 +38,20 @@ abstract class RenderedSite implements Site {
       isLast = await this.isLastPage();
     }
 
+    this.page.close();
     return jobOffers;
+  }
+
+  protected async goToNextPageViaLink(lastPageSelector: string) {
+    const nextPageLink = await this.page.evaluate((sel: string) => {
+      const element = document.querySelector(sel) as HTMLAnchorElement;
+      return element ? element.href : null;
+    }, lastPageSelector);
+
+    await Promise.all([
+      this.page.goto(nextPageLink, { waitUntil: 'networkidle0' }),
+      this.page.waitForNavigation()
+    ]);
   }
 
   protected replaceTextToIndex(selectors: string[], index: number) {

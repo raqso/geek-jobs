@@ -1,84 +1,35 @@
-import { Browser } from 'puppeteer';
-import { isString } from 'util';
 import Job from '../Job';
-import Site from '../Site';
+import RenderedSite from '../RenderedSite';
 
-export default class Olx implements Site {
+export default class Olx extends RenderedSite {
   readonly name = 'Olx';
   readonly logoImage = 'https://upload.wikimedia.org/wikipedia/commons/thumb/2/28/OLX_Logo.jpg/720px-OLX_Logo.jpg';
   readonly address = 'https://olx.pl';
   readonly endpointAddress = 'https://www.olx.pl/praca/informatyka/';
-  browser: Browser;
-  page: any;
 
-  constructor(browserObject: Browser) {
-    this.browser = browserObject;
+  protected goToNextPage = async () => this.goToNextPageViaLink(this.selectors.lastPageButton);
+
+  protected async isLastPage() {
+    return await this.page.evaluate((sel: string) => {
+      const element = document.querySelector(sel) as HTMLAnchorElement;
+      return element ? false : true;
+    }, this.selectors.lastPageButton);
   }
 
-  async getJobs() {
-    let jobOffers: Job[] = [];
-
-    await this.openNewBrowserPage();
-    await this.page.goto(this.endpointAddress);
-
-    let isLast = await this.isLastPage();
-    while (!isLast) {
-      jobOffers.push(...(await this.getJobsForThePage()));
-      await this.goToNextPage();
-      isLast = await this.isLastPage();
-    }
-
-    await this.page.close();
-    return jobOffers;
-  }
-
-  private async openNewBrowserPage() {
-    this.page = await this.browser.newPage();
-    /* await this.setFetchingHtmlOnly(); */
-  }
-
-  /* private async setFetchingHtmlOnly() {
-    await this.page.setRequestInterception(true);
-    this.page.on('request', (req: any) => {
-      if (
-        req.resourceType() === 'stylesheet' ||
-        req.resourceType() === 'font' ||
-        req.resourceType() === 'image'
-      ) {
-        req.abort();
-      } else {
-        req.continue();
-      }
-    });
-  } */
-
-  private async getJobsForThePage() {
+  protected async getJobsForThePage() {
     const listLength = await this.page.evaluate((sel: string) => {
       return document.querySelectorAll(sel).length;
-    }, this.selectors.lengthSelectorClass);
+    }, this.selectors.lengthClass);
 
     let jobOffers: Job[] = [];
     for (let i = 1; i <= listLength; i++) {
-      const positionSelector = this.selectors.listPositionSelector.replace(
-        'INDEX',
-        i.toString()
-      );
-      const citySelector = this.selectors.listCitySelector.replace(
-        'INDEX',
-        i.toString()
-      );
-      const salaryFromSelector = this.selectors.listSalarySelectorFrom.replace(
-        'INDEX',
-        i.toString()
-      );
-      const salaryToSelector = this.selectors.listSalarySelectorTo.replace(
-        'INDEX',
-        i.toString()
-      );
-      const addedDateSelector = this.selectors.listAddedDateSelector.replace(
-        'INDEX',
-        i.toString()
-      );
+      const [positionSelector, citySelector, salaryFromSelector, salaryToSelector, addedDateSelector] = this.replaceTextToIndex([
+        this.selectors.listPosition,
+        this.selectors.listCity,
+        this.selectors.listSalaryFrom,
+        this.selectors.listSalaryTo,
+        this.selectors.listAddedDate
+      ], i);
 
       const position = await this.page.evaluate((sel: string) => {
         const element = document.querySelector(sel) as HTMLAnchorElement;
@@ -129,20 +80,6 @@ export default class Olx implements Site {
     return jobOffers;
   }
 
-  async goToNextPage() {
-    await Promise.all([
-      this.page.waitForNavigation(),
-      this.page.click(this.selectors.lastPageButtonSelector)
-    ]);
-  }
-
-  private async isLastPage() {
-    return await this.page.evaluate((sel: string) => {
-      const element = document.querySelector(sel) as HTMLAnchorElement;
-      return element ? false : true;
-    }, this.selectors.lastPageButtonSelector + ' > a');
-  }
-
   private getSalary(salaryText: string) {
     let salary = '';
     if (salaryText && salaryText.split(' ').length) {
@@ -157,7 +94,7 @@ export default class Olx implements Site {
   }
 
   private getOfferDate(created: string) {
-    if (created && isString(created)) {
+    if (created && typeof created === 'string') {
       const splittedString = created.split(' ');
       const day = Number(splittedString[0]);
       const monthCode = splittedString[1];
@@ -238,18 +175,18 @@ export default class Olx implements Site {
   }
 
   readonly selectors = {
-    lastPageButtonSelector:
-      '#body-container > div > div > div.pager.rel.clr > span.fbold.next.abs.large',
-    lengthSelectorClass: 'tr.wrap',
-    listPositionSelector:
+    lastPageButton:
+      '#body-container > div > div > div.pager.rel.clr > span.fbold.next.abs.large > a',
+    lengthClass: 'tr.wrap',
+    listPosition:
       'tr.wrap:nth-child(INDEX) > td > div > table > tbody > tr > td.title-cell > div > h3 > a',
-    listCitySelector:
+    listCity:
       'tr.wrap:nth-child(INDEX) >td > div > table > tbody > tr:nth-child(2) > td.bottom-cell > div > p > small:nth-child(1) > span',
-    listSalarySelectorFrom:
+    listSalaryFrom:
       'tr.wrap:nth-child(INDEX) > td > div > table > tbody > tr:nth-child(1) > td.title-cell > div > div > span:nth-child(1)',
-    listSalarySelectorTo:
+    listSalaryTo:
       'tr.wrap:nth-child(INDEX) > td > div > table > tbody > tr:nth-child(1) > td.title-cell > div > div > span:nth-child(2)',
-    listAddedDateSelector:
+    listAddedDate:
       'tr.wrap:nth-child(INDEX) >td > div > table > tbody > tr:nth-child(2) > td.bottom-cell > div > p > small:nth-child(2) > span'
   };
 }

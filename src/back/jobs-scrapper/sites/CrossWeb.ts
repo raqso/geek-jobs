@@ -8,7 +8,6 @@ export default class CrossWeb extends RenderedSite {
   readonly address = 'https://crossweb.pl';
   readonly endpointAddress = 'https://crossweb.pl/job/oferty-pracy';
   private isLast = false;
-  page: any;
 
   protected async goToNextPage() {
     this.isLast = true; // this portal has only one page with offers

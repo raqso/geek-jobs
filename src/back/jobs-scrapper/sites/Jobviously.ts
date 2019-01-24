@@ -3,17 +3,17 @@ import Job from '../Job';
 import Site from '../Site';
 
 export default class Jobviously implements Site {
-  name = '<jobvious/y>';
-  logoImage = 'https://media.licdn.com/dms/image/C4D0BAQEU_RwMdGh7aQ/company-logo_200_200/0?e=1548892800&v=beta&t=reqPbkxezNhXmsqMjwdyi4xF2eZb6mCQSlE-oIA7jvk';
-  address = 'https://jobviously.pl';
-  endpointAddress = 'https://jobviously.pl/api/offers?count=all&type=all&page=';
+  readonly name = '<jobvious/y>';
+  readonly logoImage = 'https://media.licdn.com/dms/image/C4D0BAQEU_RwMdGh7aQ/company-logo_200_200/0?e=1548892800&v=beta&t=reqPbkxezNhXmsqMjwdyi4xF2eZb6mCQSlE-oIA7jvk';
+  readonly address = 'https://jobviously.pl';
+  readonly endpointAddress = 'https://jobviously.pl/api/offers?count=all&type=all&page=';
 
-    async getJobs() {
+  public async getJobs() {
     let jobOffers: Job[] = [];
     let lastPage = false;
 
     for (let page = 0; !lastPage; page++) {
-      let jobs: JobviouslyResponse = await this.downloadOffers(page); // @TODO Extract to a function in GetData
+      const jobs: JobviouslyResponse = await this.downloadOffers(page); // @TODO Extract to a function in GetData
 
       if (!jobs || jobs && jobs.count === 0) {
           lastPage = true;
@@ -27,11 +27,11 @@ export default class Jobviously implements Site {
     return jobOffers;
   }
 
-    private async downloadOffers(page: number) {
-        let jobs: JobviouslyResponse = await GetData.getRequest(this.endpointAddress + page);
-        jobs = jobs && typeof jobs === 'string' ? JSON.parse(jobs) : []; // @TODO Extract to a function in GetData
-        return jobs;
-    }
+  private async downloadOffers(page: number) {
+      let jobs: JobviouslyResponse = await GetData.getRequest(this.endpointAddress + page);
+      jobs = jobs && typeof jobs === 'string' ? JSON.parse(jobs) : []; // @TODO Extract to a function in GetData
+      return jobs;
+  }
 
   private createJobOffer(job: Offer): Job {
     return {

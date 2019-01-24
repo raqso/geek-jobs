@@ -1,8 +1,7 @@
-import { Browser } from 'puppeteer';
 import Job from '../Job';
-import Site from '../Site';
+import RenderedSite from '../RenderedSite';
 
-export default class Pracuj implements Site {
+export default class Pracuj extends RenderedSite {
   readonly categoryIdItAdministration = '5015';
   readonly categoryIdSoftwareDevelopment = '5016';
 
@@ -12,50 +11,8 @@ export default class Pracuj implements Site {
   readonly address = 'https://pracuj.pl';
   readonly endpointAddress =
     `https://www.pracuj.pl/praca?cc=${this.categoryIdItAdministration}%2c${this.categoryIdSoftwareDevelopment}`;
-  browser: Browser;
-  page: any;
 
-  constructor(browserObject: Browser) {
-    this.browser = browserObject;
-  }
-
-  async getJobs() {
-    let jobOffers: Job[] = [];
-    await this.openNewBrowserPage();
-    await this.page.goto(this.endpointAddress + '&pn=1');
-
-    let isLast = await this.isLastPage();
-    while (!isLast) {
-      jobOffers.push(...(await this.getJobsForThePage()));
-      const [] = await Promise.all([
-        this.page.waitForNavigation(),
-        this.clickNextPage()
-      ]);
-
-      isLast = await this.isLastPage();
-    }
-
-    return jobOffers;
-  }
-
-  private async openNewBrowserPage() {
-    this.page = await this.browser.newPage();
-    await this.setFetchingHtmlOnly();
-  }
-
-  private async setFetchingHtmlOnly() {
-    await this.page.setRequestInterception(true);
-    this.page.on('request', (req: any) => {
-      if (req.resourceType() === 'document') {
-        req.continue();
-      }
-      else {
-        req.abort();
-      }
-    });
-  }
-
-  private async isLastPage() {
+  protected async isLastPage() {
     const lastButtonText = await this.page.evaluate((sel: string) => {
       const element = document.querySelector(sel) as HTMLAnchorElement;
       return element ? element.innerText : '';
@@ -64,18 +21,9 @@ export default class Pracuj implements Site {
     return lastButtonText !== '';
   }
 
-  private async clickNextPage() {
-    const nextPageLink = this.selectors.lastPageButton + ' > a';
-    await this.page.evaluate((nextPageLink: any) => { // workaround for puppeteer.click() issues
-      const element = document.querySelector(nextPageLink) as HTMLAnchorElement;
-      if (element) {
-        element.click();
-      }
-    }, nextPageLink);
-    // await this.page.click(nextPageLink);
-  }
+  protected goToNextPage = async () => this.goToNextPageViaLink(this.selectors.lastPageButton + ' > a');
 
-  private async getJobsForThePage() {
+  protected async getJobsForThePage() {
     let jobOffers: Job[] = [];
 
     const listLength = await this.page.evaluate((sel: string) => {
@@ -83,26 +31,13 @@ export default class Pracuj implements Site {
     }, this.selectors.lengthClass);
 
     for (let i = 1; i <= listLength; i++) {
-      const positionSelector = this.selectors.listPosition.replace(
-        'INDEX',
-        i.toString()
-      );
-      const companySelector = this.selectors.listCompany.replace(
-        'INDEX',
-        i.toString()
-      );
-      const companyLogoSelector = this.selectors.listCompanyLogo.replace(
-        'INDEX',
-        i.toString()
-      );
-      const citySelector = this.selectors.listCity.replace(
-        'INDEX',
-        i.toString()
-      );
-      const addedDateSelector = this.selectors.listAddedDate.replace(
-        'INDEX',
-        i.toString()
-      );
+      const [positionSelector, companySelector, companyLogoSelector, citySelector, addedDateSelector] = this.replaceTextToIndex([
+        this.selectors.listPosition,
+        this.selectors.listCompany,
+        this.selectors.listCompanyLogo,
+        this.selectors.listCity,
+        this.selectors.listAddedDate,
+      ], i);
 
       const position = await this.page.evaluate((sel: string) => {
         const element = document.querySelector(sel) as HTMLAnchorElement;

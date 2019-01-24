@@ -7,7 +7,15 @@ export default class StackOverflow extends RenderedSite {
     'https://cdn.sstatic.net/Sites/stackoverflow/company/img/logos/so/so-logo.png';
   readonly address = 'https://stackoverflow.com';
   readonly endpointAddress = 'https://stackoverflow.com/jobs?l=Poland';
-  page: any;
+
+  protected goToNextPage = async () => this.goToNextPageViaLink(this.selectors.lastPageButton);
+
+  protected async isLastPage() {
+    return await this.page.evaluate((sel: string) => {
+      const element = document.querySelector(sel) as HTMLAnchorElement;
+      return element ? false : true;
+    }, this.selectors.lastPageButton);
+  }
 
   protected async getJobsForThePage() {
     const listLength = await this.page.evaluate((selector: string) => {
@@ -76,25 +84,6 @@ export default class StackOverflow extends RenderedSite {
       }
     }
     return jobOffers;
-  }
-
-  async goToNextPage() {
-    const nextPageLink = await this.page.evaluate((sel: string) => {
-      const element = document.querySelector(sel) as HTMLAnchorElement;
-      return element ? element.href : null;
-    }, this.selectors.lastPageButton);
-
-    await Promise.all([
-      this.page.goto(nextPageLink, { waitUntil: 'networkidle0' }),
-      this.page.waitForNavigation()
-    ]);
-  }
-
-  protected async isLastPage() {
-    return await this.page.evaluate((sel: string) => {
-      const element = document.querySelector(sel) as HTMLAnchorElement;
-      return element ? false : true;
-    }, this.selectors.lastPageButton);
   }
 
   private getSalary(salaryText: string) {

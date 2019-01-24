@@ -1,107 +1,39 @@
-import { Browser } from 'puppeteer';
-import { isString } from 'util';
 import Job from '../Job';
-import Site from '../Site';
+import RenderedSite from '../RenderedSite';
 
-export default class ForProgrammers implements Site {
+export default class ForProgrammers extends RenderedSite {
   readonly name = '4Programmers.net';
   readonly logoImage = 'https://static.4programmers.net/img/logo.png';
   readonly address = 'https://4programmers.net';
   readonly endpointAddress = 'https://4programmers.net/Praca';
-  browser: Browser;
-  page: any;
 
-  constructor(browserObject: Browser) {
-    this.browser = browserObject;
-  }
+  protected goToNextPage = async () => await this.goToNextPageViaLink(this.selectors.lastPageButton + ' > a');
 
-  public async getJobs() {
-    let jobOffers: Job[] = [];
-
-    await this.openNewBrowserPage();
-    await this.page.goto(this.endpointAddress, {
-      waitUntil: 'domcontentloaded'
-    });
-
-    let isLast = await this.isLastPage();
-    while (!isLast) {
-      jobOffers.push(...(await this.getJobsForThePage()));
-      await this.goToNextPage();
-      isLast = await this.isLastPage();
-    }
-
-    await this.page.close();
-    return jobOffers;
-  }
-
-  private async openNewBrowserPage() {
-    this.page = await this.browser.newPage();
-    /* await this.setFetchingHtmlOnly(); */
-  }
-
-  /* private async setFetchingHtmlOnly() {
-    await this.page.setRequestInterception(true);
-    this.page.on('request', (req: any) => {
-      if (req.resourceType() === 'document') {
-        req.continue();
-      }
-      else {
-        req.abort();
-      }
-    });
-  } */
-
-  async goToNextPage() {
-    await Promise.all([
-      this.page.waitForNavigation({ waitUntil: 'domcontentloaded' }),
-      this.page.click(this.selectors.lastPageButtonSelector)
-    ]);
-  }
-
-  private async isLastPage() {
+  protected async isLastPage() {
     const lastButtonValue = await this.page.evaluate((sel: string) => {
       const element = document.querySelector(sel) as HTMLUListElement;
       return element ? element.innerText : '';
-    }, this.selectors.lastPageButtonSelector);
+    }, this.selectors.lastPageButton);
 
     return lastButtonValue !== '»';
   }
 
-  private async getJobsForThePage() {
+  protected async getJobsForThePage() {
     const listLength = await this.page.evaluate((sel: string) => {
       return document.querySelectorAll(sel).length;
-    }, this.selectors.lengthSelectorClass);
+    }, this.selectors.lengthClass);
 
     let jobOffers: Job[] = [];
     for (let i = 1; i <= listLength; i++) {
-      const positionSelector = this.selectors.listPositionSelector.replace(
-        'INDEX',
-        i.toString()
-      );
-      const companySelector = this.selectors.listCompanySelector.replace(
-        'INDEX',
-        i.toString()
-      );
-      const companyLogoSelector = this.selectors.listCompanyLogoSelector.replace(
-        'INDEX',
-        i.toString()
-      );
-      const citySelector = this.selectors.listCitySelector.replace(
-        'INDEX',
-        i.toString()
-      );
-      const technologiesSelector = this.selectors.listTechnologiesSelector.replace(
-        'INDEX',
-        i.toString()
-      );
-      const salarySelector = this.selectors.listSalarySelector.replace(
-        'INDEX',
-        i.toString()
-      );
-      const addedDateSelector = this.selectors.listAddedDateSelector.replace(
-        'INDEX',
-        i.toString()
-      );
+      const [positionSelector, companySelector, companyLogoSelector, citySelector, technologiesSelector, salarySelector, addedDateSelector] = this.replaceTextToIndex([
+        this.selectors.listPosition,
+        this.selectors.listCompany,
+        this.selectors.listCompanyLogo,
+        this.selectors.listCity,
+        this.selectors.listTechnologies,
+        this.selectors.listSalary,
+        this.selectors.listAddedDate
+      ] , i);
 
       const position = await this.page.evaluate((sel: string) => {
         const element = document.querySelector(sel) as HTMLAnchorElement;
@@ -196,7 +128,7 @@ export default class ForProgrammers implements Site {
   private getOfferDate(created: string) {
     if (created === 'Nowe') {
       return new Date();
-    } else if (created && isString(created)) {
+    } else if (created && typeof created === 'string') {
       const howMany = Number(created.split(' ')[0]);
       const unit: 'godziny' | 'dni' | 'tygodnie' | string = created.split(
         ' '
@@ -233,22 +165,22 @@ export default class ForProgrammers implements Site {
   }
 
   readonly selectors = {
-    lastPageButtonSelector:
+    lastPageButton:
       '#job-main-content > main > nav.pull-left > ul > li:last-child',
-    lengthSelectorClass: '#box-jobs > table > tbody > tr',
-    listPositionSelector:
+    lengthClass: '#box-jobs > table > tbody > tr',
+    listPosition:
       '#box-jobs > table > tbody > tr:nth-child(INDEX) > td.col-body > h2 > a',
-    listCompanySelector:
+    listCompany:
       '#box-jobs > table > tbody > tr:nth-child(INDEX) > td.col-body > p:nth-child(3) > a',
-    listCompanyLogoSelector:
+    listCompanyLogo:
       '#box-jobs > table > tbody > tr:nth-child(INDEX) > td.col-logo > a > img',
-    listCitySelector:
+    listCity:
       '#box-jobs > table > tbody > tr:nth-child(INDEX) > td.col-body > p:nth-child(3) > small > a',
-    listSalarySelector:
+    listSalary:
       '#box-jobs > table > tbody > tr:nth-child(INDEX) > td.col-salary.hidden-xs.hidden-xxs > p > strong',
-    listAddedDateSelector:
+    listAddedDate:
       '#box-jobs > table > tbody > tr:nth-child(INDEX) > td.col-time',
-    listTechnologiesSelector:
+    listTechnologies:
       '#box-jobs > table > tbody > tr:nth-child(INDEX) > td.col-body > ul'
   };
 }

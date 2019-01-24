@@ -3,19 +3,21 @@ import Job from '../Job';
 import Site from '../Site';
 
 export default class NoFulffJobs implements Site {
-    name = 'no fluff {jobs}';
-    logoImage = 'https://nofluffjobs.com/images/logo_NFJ.png';
-    address = 'https://nofluffjobs.com';
-    endpointAddress = 'https://nofluffjobs.com/api/posting';
+    readonly name = 'no fluff {jobs}';
+    readonly logoImage = 'https://nofluffjobs.com/images/logo_NFJ.png';
+    readonly address = 'https://nofluffjobs.com';
+    readonly endpointAddress = 'https://nofluffjobs.com/api/posting';
 
-    async getJobs() {
+    public async getJobs() {
         let jobOffers: Job[] = [];
         let result: NoFluffJobsResponse  = await GetData.getRequest(this.endpointAddress);
         result = result !== {} ? JSON.parse(result as string) : [];
 
         if (result && result.postings && result.postings.length) {
             result.postings.forEach((job) => {
-                jobOffers.push(this.createJobOffer(job));
+                if (job.essentials) {
+                    jobOffers.push(this.createJobOffer(job));
+                }
             });
         }
 

@@ -3,12 +3,12 @@ import Job from '../Job';
 import Site from '../Site';
 
 export default class JustJoinIt implements Site {
-  name = 'Just Join IT';
-  logoImage = 'https://bucket.justjoin.it/companies/logos/original/a558c98b3368639ef93fa5c6a1cc94d6ce3b1693.png?1527165365';
-  address = 'https://justjoin.it';
-  endpointAddress = 'https://justjoin.it/api/offers';
+  readonly name = 'Just Join IT';
+  readonly logoImage = 'https://bucket.justjoin.it/companies/logos/original/a558c98b3368639ef93fa5c6a1cc94d6ce3b1693.png?1527165365';
+  readonly address = 'https://justjoin.it';
+  readonly endpointAddress = 'https://justjoin.it/api/offers';
 
-  async getJobs() {
+  public async getJobs() {
     let jobOffers: Job[] = [];
     let jobs: JustJoinJob[] | {} = await GetData.getRequest(
       'https://justjoin.it/api/offers'

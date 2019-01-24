@@ -35,14 +35,14 @@ export class Offer extends React.Component<OfferProps, any> {
           </div>
           <div className={'offer-content'}>
             <p className={'position'}>{this.props.position}</p>
-            <ul className="technologies">
+            <ul className='technologies'>
               {this.props.technologies
                 ? this.props.technologies.map(technology => {
                     return <li key={technology.toString()}>{technology}</li>;
                   })
                 : null}
             </ul>
-            <span className="location">{this.props.location}</span>{' '}
+            <span className='location'>{this.props.location}</span>{' '}
             {this.getNiceDate(this.props.addedDate)}
           </div>
           <div className={'salary'}>
