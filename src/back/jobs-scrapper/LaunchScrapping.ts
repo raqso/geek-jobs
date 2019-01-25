@@ -1,6 +1,5 @@
 import puppeteer from 'puppeteer';
 import JobFetcher from './JobFetcher';
-import JobsPl from './sites/JobsPl';
 
 export default async function launchScrapping() {
   try {
@@ -10,7 +9,7 @@ export default async function launchScrapping() {
       // devtools: true
     });
 
-    await new JobFetcher(browser, [new JobsPl(browser)]).start();
+    await new JobFetcher(browser).start();
     browser.close();
   } catch (error) {
     console.warn('Error has been occured! ', error);
