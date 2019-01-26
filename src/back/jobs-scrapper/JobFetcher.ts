@@ -13,6 +13,7 @@ import StackOverflow from './sites/StackOverflow';
 import CrossWeb from './sites/CrossWeb';
 import InfoPraca from './sites/InfoPraca';
 import JobsPl from './sites/JobsPl';
+import Linkedin from './sites/Linkedin';
 
 export default class JobFetcher {
   browser: puppeteer.Browser;
@@ -35,7 +36,8 @@ export default class JobFetcher {
         new ForProgrammers(this.browser),
         new NoFulffJobs(),
         new Olx(this.browser),
-        new JobsPl(this.browser)
+        new JobsPl(this.browser),
+        new Linkedin(this.browser)
       ];
     }
   }
