@@ -2,6 +2,7 @@ const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
 const nodeExternals = require('webpack-node-externals');
+const FaviconsWebpackPlugin = require('favicons-webpack-plugin');
 
 const clientOutputDirectory = './dist/front';
 const serverOutputDirectory = 'dist/back';
@@ -63,8 +64,8 @@ const frontConfig = {
     /* new CleanWebpackPlugin([clientOutputDirectory]), */
     new HtmlWebpackPlugin({
       template: './public/index.html',
-      favicon: './public/favicon.ico',
-    })
+    }),
+    new FaviconsWebpackPlugin('./public/geek.png')
   ]
 };
 
