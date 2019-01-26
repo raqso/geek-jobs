@@ -7,7 +7,7 @@ export default class ForProgrammers extends RenderedSite {
   readonly address = 'https://4programmers.net';
   readonly endpointAddress = 'https://4programmers.net/Praca';
 
-  protected goToNextPage = async () => await this.goToNextPageViaLink(this.selectors.lastPageButton + ' > a');
+  protected goToNextPage = async () => await this.goToNextPageViaLastPageLink(this.selectors.lastPageButton + ' > a');
 
   protected async isLastPage() {
     const lastButtonValue = await this.page.evaluate((sel: string) => {

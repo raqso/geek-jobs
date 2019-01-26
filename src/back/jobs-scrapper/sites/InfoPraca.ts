@@ -9,7 +9,7 @@ export default class InfoPraca extends RenderedSite {
   readonly logoImage =
     'https://static.infopraca.pl/static/vee086020901d/pl/pl/new/img/logos/header.png';
 
-  protected goToNextPage = async () => await this.goToNextPageViaLink(this.selectors.lastPageButton);
+  protected goToNextPage = async () => await this.goToNextPageViaLastPageLink(this.selectors.lastPageButton);
 
   protected async isLastPage() {
     const lastButtonValue = await this.page.evaluate((sel: string) => {

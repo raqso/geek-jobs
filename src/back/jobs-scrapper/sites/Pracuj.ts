@@ -21,7 +21,7 @@ export default class Pracuj extends RenderedSite {
     return lastButtonText !== '';
   }
 
-  protected goToNextPage = async () => await this.goToNextPageViaLink(this.selectors.lastPageButton + ' > a');
+  protected goToNextPage = async () => await this.goToNextPageViaLastPageLink(this.selectors.lastPageButton + ' > a');
 
   protected async getJobsForThePage() {
     let jobOffers: Job[] = [];

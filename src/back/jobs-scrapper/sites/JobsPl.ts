@@ -8,7 +8,7 @@ export default class JobsPl extends RenderedSite {
   readonly endpointAddress =
     'https://www.jobs.pl/praca/it-rozwoj-oprogramowania/dolnoslaskie?locations[0]=8194&locations[1]=8198&locations[2]=8205&locations[3]=8206&locations[4]=8195&locations[5]=8200&locations[6]=8203&locations[7]=8202&locations[8]=8197&locations[9]=8207&locations[10]=8201&locations[11]=8199&locations[12]=8196&locations[13]=8204&locations[14]=8208';
 
-  protected goToNextPage = async () => await this.goToNextPageViaLink(this.selectors.lastPage);
+  protected goToNextPage = async () => await this.goToNextPageViaLastPageLink(this.selectors.lastPage);
 
   protected async isLastPage() {
     return await this.page.evaluate((sel: string) => {
