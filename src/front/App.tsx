@@ -2,6 +2,7 @@ import * as React from 'react';
 import './App.css';
 import { Offer } from './components/Offer';
 import SearchBox from './components/SearchBox';
+import OffersCounter from './components/OffersCounter';
 
 interface AppState {
   offers: any[];
@@ -23,16 +24,17 @@ class App extends React.Component<any, AppState> {
     return (
       <div className='App'>
         <section id='top'>
-          <div id='header'></div>
+          <div id='header' />
           <SearchBox
-            onClick={ () => this.searchOffers()}
+            onClick={() => this.searchOffers()}
             positionPlaceholder='Stanowisko, np: Programista C#'
             locationPlaceholder='Lokalizacja, np: Wrocław'
             searchButtonText='Szukaj'
-            ref={ (el: SearchBox) => (this.searchbox = el)}
+            ref={(el: SearchBox) => (this.searchbox = el)}
           />
         </section>
         <section id='offers-section' ref={(el: any) => (this.offersList = el)}>
+          <OffersCounter offersLength={this.state.offers.length} />
           <ul id='offers'>{this.renderOffers()}</ul>
         </section>
         <section id='footer' />
@@ -62,7 +64,9 @@ class App extends React.Component<any, AppState> {
   }
 
   private async searchOffers() {
-    const address = `${this.offersApiAddress}?position=${this.searchbox.getPosition()}&location=${this.searchbox.getLocation()}`;
+    const address = `${
+      this.offersApiAddress
+    }?position=${this.searchbox.getPosition()}&location=${this.searchbox.getLocation()}`;
 
     await fetch(address)
       .then(response => response.json())
