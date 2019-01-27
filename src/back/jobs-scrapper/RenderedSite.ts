@@ -33,19 +33,16 @@ abstract class RenderedSite implements Site {
     let isLast = await this.isLastPage();
     while (!isLast) {
       jobOffers.push(...(await this.getJobsForThePage()));
-
+      // console.log(`Page ${this.pageNumber} - ${jobOffers.length} offers`);
+      this.pageNumber++;
       const [] = await Promise.all([
         this.page.waitForNavigation(),
         this.goToNextPage()
       ]);
       isLast = await this.isLastPage();
     }
+    this.page.close();
 
-    try {
-      this.page.close();
-    } catch (error) {
-      // Propably no needed
-    }
     return jobOffers;
   }
 
