@@ -12,7 +12,7 @@ export default async function launchScrapping() {
 
     await new JobFetcher(browser, [new Linkedin(browser)]).start();
     try {
-      browser.close();
+      await browser.close();
     } catch (error) {
       // Already closed
     }

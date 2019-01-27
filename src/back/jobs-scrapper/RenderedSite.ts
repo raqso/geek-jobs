@@ -59,6 +59,7 @@ abstract class RenderedSite implements Site {
 
   protected async goToThePage(pageAddress: string) {
     await this.page.goto(pageAddress, { waitUntil: 'networkidle0' });
+    await this.page.waitForNavigation({waitUntil: 'load'});
   }
 
   protected replaceTextToIndex(selectors: string[], index: number) {
