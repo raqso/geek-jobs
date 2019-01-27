@@ -10,7 +10,6 @@ export default class Linkedin extends RenderedSite {
     'https://pl.linkedin.com/jobs/search?locationId=pl&f_F=it';
 
   protected async goToNextPage() {
-    this.pageNumber++;
     const offersPerPage = 25;
     const nextPageAddress = `${this.endpointAddress}&jobs_jserp_pagination_${this.pageNumber}&start=${this.pageNumber * offersPerPage - offersPerPage}&count=${offersPerPage}`;
 
@@ -78,7 +77,7 @@ export default class Linkedin extends RenderedSite {
 
         const companyLogo = await this.page.evaluate((sel: string) => {
           const element = document.querySelector(sel) as HTMLImageElement;
-          return element ? element.src : null;
+          return element ? element.getAttribute('data-delayed-url') : null;
         }, companyLogoSelector);
 
         jobOffers.push({
@@ -94,6 +93,7 @@ export default class Linkedin extends RenderedSite {
         } as Job);
       }
     }
+
     return jobOffers;
   }
 
