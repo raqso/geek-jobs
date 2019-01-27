@@ -58,7 +58,7 @@ abstract class RenderedSite implements Site {
   }
 
   protected async goToThePage(pageAddress: string) {
-    await this.page.goto(pageAddress, { waitUntil: 'domcontentloaded' });
+    await this.page.goto(pageAddress); // , { waitUntil: 'domcontentloaded' }
       // this.page.waitForNavigation()
   }
 
