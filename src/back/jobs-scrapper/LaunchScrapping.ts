@@ -1,5 +1,6 @@
 import puppeteer from 'puppeteer';
 import JobFetcher from './JobFetcher';
+import Linkedin from './sites/Linkedin';
 
 export default async function launchScrapping() {
   try {
@@ -9,7 +10,7 @@ export default async function launchScrapping() {
       devtools: false
     });
 
-    await new JobFetcher(browser).start();
+    await new JobFetcher(browser, [new Linkedin(browser)]).start();
     try {
       browser.close();
     } catch (error) {

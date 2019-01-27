@@ -58,8 +58,7 @@ abstract class RenderedSite implements Site {
   }
 
   protected async goToThePage(pageAddress: string) {
-    await this.page.goto(pageAddress); // , { waitUntil: 'domcontentloaded' }
-      // this.page.waitForNavigation()
+    await this.page.goto(pageAddress, { waitUntil: 'networkidle0' });
   }
 
   protected replaceTextToIndex(selectors: string[], index: number) {
@@ -97,6 +96,15 @@ abstract class RenderedSite implements Site {
         }
       });
     }
+
+    this.page.on('response', (response: any) => {
+      const status = response.status();
+      console.log(`${this.name} response status: ${status}`);
+      // [301, 302, 303, 307, 308]
+      /* if ((status >= 300) && (status <= 399)) {
+          url_redirected = true;
+      } */
+  });
   }
 }
 
