@@ -32,8 +32,10 @@ abstract class RenderedSite implements Site {
 
     let isLast = await this.isLastPage();
     while (!isLast) {
-      jobOffers.push(...(await this.getJobsForThePage()));
-      // console.log(`Page ${this.pageNumber} - ${jobOffers.length} offers`);
+      const offersFromOnePage = await this.getJobsForThePage();
+
+      console.log(`#${this.name} - Page ${this.pageNumber} - ${offersFromOnePage.length} offers`);
+      jobOffers.push(...offersFromOnePage);
       this.pageNumber++;
       const [] = await Promise.all([
         this.page.waitForNavigation(),
@@ -56,10 +58,8 @@ abstract class RenderedSite implements Site {
   }
 
   protected async goToThePage(pageAddress: string) {
-    await Promise.all([
-      this.page.goto(pageAddress, { waitUntil: 'networkidle0' }),
-      this.page.waitForNavigation()
-    ]);
+    await this.page.goto(pageAddress, { waitUntil: 'domcontentloaded' });
+      // this.page.waitForNavigation()
   }
 
   protected replaceTextToIndex(selectors: string[], index: number) {
