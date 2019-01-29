@@ -34,7 +34,11 @@ abstract class RenderedSite implements Site {
     while (!isLast) {
       const offersFromOnePage = await this.getJobsForThePage();
 
-      console.log(`#${this.name} - Page ${this.pageNumber} - ${offersFromOnePage.length} offers`);
+      console.log(
+        `#${this.name} - Page ${this.pageNumber} - ${
+          offersFromOnePage.length
+        } offers`
+      );
       jobOffers.push(...offersFromOnePage);
       this.pageNumber++;
       const [] = await Promise.all([
@@ -58,8 +62,10 @@ abstract class RenderedSite implements Site {
   }
 
   protected async goToThePage(pageAddress: string) {
-    await this.page.goto(pageAddress, { waitUntil: 'networkidle0' });
-    await this.page.waitForNavigation({waitUntil: 'load'});
+    await Promise.all([
+      this.page.goto(pageAddress, { waitUntil: 'networkidle0' }),
+      this.page.waitForNavigation()
+    ]);
   }
 
   protected replaceTextToIndex(selectors: string[], index: number) {
@@ -87,8 +93,7 @@ abstract class RenderedSite implements Site {
           request.abort();
         }
       });
-    }
-    else {
+    } else {
       this.page.on('request', (request: any) => {
         if (this.blockedResources.includes(request.resourceType())) {
           request.abort();
