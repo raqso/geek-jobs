@@ -1,6 +1,6 @@
-import * as React from 'react';
+import React from 'react';
 import './App.css';
-import { Offer } from './components/Offer';
+import Offer from './components/Offer';
 import SearchBox from './components/SearchBox';
 import OffersCounter from './components/OffersCounter';
 
@@ -25,6 +25,7 @@ class App extends React.Component<any, AppState> {
       <div className='App'>
         <section id='top'>
           <div id='header' />
+          <div id='container'>
           <SearchBox
             onClick={() => this.searchOffers()}
             positionPlaceholder='Stanowisko, np: Programista C#'
@@ -32,6 +33,7 @@ class App extends React.Component<any, AppState> {
             searchButtonText='Szukaj'
             ref={(el: SearchBox) => (this.searchbox = el)}
           />
+          </div>
         </section>
         <section id='offers-section' ref={(el: any) => (this.offersList = el)}>
           <OffersCounter offersLength={this.state.offers.length} />
