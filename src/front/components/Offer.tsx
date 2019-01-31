@@ -1,5 +1,5 @@
 import  React from 'react';
-import { Card, CardContent, CardActionArea, Chip  } from '@material-ui/core';
+import { Card, CardContent, CardActionArea, Chip, Typography  } from '@material-ui/core';
 import { withStyles, createStyles } from '@material-ui/styles';
 
 interface OfferProps {
@@ -34,20 +34,41 @@ const styles = createStyles({
     justifyContent: 'space-between'
   },
   companyLogo: {
-    flexGrow: 1,
+    width: '185px'
   },
   companyLogoImg: {
     maxWidth: '150px',
     maxHeight: '75px'
   },
   offerContent: {
-    flexGrow: 4
+    flexGrow: 4,
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'flex-start'
+  },
+  technologies: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'flex-start'
+  },
+  technology: {
+    height: '20px'
+  },
+  locationAndDate: {
+    display: 'flex',
+    flexDirection: 'row'
+  },
+  location: {
+    margin: '0 10px 0 0px'
+  },
+  date: {
+    margin: '0 10px 0 0px'
   },
   salary: {
     flexGrow: 1
   },
   portalLogo: {
-    flexGrow: 1
+    //
   },
   portalLogoImg: {
     maxWidth: '80px',
@@ -70,6 +91,7 @@ const Offer = (props: OfferProps) => {
     return (
       <Card className={classes.card}>
         <CardActionArea>
+          <a href={props.link} >
           <CardContent className={classes.cardContent}>
           <div className={classes.companyLogo}>
               <img
@@ -83,24 +105,29 @@ const Offer = (props: OfferProps) => {
               />
             </div>
             <div className={classes.offerContent}>
-              <p className={'position'}>{props.position}</p>
-              <ul className='technologies'>
+            <Typography component='h5' variant='h5' className={'position'}>
+              {props.position}
+            </Typography>
+              <div className={classes.technologies}>
                 {props.technologies
                   ? props.technologies.map(technology => {
-                      return <Chip label={technology} key={technology.toString()} />;
+                      return <Chip className={classes.technology} label={technology} key={technology.toString()} />;
                     })
                   : null}
-              </ul>
-              <span className='location'>{props.location}</span>{' '}
-              {getNiceDate(props.addedDate)}
+              </div>
+              <div className={classes.locationAndDate}>
+                <Typography variant='subtitle1' color='textSecondary' className={classes.location}><i className='fas fa-map-marker'></i> {props.location}</Typography>{' '}
+                <Typography variant='subtitle1' color='textSecondary' className={classes.date}><i className='far fa-calendar'></i> {getNiceDate(props.addedDate)}</Typography>
+              </div>
             </div>
-            <div className={classes.salary}>
+            <Typography className={classes.salary} color='textSecondary'>
               {getNiceSalary(props.salary)}
-            </div>
+            </Typography>
             <div className={classes.portalLogo}>
               <img src={props.portalImage} alt={'Job offers portal logo'} className={classes.portalLogoImg} />
             </div>
           </CardContent>
+          </a>
         </CardActionArea>
       </Card>
     );
@@ -124,7 +151,7 @@ const getNiceSalary = (salary: {
   currency: string;
 }) => {
   if (salary && salary.from && salary.to) {
-    return `${salary.from} - ${salary.to}${
+    return `${salary.from} - ${salary.to} ${
       salary.currency ? salary.currency : ''
     }`;
   } else {
