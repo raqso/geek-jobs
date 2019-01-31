@@ -6,23 +6,15 @@ export default class BulldogJob extends RenderedSite {
   readonly logoImage = 'https://cdn.bulldogjob.com/assets/logo-6d85aa7138552c5b466f9a4fb26785893cceb34e7b344915bba0392dd125287a.png';
   readonly address = 'https://bulldogjob.pl/';
   readonly endpointAddress =
-    'https://bulldogjob.pl/companies/jobs?mode=plain&page=';
+    'https://bulldogjob.pl/companies/jobs';
 
-  protected pageNumber = 1;
-
-  protected async goToNextPage() {
-    await this.page.waitFor(2 * 1000);
-    this.pageNumber++;
-    await this.page.goto(this.endpointAddress + this.pageNumber);
-  }
+  protected goToNextPage = async () => await this.goToNextPageViaLastPageLink(`${this.selectors.nextPageButton} > a`);
 
   protected async isLastPage() {
-    const offersOnPage = await this.page.evaluate((sel: string) => {
-      const element = document.querySelector(sel) as HTMLUListElement;
-      return element ? element.childElementCount : 0;
-    }, this.selectors.offersList);
-
-    return offersOnPage === 0;
+    return await this.page.evaluate((sel: string) => {
+      const element = document.querySelector(sel) as any;
+      return element ? [...element.classList].includes('disabled') : false;
+    }, this.selectors.nextPageButton);
   }
 
   protected async getJobsForThePage() {
@@ -124,6 +116,7 @@ export default class BulldogJob extends RenderedSite {
   }
 
   readonly selectors = {
+    nextPageButton: '#search-result > div > section > nav > div > ul > li.next:last-child',
     listPosition:
       '#search-result > div > section > ul > li:nth-child(INDEX) > div.description > h2 > a',
     listCompany:
