@@ -8,7 +8,7 @@ abstract class ScrappedSite implements Site {
   abstract address: string;
   abstract logoImage: string;
   abstract endpointAddress: string;
-  abstract selectors: Object;
+  protected abstract selectors: any;
   protected pageNumber = 1;
   protected cherrioInstance = cheerio.load('');
   protected abstract isLastPage(): Promise<boolean>;
@@ -38,17 +38,23 @@ abstract class ScrappedSite implements Site {
   }
 
   private async goToNextPage() {
-    const nextPageUrl = this.cherrioInstance(this.selectors).attr('href');
+    const nextPageUrl = this.cherrioInstance(this.selectors.lastPageButton).attr('href');
     await this.loadPageHtml(nextPageUrl);
   }
 
   private async loadPageHtml(address: string) {
-    this.cherrioInstance = cheerio.load(await this.getPageHtml(address) as string);
+    if (address) {
+      this.cherrioInstance = cheerio.load(await this.getPageHtml(address) as string);
+    }
+    else {
+      throw new Error('Invalid url address for the next page!');
+    }
   }
 
   private async getPageHtml(address: string) {
+    const proxedAddress = `https://api.scraperapi.com?key=${process.env.SCRAPPER_API_KEY}&url=${address}`;
     return new Promise((resolve, reject) => {
-      request(address, (error, _response, html) => {
+      request(proxedAddress, (error, _response, html) => {
         if (!error) {
           resolve(html);
         } else {

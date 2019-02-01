@@ -7,11 +7,17 @@ export default class Linkedin extends ScrappedSite {
   readonly logoImage =
     'https://pl.linkedin.com/scds/common/u/images/logos/linkedin/logo_linkedin_white_text_blue_inbug_312x80_v1.png';
   readonly endpointAddress =
-    `https://api.scraperapi.com?key=${process.env.SCRAPPER_API_KEY}&url=https://pl.linkedin.com/jobs/search?locationId=pl&f_F=it`;
+    `https://pl.linkedin.com/jobs/search?locationId=pl&f_F=it`;
 
   protected async isLastPage() {
-    const lastButtonText = this.cherrioInstance(this.selectors.lastPageButton).text();
-    return Number(lastButtonText) === this.pageNumber;
+    const pagesLimit = 15;
+    if (this.pageNumber <= pagesLimit) {
+      const lastButtonText = this.cherrioInstance(this.selectors.lastPageButton).text();
+      return Number(lastButtonText) === this.pageNumber;
+    }
+    else {
+      return true;
+    }
   }
 
   protected async getJobsForThePage() {
@@ -89,18 +95,18 @@ export default class Linkedin extends ScrappedSite {
     }
   }
 
-  readonly selectors = {
+  protected readonly selectors = {
     lastPageButton:
     'div> div > div > nav > ul > li:last-child > a',
     offersLength: 'ul.jobs-search-content__results',
     position:
       '.listed-job-posting__title',
     company:
-      'listed-job-posting__company',
+      '.listed-job-posting__company',
     companyLogo: 'img.listed-job-posting__image',
     location:
       '.listed-job-posting__title',
     addedDate:
-      'posted-time-ago__text'
+      '.posted-time-ago__text'
   };
 }
