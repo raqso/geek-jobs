@@ -1,98 +1,42 @@
-import RenderedSite from '../RenderedSite';
 import Job from '../Job';
+import ScrappedSite from '../ScrappedSite';
 
-export default class Linkedin extends RenderedSite {
+export default class Linkedin extends ScrappedSite {
   readonly name = 'Linkedin';
   readonly address = 'https://linkedin.com';
   readonly logoImage =
     'https://pl.linkedin.com/scds/common/u/images/logos/linkedin/logo_linkedin_white_text_blue_inbug_312x80_v1.png';
   readonly endpointAddress =
-    'https://pl.linkedin.com/jobs/search?locationId=pl&f_F=it';
-
-  protected async goToNextPage() {
-    const offersPerPage = 25;
-    const nextPageAddress = `${this.endpointAddress}&jobs_jserp_pagination_${this.pageNumber}&start=${this.pageNumber * offersPerPage - offersPerPage}&count=${offersPerPage}`;
-
-    await this.goToThePage(nextPageAddress);
-  }
+    `https://api.scraperapi.com?key=${process.env.SCRAPPER_API_KEY}&url=https://pl.linkedin.com/jobs/search?locationId=pl&f_F=it`;
 
   protected async isLastPage() {
-    return await this.page.evaluate((sel: string, pageNumber: number) => {
-      const element = document.querySelector(sel) as HTMLAnchorElement;
-      return element && Number(element.innerText) ===  pageNumber ? true : false;
-    }, this.selectors.lastPageButton, this.pageNumber);
+    const lastButtonText = this.cherrioInstance(this.selectors.lastPageButton).text();
+    return Number(lastButtonText) === this.pageNumber;
   }
 
   protected async getJobsForThePage() {
-    const listLength = await this.page.evaluate((selector: string) => {
-      return document.querySelectorAll(selector).length;
-    }, this.selectors.offersLength);
-
     let jobOffers: Job[] = [];
-    for (let i = 1; i <= listLength; i++) {
-      const [
-        positionSelector,
-        offerLinkSelector,
-        citySelector,
-        addedDateSelector,
-        companySelector,
-        companyLogoSelector
-      ] = this.replaceTextToIndex(
-        [
-          this.selectors.listPosition,
-          this.selectors.listOfferLink,
-          this.selectors.listLocation,
-          this.selectors.listAddedDate,
-          this.selectors.listCompany,
-          this.selectors.listCompanyLogo
-        ],
-        i
-      );
 
-      const position = await this.page.evaluate((sel: string) => {
-        const element = document.querySelector(sel) as HTMLHeadingElement;
-        return element ? element.innerText : null;
-      }, positionSelector);
+    this.cherrioInstance(this.selectors.offersLength).find('li.jobs-search-result-item').each( (_index, element) => {
+      const position = this.cherrioInstance(element).find(this.selectors.position).text();
+      const offerLink = this.cherrioInstance(element).find('a').attr('href');
+      const location = this.cherrioInstance(element).find(this.selectors.location).text().trim();
+      const addedDate = this.cherrioInstance(element).find(this.selectors.addedDate).text();
+      const company = this.cherrioInstance(element).find(this.selectors.company).text();
+      const companyLogo = this.cherrioInstance(element).find(this.selectors.companyLogo).attr('data-delayed-url');
 
-      if (position) {
-        const offerLink = await this.page.evaluate((sel: string) => {
-          const element = document.querySelector(sel) as HTMLAnchorElement;
-          return element ? element.href : null;
-        }, offerLinkSelector);
-
-        const location = await this.page.evaluate((sel: string) => {
-          const element = document.querySelector(sel) as HTMLParagraphElement;
-          return element ? element.innerText.trim() : null;
-        }, citySelector);
-
-        const addedDate = await this.page.evaluate((sel: string) => {
-          const element = document.querySelector(sel) as HTMLSpanElement;
-          return element ? element.innerText : null;
-        }, addedDateSelector);
-
-        const company = await this.page.evaluate((sel: string) => {
-          const element = document.querySelector(sel) as HTMLHeadingElement;
-          return element ? element.innerText : null;
-        }, companySelector);
-
-        const companyLogo = await this.page.evaluate((sel: string) => {
-          const element = document.querySelector(sel) as HTMLImageElement;
-          return element ? element.getAttribute('data-delayed-url') : null;
-        }, companyLogoSelector);
-
-        jobOffers.push({
-          addedDate: this.getOfferDate(addedDate),
-          dateCrawled: new Date(),
-          link: offerLink,
-          location: location,
-          position: position,
-          company: company,
-          companyLogo: companyLogo,
-          website: this.name,
-          portalLogo: this.logoImage
-        } as Job);
-      }
-    }
+      jobOffers.push({
+        addedDate: this.getOfferDate(addedDate),
+        dateCrawled: new Date(),
+        link: offerLink,
+        location: location,
+        position: position,
+        company: company,
+        companyLogo: companyLogo,
+        website: this.name,
+        portalLogo: this.logoImage
+      } as Job);
+    });
 
     return jobOffers;
   }
@@ -148,17 +92,15 @@ export default class Linkedin extends RenderedSite {
   readonly selectors = {
     lastPageButton:
     'div> div > div > nav > ul > li:last-child > a',
-
-    offersLength: 'li.jobs-search-result-item',
-    listPosition:
-      'li.jobs-search-result-item:nth-child(INDEX) h3.listed-job-posting__title',
-    listOfferLink: 'li.jobs-search-result-item:nth-child(INDEX) > a',
-    listCompany:
-      'li.jobs-search-result-item:nth-child(INDEX) h4.listed-job-posting__company',
-    listCompanyLogo: 'li.jobs-search-result-item:nth-child(INDEX) img.listed-job-posting__image',
-    listLocation:
-      'li.jobs-search-result-item:nth-child(INDEX) p.listed-job-posting__location',
-    listAddedDate:
-      'li.jobs-search-result-item:nth-child(INDEX) span.posted-time-ago__text'
+    offersLength: 'ul.jobs-search-content__results',
+    position:
+      '.listed-job-posting__title',
+    company:
+      'listed-job-posting__company',
+    companyLogo: 'img.listed-job-posting__image',
+    location:
+      '.listed-job-posting__title',
+    addedDate:
+      'posted-time-ago__text'
   };
 }
