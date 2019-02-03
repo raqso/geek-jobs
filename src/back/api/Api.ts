@@ -15,7 +15,7 @@ class Api {
 
     private mongoSetup(): void {
         (<any>mongoose).Promise = global.Promise;
-        mongoose.connect(this.mongoUrl);
+        mongoose.connect(this.mongoUrl, { useNewUrlParser: true });
     }
 
     private config(): void {
