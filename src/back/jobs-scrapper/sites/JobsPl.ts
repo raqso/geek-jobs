@@ -13,7 +13,7 @@ export default class JobsPl extends RenderedSite {
   protected async isLastPage() {
     return await this.page.evaluate((sel: string) => {
       const element = document.querySelector(sel) as HTMLAnchorElement;
-      return element.innerText === '>' ? false : true;
+      return element.innerText !== '>';
     }, this.selectors.lastPage);
   }
 

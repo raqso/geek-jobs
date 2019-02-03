@@ -11,9 +11,13 @@ export default class BulldogJob extends RenderedSite {
   protected goToNextPage = async () => await this.goToNextPageViaLastPageLink(`${this.selectors.nextPageButton} > a`);
 
   protected async isLastPage() {
-    return await this.page.evaluate((sel: string) => {
-      const element = document.querySelector(sel) as any;
-      return element ? [...element.classList].includes('disabled') : false;
+    return await this.page.evaluate((sel: 'li') => {
+      const element = document.querySelector(sel);
+      if (element) {
+        element.classList.contains('disabled');
+      }
+
+      return element ? element.classList.contains('disabled') : false;
     }, this.selectors.nextPageButton);
   }
 

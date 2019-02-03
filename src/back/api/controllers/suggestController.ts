@@ -17,15 +17,7 @@ export class SuggestController {
         { useNewUrlParser: true }
       );
     }
-    JobOffer.distinct('position', { position: {'$regex': _text, '$options': 'i'}}, (err: any, result: any) => {
-        if (err) {
-          res.send(error);
-        } else {
-          res.header('Access-Control-Allow-Origin', '*');
-          res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
-          res.json(result);
-        }
-      });
+    JobOffer.distinct('position', { position: {'$regex': _text, '$options': 'i'}}, this.sendResponse(res));
   }
 
   public async locationSuggestions(
@@ -40,15 +32,20 @@ export class SuggestController {
       );
     }
 
-    JobOffer.distinct('location', { location: {'$regex': _text, '$options': 'i'}}, (err: any, result: any) => {
-        if (err) {
-          res.send(error);
-        } else {
-          res.header('Access-Control-Allow-Origin', '*');
-          res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
-          res.json(result);
-        }
-      });
+    JobOffer.distinct('location', { location: {'$regex': _text, '$options': 'i'}}, this.sendResponse(res));
+  }
+
+  private sendResponse(res: express.Response): ((err: any, res: any[]) => void) | undefined {
+    return (err: any, result: any) => {
+      if (err) {
+        res.send(error);
+      }
+      else {
+        res.header('Access-Control-Allow-Origin', '*');
+        res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
+        res.json(result);
+      }
+    };
   }
 }
 

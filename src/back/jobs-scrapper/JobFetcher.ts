@@ -46,17 +46,20 @@ export default class JobFetcher {
     let downloads: Promise<void>[] = [];
     console.log(`Started fetching at ${new Date().toLocaleString()}`);
     Database.clearJobOffers();
-    this.sitesToFetch.forEach(site => {
-      if (this.isSiteOnline(site)) {
-        downloads.push(this.fetchJobOffers(site));
-      }
-    });
+
+    await Promise.all(
+      this.sitesToFetch.map(async site => {
+        if (await this.isSiteOnline(site)) {
+          downloads.push(this.fetchJobOffers(site));
+        }
+      })
+    );
 
     await Promise.all(downloads);
     console.log(
-      `${new Date().toLocaleString()}: Fetched ${this.fetchedOffers} offers from ${
-        this.sitesToFetch.length
-      } sites. 😎`
+      `${new Date().toLocaleString()}: Fetched ${
+        this.fetchedOffers
+      } offers from ${this.sitesToFetch.length} sites. 😎`
     );
   }
 
@@ -68,7 +71,7 @@ export default class JobFetcher {
 
       console.log(`Fetched ${jobOffers.length} records from the ${site.name}`);
       this.fetchedOffers += jobOffers.length;
-      await jobOffers.forEach(async job => {
+      jobOffers.forEach(async job => { // @TODO Think about this
         await Database.upsertJob(job);
       });
       console.log(
@@ -85,14 +88,16 @@ export default class JobFetcher {
   }
 
   private async isSiteOnline(site: Site) {
-    await https
-      .get(site.endpointAddress, () => {
-        console.info(`🌐 ${site.name} is online`);
-        return true;
-      })
-      .on('error', () => {
-        console.warn(`🔻 ${site.name} is offline`);
-        return false;
-      });
+    return new Promise((resolve, reject) => {
+      https
+        .get(site.endpointAddress, () => {
+          console.info(`🌐 ${site.name} is online`);
+          return resolve(true);
+        })
+        .on('error', () => {
+          console.warn(`🔻 ${site.name} is offline`);
+          return reject(false);
+        });
+    });
   }
 }

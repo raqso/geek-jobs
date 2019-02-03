@@ -12,7 +12,7 @@ export default class Olx extends RenderedSite {
   protected async isLastPage() {
     return await this.page.evaluate((sel: string) => {
       const element = document.querySelector(sel) as HTMLAnchorElement;
-      return element ? false : true;
+      return !element;
     }, this.selectors.lastPageButton);
   }
 

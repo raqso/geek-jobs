@@ -41,7 +41,7 @@ abstract class RenderedSite implements Site {
       );
       jobOffers.push(...offersFromOnePage);
       this.pageNumber++;
-      const [] = await Promise.all([
+      await Promise.all([
         this.page.waitForNavigation(),
         this.goToNextPage()
       ]);

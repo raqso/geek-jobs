@@ -11,11 +11,6 @@ export default async function launchScrapping() {
     });
 
     await new JobFetcher(browser).start();
-    try {
-      await browser.close();
-    } catch (error) {
-      // Already closed
-    }
   } catch (error) {
     console.warn('Error has been occured! ', error);
   }

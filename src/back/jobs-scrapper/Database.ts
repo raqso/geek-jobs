@@ -5,17 +5,6 @@ import Job from './Job';
 export default class Database {
   static readonly DB_URL = 'mongodb://localhost/jobs';
   static async upsertJob(jobObj: Job) {
-    if (mongoose.connection.readyState === 0) {
-      await mongoose.connect(
-        this.DB_URL,
-        { useNewUrlParser: true }
-      );
-    }
-
-    if (jobObj && jobObj.addedDate) {
-      jobObj.addedDate = Database.randomizeTime(jobObj.addedDate);
-    }
-
     const conditions = { position: jobObj.position, company: jobObj.company };
     const options = {
       upsert: true,
@@ -24,24 +13,38 @@ export default class Database {
       useFindAndModify: false
     };
 
-    JobOffer.findOneAndUpdate(
-      conditions,
-      jobObj,
-      options,
-      (err: any, _doc: any, _result: string) => {
-        if (err) throw err;
-      }
-    );
+    if (jobObj && jobObj.addedDate) {
+      jobObj.addedDate = Database.randomizeTime(jobObj.addedDate);
+    }
+
+    return new Promise( async (resolve, reject) => {
+      await Database.connectIfNecessary();
+
+      JobOffer.findOneAndUpdate(
+        conditions,
+        jobObj,
+        options,
+        (error: any, _doc: any, _result: string) => {
+          if (!error) {
+            resolve('Record has been added');
+          }
+          else {
+            reject(error);
+          }
+        }
+      );
+    });
+  }
+
+  private static async connectIfNecessary() {
+    if (mongoose.connection.readyState === 0) {
+      await mongoose.connect(this.DB_URL, { useNewUrlParser: true });
+    }
   }
 
   static async clearJobOffers() {
-    if (mongoose.connection.readyState === 0) {
-      await mongoose.connect(
-        this.DB_URL,
-        { useNewUrlParser: true }
-      );
-      mongoose.connection.db.dropDatabase();
-    }
+    await Database.connectIfNecessary();
+    await mongoose.connection.db.dropDatabase();
   }
 
   public static randomizeTime(addedDate?: Date) {
