@@ -35,7 +35,7 @@ export default class Linkedin extends ScrappedSite {
         addedDate: this.getOfferDate(addedDate),
         dateCrawled: new Date(),
         link: offerLink,
-        location: location,
+        location: this.getCityName(location),
         position: position,
         company: company,
         companyLogo: companyLogo,
@@ -95,6 +95,15 @@ export default class Linkedin extends ScrappedSite {
     }
   }
 
+  private getCityName(location: string) {
+    if (location && location.split(',').length) {
+      return location.split(',')[0];
+    }
+    else {
+      return '';
+    }
+  }
+
   protected readonly selectors = {
     lastPageButton:
     'div> div > div > nav > ul > li:last-child > a',
@@ -105,7 +114,7 @@ export default class Linkedin extends ScrappedSite {
       '.listed-job-posting__company',
     companyLogo: 'img.listed-job-posting__image',
     location:
-      '.listed-job-posting__title',
+      '.listed-job-posting__location',
     addedDate:
       '.posted-time-ago__text'
   };
