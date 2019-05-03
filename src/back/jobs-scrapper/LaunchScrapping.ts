@@ -1,6 +1,8 @@
 import puppeteer from 'puppeteer';
 import JobFetcher from './JobFetcher';
-require('dotenv').load();
+import dotenv from 'dotenv';
+
+dotenv.config();
 
 export default async function launchScrapping() {
   try {
