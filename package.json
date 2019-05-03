@@ -10,10 +10,10 @@
   "keywords": [],
   "scripts": {
     "build": "webpack --mode production",
-    "start": "npm run build && node dist/back/server.js",
+    "start": "yarn run build && node dist/back/server.js",
     "client": "concurrently \"webpack --mode development --watch\" \"webpack-dev-server --watch --mode development --devtool inline-source-map --hot\"",
     "server": "nodemon dist/back/server.js",
-    "dev": "concurrently \"npm run server\" \"npm run client\""
+    "dev": "concurrently \"yarn run server\" \"yarn run client\""
   },
   "scripts-info": {
     "build": "Build for production",
