@@ -26,9 +26,10 @@
     "node": ">=8.9"
   },
   "dependencies": {
-    "@material-ui/core": "^3.9.0",
-    "@material-ui/styles": "^3.0.0-alpha.9",
+    "@material-ui/core": "^3.9.3",
+    "@material-ui/styles": "^3.0.0-alpha.10",
     "@types/cheerio": "^0.22.10",
+    "@types/jss": "^9.5.8",
     "@types/node-cron": "^2.0.0",
     "@types/react": "^16.7.18",
     "@types/react-dom": "^16.0.11",
@@ -40,6 +41,7 @@
     "dotenv": "^8.0.0",
     "express": "^4.16.4",
     "google-closure-compiler": "^20190415.0.0",
+    "jss": "10.0.0-alpha.3",
     "mongoose": "^5.4.2",
     "node-cron": "^2.0.3",
     "puppeteer": "^1.15.0",
@@ -86,7 +88,7 @@
     "typedoc": "^0.14.0",
     "typescript": "^3.2.2",
     "webpack": "^4.28.3",
-    "webpack-cli": "^3.2.0",
+    "webpack-cli": "^3.3.1",
     "webpack-dev-server": "^3.3.1",
     "webpack-node-externals": "^1.7.2"
   },
