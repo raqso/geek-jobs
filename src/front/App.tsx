@@ -4,9 +4,11 @@ import Fab from '@material-ui/core/Fab';
 import Offer from './components/Offer';
 import SearchBox from './components/SearchBox';
 import OffersCounter from './components/OffersCounter';
+import Loading from './components/Loading';
 
 interface AppState {
   offers: any[];
+  isLoading: Boolean;
 }
 
 class App extends React.Component<any, AppState> {
@@ -17,13 +19,15 @@ class App extends React.Component<any, AppState> {
   constructor(props: any) {
     super(props);
     this.state = {
-      offers: []
+      offers: [],
+      isLoading: false
     };
   }
 
   public render() {
     return (
       <div className='App'>
+        {this.state.isLoading && <Loading />}
         <section id='top'>
           <div id='header' />
           <div id='container'>
@@ -83,17 +87,21 @@ class App extends React.Component<any, AppState> {
   }
 
   private async searchOffers() {
-    const address = `${
-      this.offersApiAddress
-    }?position=${this.searchbox.getPosition()}&location=${this.searchbox.getLocation()}`;
+    this.setState({isLoading: true}, async () => {
+      const address = `${
+        this.offersApiAddress
+      }?position=${this.searchbox.getPosition()}&location=${this.searchbox.getLocation()}`;
 
-    await fetch(address)
-      .then(response => response.json())
-      .then(offers => this.setState({ offers }));
+      await fetch(address)
+        .then(response => response.json())
+        .then(offers => this.setState({ offers }, () => {
+          if (this.offersList) {
+            this.offersList.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          }
+        }));
 
-    if (this.offersList) {
-      this.offersList.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }
+      this.setState({isLoading: false});
+    });
   }
 }
 
