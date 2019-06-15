@@ -1,7 +1,7 @@
 {
-  "name": "search-it",
+  "name": "geek-jobs",
   "version": "1.0.0",
-  "description": "IT Job search",
+  "description": "IT Job searcher",
   "main": "dist/back/index.js",
   "typings": "build/main/index.d.ts",
   "module": "build/module/index.js",
