@@ -1,4 +1,4 @@
-
+[![Build Status](https://travis-ci.org/raqso/geek-jobs.svg?branch=master)](https://travis-ci.org/raqso/geek-jobs)
 # GeekJobs
 
 Multisite IT Job searcher
