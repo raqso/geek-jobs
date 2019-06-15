@@ -1,7 +1,7 @@
 import * as express from 'express';
 import mongoose from 'mongoose';
 import { JobOffer } from '../models/offersModel';
-import { error, isString } from 'util';
+import { isString } from 'util';
 
 export type OffersParameters = {
   position?: string;
@@ -28,8 +28,8 @@ export class OffersController {
         { useNewUrlParser: true }
       );
     }
-    JobOffer.find({}, (err: Error, result: string) => {
-      if (err) {
+    JobOffer.find({}, (error: Error, result: string) => {
+      if (error) {
         res.send(error);
       } else {
         res.json(result);
@@ -124,8 +124,8 @@ export class OffersController {
       { location: /Wrocław/ },
       null,
       { sort: { addedDate: -1 } },
-      (err: any, result: any) => {
-        if (err) {
+      (error: any, result: any) => {
+        if (error) {
           res.send(error);
         } else {
           res.header('Access-Control-Allow-Origin', '*');

@@ -1,7 +1,6 @@
 import * as express from 'express';
 import mongoose from 'mongoose';
 import { JobOffer } from '../models/offersModel';
-import { error } from 'util';
 
 export class SuggestController {
   readonly DB_URL = 'mongodb://localhost/jobs';
@@ -36,8 +35,8 @@ export class SuggestController {
   }
 
   private sendResponse(res: express.Response): ((err: any, res: any[]) => void) | undefined {
-    return (err: any, result: any) => {
-      if (err) {
+    return (error: any, result: any) => {
+      if (error) {
         res.send(error);
       }
       else {
