@@ -11,4 +11,5 @@ coverage
 *.log
 
 .*
+!.travis.yml
 !/.gitignore

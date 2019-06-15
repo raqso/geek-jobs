@@ -14,7 +14,8 @@
     "cron": "pm2 start dist/back/cron.js",
     "client": "concurrently \"webpack --mode development --watch\" \"webpack-dev-server --watch --mode development --devtool inline-source-map --hot\"",
     "server": "nodemon dist/back/server.js",
-    "dev": "concurrently \"yarn run server\" \"yarn run client\""
+    "dev": "concurrently \"yarn run server\" \"yarn run client\"",
+    "test": "yarn build"
   },
   "scripts-info": {
     "build": "Build for production",
