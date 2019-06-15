@@ -55,7 +55,7 @@ export class GetData {
     return (
       created &&
       (created.toUpperCase() === 'Nowe'.toUpperCase() ||
-        created.toUpperCase() === 'Nowe'.toUpperCase())
+        created.toUpperCase() === 'New'.toUpperCase())
     );
   }
 }
