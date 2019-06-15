@@ -10,9 +10,9 @@ export default class JustJoinIt implements Site {
 
   public async getJobs() {
     let jobOffers: Job[] = [];
-    let jobs: JustJoinJob[] | {} = await GetData.getRequest(
+    let jobs: JustJoinJob[] = await GetData.getRequest(
       'https://justjoin.it/api/offers'
-    );
+    ) as JustJoinJob[];
     jobs = (jobs && typeof(jobs) === 'string') ? JSON.parse(jobs) : [];
 
     if (jobs && Array.isArray(jobs)) {

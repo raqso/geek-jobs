@@ -28,7 +28,7 @@ export default class Jobviously implements Site {
   }
 
   private async downloadOffers(page: number) {
-      let jobs: JobviouslyResponse = await GetData.getRequest(this.endpointAddress + page);
+      let jobs: JobviouslyResponse = await GetData.getRequest(this.endpointAddress + page) as JobviouslyResponse;
       jobs = jobs && typeof jobs === 'string' ? JSON.parse(jobs) : []; // @TODO Extract to a function in GetData
       return jobs;
   }
