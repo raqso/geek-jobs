@@ -10,7 +10,7 @@ export default class NoFulffJobs implements Site {
 
     public async getJobs() {
         let jobOffers: Job[] = [];
-        let result: NoFluffJobsResponse  = await GetData.getRequest(this.endpointAddress);
+        let result: NoFluffJobsResponse  = await GetData.getRequest(this.endpointAddress) as NoFluffJobsResponse;
         result = result !== {} ? JSON.parse(result as string) : [];
 
         if (result && result.postings && result.postings.length) {
