@@ -194,7 +194,6 @@ fieldset {
   */
   padding: 0.35em 0.75em 0.625em;
   margin: 0;
-  padding: 0;
   -webkit-margin-start: 0;
   -webkit-margin-end: 0;
   -webkit-padding-before: 0;
@@ -215,8 +214,6 @@ legend {
   /* 1 */
   color: inherit;
   /* 2 */
-  display: table;
-  /* 1 */
   max-width: 100%;
   /* 1 */
   padding: 0;
@@ -225,7 +222,6 @@ legend {
   /* 1 */
 
   margin: 0;
-  padding: 0;
   display: block;
   -webkit-padding-start: 0;
   -webkit-padding-end: 0;
