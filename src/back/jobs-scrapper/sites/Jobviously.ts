@@ -4,7 +4,7 @@ import Site from '../Site';
 
 export default class Jobviously implements Site {
   readonly name = '<jobvious/y>';
-  readonly logoImage = 'https://media.licdn.com/dms/image/C4D0BAQEU_RwMdGh7aQ/company-logo_400_400/0?e=1556755200&v=beta&t=qy1ZzTsP4CAfpdCoW9H2eD-HwNVSwMx5V2voYw9C5fU';
+  readonly logoImage = 'https://www.wykop.pl/cdn/c3397992/Jobviously_XBpEgTisQ3,q150.jpg';
   readonly address = 'https://jobviously.pl';
   readonly endpointAddress = 'https://jobviously.pl/api/offers?count=all&type=all&page=';
 
