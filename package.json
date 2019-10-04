@@ -49,7 +49,7 @@
     "react-dom": "^16.8.6",
     "react-router-dom": "^5.0.1",
     "request": "^2.88.0",
-    "snyk": "^1.190.0"
+    "snyk": "^1.230.5"
   },
   "devDependencies": {
     "@types/body-parser": "^1.17.0",

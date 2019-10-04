@@ -8,3 +8,6 @@ patch:
         patched: '2019-07-04T08:29:43.065Z'
     - mongoose > async > lodash:
         patched: '2019-07-04T08:29:43.065Z'
+  SNYK-JS-HTTPSPROXYAGENT-469131:
+    - puppeteer > https-proxy-agent:
+        patched: '2019-10-04T08:27:21.210Z'
