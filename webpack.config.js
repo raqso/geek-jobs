@@ -11,7 +11,7 @@ const frontConfig = {
   target: 'web',
   entry: ["./src/front/index.tsx"],
   output: {
-    
+
     path: __dirname + "/" + clientOutputDirectory,
     filename: 'bundle.js'
   },
@@ -53,7 +53,7 @@ const frontConfig = {
     compress: true,
     open: true,
     proxy: {
-      '/api': 'http://localhost:80'
+      '/api': 'http://localhost:5000'
     }
   },
   plugins: [
