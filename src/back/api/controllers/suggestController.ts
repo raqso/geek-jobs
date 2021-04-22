@@ -34,7 +34,7 @@ export class SuggestController {
     JobOffer.distinct('location', { location: {'$regex': _text, '$options': 'i'}}, this.sendResponse(res));
   }
 
-  private sendResponse(res: express.Response): ((err: any, res: any[]) => void) | undefined {
+  private sendResponse(res: express.Response) {
     return (error: any, result: any) => {
       if (error) {
         res.send(error);
