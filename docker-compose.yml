@@ -1,4 +1,4 @@
-version: '3'
+version: '3.4'
 services:
   database:
     image: mongo
@@ -6,5 +6,17 @@ services:
       - 27017:27017
     volumes:
       - mongodb:/data/db
+  frontend:
+    build:
+      context: ./
+      dockerfile: ./src/front/Dockerfile
+      target: dev
+    volumes:
+      - .:/src
+    command: yarn client
+    ports:
+      - "3000:3000"
+    environment:
+      NODE_ENV: development
 volumes:
  mongodb:

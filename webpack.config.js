@@ -9,29 +9,28 @@ const serverOutputDirectory = 'dist/back';
 
 const frontConfig = {
   target: 'web',
-  entry: ["./src/front/index.tsx"],
+  entry: ['./src/front/index.tsx'],
   output: {
-
-    path: __dirname + "/" + clientOutputDirectory,
+    path: __dirname + '/' + clientOutputDirectory,
     filename: 'bundle.js'
   },
-  devtool: "source-map",
+  devtool: 'source-map',
   resolve: {
     // Add '.ts' and '.tsx' as resolvable extensions.
-    extensions: [".ts", ".tsx", ".js", ".json"]
+    extensions: ['.ts', '.tsx', '.js', '.json']
   },
   module: {
     rules: [
       // All files with a '.ts' or '.tsx' extension will be handled by 'awesome-typescript-loader'.
       {
         test: /\.tsx?$/,
-        loader: "awesome-typescript-loader"
+        loader: 'awesome-typescript-loader'
       },
       // All output '.js' files will have any sourcemaps re-processed by 'source-map-loader'.
       {
-        enforce: "pre",
+        enforce: 'pre',
         test: /\.js$/,
-        loader: "source-map-loader"
+        loader: 'source-map-loader'
       },
       {
         test: /\.css$/,
@@ -54,12 +53,13 @@ const frontConfig = {
     open: true,
     proxy: {
       '/api': 'http://localhost:5000'
-    }
+    },
+    host: '0.0.0.0'
   },
   plugins: [
     /* new CleanWebpackPlugin([clientOutputDirectory]), */
     new HtmlWebpackPlugin({
-      template: './public/index.html',
+      template: './public/index.html'
     }),
     new FaviconsWebpackPlugin('./public/geek.png')
   ]
