@@ -15,7 +15,11 @@ Multisite IT Job searcher
 - [docker](https://docs.docker.com/get-docker/) installed
 - [ts-node](https://www.npmjs.com/package/ts-node) package installed
 
-### Launch in terminal
+### Docker(quick) way
+
+1. `docker-compose up`
+
+### Regular way
 
 1. `yarn` - install dependencies
 2. `docker-compose up` - start database container
