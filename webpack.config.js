@@ -52,7 +52,7 @@ const frontConfig = {
     compress: true,
     open: true,
     proxy: {
-      '/api': 'http://localhost:5000'
+      '/api': process.env.API || 'http://localhost:5000'
     },
     host: '0.0.0.0'
   },
