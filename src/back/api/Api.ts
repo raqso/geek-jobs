@@ -5,7 +5,7 @@ import mongoose from 'mongoose';
 
 class Api {
   public app: express.Application;
-  public readonly mongoUrl = 'mongodb://localhost/jobs';
+  public readonly mongoUrl = process.env.MONGO_URL || 'mongodb://localhost/jobs';
 
   constructor() {
     this.mongoSetup();
