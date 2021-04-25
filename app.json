@@ -9,6 +9,10 @@
     },
     "MONGO_URL": {
       "description": "Connection string for mongo db"
+    },
+    "PORT": {
+      "description": "API server port",
+      "value": "443"
     }
   }
 }
