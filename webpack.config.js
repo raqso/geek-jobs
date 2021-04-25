@@ -71,7 +71,8 @@ const backConfig = {
   entry: {
     server: './src/back/server.ts',
     cron: './src/back/Cron.ts',
-    scrapper: './src/back/jobs-scrapper/LaunchScrapping.ts'
+    scrapper: './src/back/jobs-scrapper/LaunchScrapping.ts',
+    download: './src/back/jobs-scrapper/scripts/downloadOffers.ts'
   },
   output: {
     path: path.join(__dirname, serverOutputDirectory),
