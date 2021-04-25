@@ -38,7 +38,10 @@ export default class Database {
 
   private static async connectIfNecessary() {
     if (mongoose.connection.readyState === 0) {
-      await mongoose.connect(config.mongoUrl, { useNewUrlParser: true });
+      await mongoose.connect(config.mongoUrl, {
+        useNewUrlParser: true,
+        useUnifiedTopology: true
+      });
     }
   }
 

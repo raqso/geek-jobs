@@ -14,7 +14,10 @@ class Api {
 
   private mongoSetup(): void {
     (<any>mongoose).Promise = global.Promise;
-    mongoose.connect(config.mongoUrl, { useNewUrlParser: true });
+    mongoose.connect(config.mongoUrl, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true
+    });
   }
 
   private config(): void {
