@@ -28,7 +28,7 @@
     "dev": "Start development server"
   },
   "engines": {
-    "node": ">=8.9"
+    "node": "^14"
   },
   "dependencies": {
     "@material-ui/core": "^4.1.1",

@@ -1,0 +1,5 @@
+{
+  "rewrites": [
+    { "source": "/api/:match*", "destination": "https://geek-jobs-api.herokuapp.com/:match*" }
+  ]
+}
