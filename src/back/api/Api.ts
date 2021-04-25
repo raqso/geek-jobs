@@ -1,26 +1,17 @@
 import express from 'express';
 import * as bodyParser from 'body-parser';
 import { offersRoutes } from './routes/offersRoutes';
-import mongoose from 'mongoose';
-import config from '../../config';
+import Database from '../jobs-scrapper/Database';
 class Api {
   public app: express.Application;
 
   constructor() {
-    this.mongoSetup();
     this.app = express();
     this.config();
   }
 
-  private mongoSetup(): void {
-    (<any>mongoose).Promise = global.Promise;
-    mongoose.connect(config.mongoUrl, {
-      useNewUrlParser: true,
-      useUnifiedTopology: true
-    });
-  }
-
-  private config(): void {
+  private async config() {
+    await Database.connectIfNecessary();
     this.app.use(bodyParser.json());
 
     this.app.use(
