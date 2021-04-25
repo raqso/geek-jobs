@@ -12,6 +12,7 @@
     "build": "webpack --mode production",
     "start": "yarn run build && pm2 start dist/back/server.js",
     "cron": "pm2 start dist/back/cron.js",
+    "download": "ts-node src/back/jobs-scrapper/scripts/downloadOffers.ts",
     "client": "concurrently \"webpack --mode development --watch\" \"webpack-dev-server --watch --mode development --devtool inline-source-map --hot\"",
     "server": "nodemon dist/back/server.js",
     "dev": "concurrently \"yarn run server\" \"yarn run client\"",
