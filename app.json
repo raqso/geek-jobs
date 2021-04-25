@@ -1,0 +1,14 @@
+{
+  "buildpacks": [
+    { "url": "https://github.com/heroku/heroku-buildpack-nodejs" }
+  ],
+  "env": {
+    "NODE_ENV": {
+      "required": "true",
+      "value": "production"
+    },
+    "MONGO_URL": {
+      "description": "Connection string for mongo db"
+    }
+  }
+}

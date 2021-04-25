@@ -45,7 +45,7 @@ export default class JobFetcher {
   async start() {
     let downloads: Promise<void>[] = [];
     console.log(`Started fetching at ${new Date().toLocaleString()}`);
-    Database.clearJobOffers();
+    await Database.clearJobOffers();
 
     await Promise.all(
       this.sitesToFetch.map(async site => {
