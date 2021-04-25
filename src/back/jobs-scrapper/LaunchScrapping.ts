@@ -7,7 +7,13 @@ dotenv.config();
 export default async function launchScrapping() {
   try {
     const browser = await puppeteer.launch({
-      args: ['--no-sandbox', '--disable-setuid-sandbox'],
+      executablePath: process.env.CHROMIUM_PATH,
+      args: [
+        '--no-sandbox',
+        '--disable-setuid-sandbox',
+        '--disable-gpu',
+        '--disable-dev-shm-usage'
+      ],
       headless: true,
       devtools: false
     });
