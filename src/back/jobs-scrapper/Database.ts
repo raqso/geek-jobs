@@ -1,9 +1,9 @@
 import mongoose from 'mongoose';
+import config from '../../config';
 import { JobOffer } from '../api/models/offersModel';
 import Job from './Job';
 
 export default class Database {
-  static readonly DB_URL = 'mongodb://localhost/jobs';
   static async upsertJob(jobObj: Job) {
     const conditions = { position: jobObj.position, company: jobObj.company };
     const options = {
@@ -38,7 +38,7 @@ export default class Database {
 
   private static async connectIfNecessary() {
     if (mongoose.connection.readyState === 0) {
-      await mongoose.connect(this.DB_URL, { useNewUrlParser: true });
+      await mongoose.connect(config.mongoUrl, { useNewUrlParser: true });
     }
   }
 

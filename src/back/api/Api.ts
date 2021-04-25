@@ -2,10 +2,9 @@ import express from 'express';
 import * as bodyParser from 'body-parser';
 import { offersRoutes } from './routes/offersRoutes';
 import mongoose from 'mongoose';
-
+import config from '../../config';
 class Api {
   public app: express.Application;
-  public readonly mongoUrl = process.env.MONGO_URL || 'mongodb://localhost/jobs';
 
   constructor() {
     this.mongoSetup();
@@ -15,7 +14,7 @@ class Api {
 
   private mongoSetup(): void {
     (<any>mongoose).Promise = global.Promise;
-    mongoose.connect(this.mongoUrl, { useNewUrlParser: true });
+    mongoose.connect(config.mongoUrl, { useNewUrlParser: true });
   }
 
   private config(): void {
