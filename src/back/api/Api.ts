@@ -1,5 +1,7 @@
 import express from 'express';
 import * as bodyParser from 'body-parser';
+import cors from 'cors';
+
 import { offersRoutes } from './routes/offersRoutes';
 import Database from '../jobs-scrapper/Database';
 class Api {
@@ -14,13 +16,14 @@ class Api {
     await Database.connectIfNecessary();
     this.app.use(bodyParser.json());
 
+    this.app.use(cors());
     this.app.use(
       bodyParser.urlencoded({
         extended: false
       })
     );
 
-    this.app.use('/api', offersRoutes);
+    this.app.use('/', offersRoutes);
   }
 }
 

@@ -5,6 +5,7 @@ import Offer from './components/Offer';
 import SearchBox from './components/SearchBox';
 import OffersCounter from './components/OffersCounter';
 import Loading from './components/Loading';
+import config from '../config';
 
 interface AppState {
   offers: any[];
@@ -12,7 +13,7 @@ interface AppState {
 }
 
 class App extends React.Component<any, AppState> {
-  private readonly offersApiAddress = 'api/offers';
+  private readonly offersApiAddress = `${config.api}/offers`;
   private offersList!: HTMLElement;
   private searchbox!: SearchBox;
 

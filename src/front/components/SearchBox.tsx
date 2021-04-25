@@ -1,4 +1,5 @@
 import * as React from 'react';
+import config from '../../config';
 import AutoComplete from './AutoComplete';
 import './SearchBox.css';
 
@@ -34,8 +35,8 @@ export default class SearchBox extends React.Component<
             <legend>Znajdź pracę w IT</legend>
           </fieldset>
           <div className='inner-form'>
-            <AutoComplete placeholder={this.props.positionPlaceholder} maxSuggestions={10} onChange={(value) => {this.setState({positionValue: value}); }} suggestionsEndpoint={'api/suggest?position='} />
-            <AutoComplete placeholder={this.props.locationPlaceholder} maxSuggestions={5} onChange={(value) => {this.setState({locationValue: value}); }} suggestionsEndpoint={'api/suggest?location='} />
+            <AutoComplete placeholder={this.props.positionPlaceholder} maxSuggestions={10} onChange={(value) => {this.setState({positionValue: value}); }} suggestionsEndpoint={`${config.api}/suggest?position=`} />
+            <AutoComplete placeholder={this.props.locationPlaceholder} maxSuggestions={5} onChange={(value) => {this.setState({locationValue: value}); }} suggestionsEndpoint={`${config.api}/suggest?location=`} />
             <div className='input-field third-wrap'>
             <input type='submit' value={this.props.searchButtonText} className='btn-search' />
             </div>
