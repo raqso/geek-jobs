@@ -24,11 +24,20 @@ Multisite IT Job searcher
 1. `yarn` - install dependencies
 2. `docker-compose up` - start database container
 3. `yarn dev` - start frontend dev and api servers
-4. `ts-node ./src/back/Cron.ts` - will scrap some data from web and fill up your database.
-
-Please note that `Cron.ts` won't exit because it also starts cron process that will retrigger scrapping. You can exit this after fetching some data or have this opened to allow scheudeled scrapping.
 
 Then web app should be available under [http://localhost:3000/](http://localhost:3000/)
+
+## To run scrapping script and fill your local databse with some data
+
+### Docker
+
+`docker-compose exec backend yarn download`
+
+**OR**
+
+### Without docker
+
+`yarn download`
 
 ## Used technologies
 
