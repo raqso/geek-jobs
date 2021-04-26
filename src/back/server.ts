@@ -1,6 +1,6 @@
 import app from './api/Api';
 import express = require('express');
-import config from '../config';
+import config from './config';
 
 const PORT = config.port;
 

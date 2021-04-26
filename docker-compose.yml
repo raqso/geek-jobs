@@ -8,17 +8,16 @@ services:
       - mongodb:/data/db
   frontend:
     build:
-      context: ./
-      dockerfile: ./src/front/Dockerfile
+      context: ./src/client
       target: dev
     volumes:
-      - .:/src
-    command: yarn client
+      - .:/src/client
+    command: yarn dev
     ports:
       - "3000:3000"
     environment:
       NODE_ENV: development
-      API_URL:
+      VITE_API_URL:
   backend:
     build:
       context: ./
