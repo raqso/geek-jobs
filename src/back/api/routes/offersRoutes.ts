@@ -1,9 +1,9 @@
-import * as express from 'express';
+import express, { Response, Request } from 'express';
 import { offersController } from '../controllers/offersController';
 import { suggestController } from '../controllers/suggestController';
 
 class OffersRoutes {
-  public router: express.Router = express.Router();
+  public router = express.Router();
   constructor() {
     this.config();
   }
@@ -24,17 +24,19 @@ class OffersRoutes {
       }
     );
 
-    this.router.get('/test', (req: express.Request, res: express.Response) =>
+    this.router.get('/test', (req: Request, res: Response) =>
       offersController.testOffers(req, res)
     );
 
     this.router.get(
       '/suggest',
-      (req: express.Request, res: express.Response) => {
-        if (req.query.position) {
-          suggestController.positionSuggestions(req.query.position, req, res);
-        } else if (req.query.location) {
-          suggestController.locationSuggestions(req.query.location, req, res);
+      (req: Request, res: Response) => {
+        const { position, location } = req.query;
+
+        if (position) {
+          suggestController.positionSuggestions(position.toString(), req, res);
+        } else if (location) {
+          suggestController.locationSuggestions(location.toString(), req, res);
         } else {
           res.json(400);
         }
@@ -44,13 +46,11 @@ class OffersRoutes {
 
   filterEmptyParams(parameters: any) {
     const filteredParameters = Object.assign(parameters);
-    Object.entries(parameters).forEach(
-      ([key, value]) => {
-        if (!value || value === {}) {
-          delete filteredParameters[key];
-        }
+    Object.entries(parameters).forEach(([key, value]) => {
+      if (!value || value === {}) {
+        delete filteredParameters[key];
       }
-    );
+    });
 
     return filteredParameters;
   }

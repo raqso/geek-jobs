@@ -39,7 +39,11 @@ abstract class ScrappedSite implements Site {
 
   private async goToNextPage() {
     const nextPageUrl = this.cherrioInstance(this.selectors.lastPageButton).attr('href');
-    await this.loadPageHtml(nextPageUrl);
+    if (!nextPageUrl) {
+      return;
+    }
+
+    return this.loadPageHtml(nextPageUrl);
   }
 
   private async loadPageHtml(address: string) {
