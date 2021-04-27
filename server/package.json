@@ -1,24 +1,22 @@
 {
-  "name": "geek-jobs",
-  "version": "1.0.0",
+  "name": "geek-jobs-api",
+  "version": "1.0.1",
   "description": "IT Job searcher",
-  "main": "dist/back/index.js",
-  "typings": "build/main/index.d.ts",
-  "module": "build/module/index.js",
+  "main": "dist/index.js",
   "repository": "https://github.com/raqso/search-it",
   "license": "MIT",
   "keywords": [],
   "scripts": {
+    "dev": "concurrently \"webpack --mode development --watch --config-name backend\" \"nodemon dist/server.js\"",
     "build": "webpack --mode production --config-name backend",
     "start": "pm2-runtime start ecosystem.config.js --env production",
-    "cron": "pm2 start dist/back/cron.js",
-    "download": "ts-node src/back/jobs-scrapper/scripts/downloadOffers.ts",
-    "dev": "concurrently \"webpack --mode development --watch --config-name backend\" \"nodemon dist/back/server.js\""
+    "download": "ts-node src/jobs-scrapper/scripts/downloadOffers.ts"
   },
   "scripts-info": {
+        "dev": "Start development server",
     "build": "Build for production",
     "start": "Start production server",
-    "dev": "Start development server"
+    "download": "Scrap job offers from web and save to db"
   },
   "engines": {
     "node": ">=14"
@@ -26,7 +24,6 @@
   "dependencies": {
     "@types/apicache": "^1.2.2",
     "@types/cheerio": "^0.22.11",
-    "@types/node-cron": "^2.0.2",
     "@types/request": "^2.48.1",
     "apicache": "^1.6.2",
     "body-parser": "^1.19.0",
@@ -37,7 +34,6 @@
     "express-rate-limit": "^5.2.6",
     "helmet": "^4.5.0",
     "mongoose": "^5.11.7",
-    "node-cron": "^2.0.3",
     "pm2": "^4.5.6",
     "puppeteer": "^1.17.0",
     "request": "^2.88.0"

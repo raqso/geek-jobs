@@ -3,7 +3,7 @@ FROM node:15-alpine as base
 RUN apk add --virtual udev ttf-freefont chromium git
 ENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD true
 ENV CHROMIUM_PATH /usr/bin/chromium-browser
-WORKDIR /src
+WORKDIR /app
 COPY package*.json /
 COPY yarn.lock /
 EXPOSE 5000

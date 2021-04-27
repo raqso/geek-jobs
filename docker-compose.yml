@@ -20,11 +20,10 @@ services:
       VITE_API_URL:
   backend:
     build:
-      context: ./
-      dockerfile: ./src/back/Dockerfile
+      context: ./server
       target: dev
     volumes:
-      - .:/src
+      - ./server/src:/app/src
     command: yarn dev
     ports:
       - "5000:5000"

@@ -1,16 +1,14 @@
 const path = require('path');
 const nodeExternals = require('webpack-node-externals');
 
-const serverOutputDirectory = 'dist/back';
+const serverOutputDirectory = 'dist';
 
 const backConfig = {
   name: 'backend',
   target: 'node',
   entry: {
-    server: './src/back/server.ts',
-    cron: './src/back/Cron.ts',
-    scrapper: './src/back/jobs-scrapper/LaunchScrapping.ts',
-    download: './src/back/jobs-scrapper/scripts/downloadOffers.ts'
+    server: './src/server.ts',
+    download: './src/jobs-scrapper/scripts/downloadOffers.ts'
   },
   output: {
     path: path.join(__dirname, serverOutputDirectory),
