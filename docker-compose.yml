@@ -12,6 +12,9 @@ services:
       target: dev
     volumes:
       - ./client/src:/app/src
+      - ./client/index.html:/app/index.html
+      - ./client/package.json:/app/package.json
+      - ./client/tsconfig.json:/app/tsconfig.json
     command: yarn dev
     ports:
       - "3000:3000"
