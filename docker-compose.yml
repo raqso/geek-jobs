@@ -8,10 +8,13 @@ services:
       - mongodb:/data/db
   frontend:
     build:
-      context: ./src/client
+      context: ./client
       target: dev
     volumes:
-      - ./src/client/src:/app/src
+      - ./client/src:/app/src
+      - ./client/index.html:/app/index.html
+      - ./client/package.json:/app/package.json
+      - ./client/tsconfig.json:/app/tsconfig.json
     command: yarn dev
     ports:
       - "3000:3000"
@@ -20,11 +23,13 @@ services:
       VITE_API_URL:
   backend:
     build:
-      context: ./
-      dockerfile: ./src/back/Dockerfile
+      context: ./server
       target: dev
     volumes:
-      - .:/src
+      - ./server/src:/app/
+      - ./server/package.json:/app/package.json
+      - ./server/tsconfig.json:/app/tsconfig.json
+      - ./server/nodemon.json:/app/nodemon.json
     command: yarn dev
     ports:
       - "5000:5000"

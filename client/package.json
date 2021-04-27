@@ -1,6 +1,7 @@
 {
-  "name": "client",
-  "version": "0.0.1",
+  "name": "geek-jobs-client",
+  "version": "1.0.1",
+  "description": "IT Job searcher",
   "engines": {
     "node": ">=14"
   },
