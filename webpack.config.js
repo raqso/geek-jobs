@@ -1,4 +1,5 @@
 const path = require('path');
+const nodeExternals = require('webpack-node-externals');
 
 const serverOutputDirectory = 'dist/back';
 
@@ -42,4 +43,4 @@ const backConfig = {
   }
 };
 
-module.exports = [frontConfig, backConfig];
+module.exports = [ backConfig ];

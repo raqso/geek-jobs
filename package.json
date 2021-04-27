@@ -13,13 +13,11 @@
     "start": "pm2-runtime start ecosystem.config.js --env production",
     "cron": "pm2 start dist/back/cron.js",
     "download": "ts-node src/back/jobs-scrapper/scripts/downloadOffers.ts",
-    "server": "concurrently \"webpack --mode development --watch --config-name backend\" \"nodemon dist/back/server.js\"",
-    "dev": "yarn run client"
+    "dev": "concurrently \"webpack --mode development --watch --config-name backend\" \"nodemon dist/back/server.js\""
   },
   "scripts-info": {
     "build": "Build for production",
     "start": "Start production server",
-    "server": "Start development server side only",
     "dev": "Start development server"
   },
   "engines": {

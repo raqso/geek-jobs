@@ -1,6 +1,9 @@
 {
   "name": "client",
-  "version": "0.0.0",
+  "version": "0.0.1",
+  "engines": {
+    "node": "16"
+  },
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",

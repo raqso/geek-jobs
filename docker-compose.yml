@@ -11,7 +11,7 @@ services:
       context: ./src/client
       target: dev
     volumes:
-      - .:/src/client
+      - ./src/client/src:/app/src
     command: yarn dev
     ports:
       - "3000:3000"
@@ -25,7 +25,7 @@ services:
       target: dev
     volumes:
       - .:/src
-    command: yarn server
+    command: yarn dev
     ports:
       - "5000:5000"
     environment:

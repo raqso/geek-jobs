@@ -10,7 +10,7 @@
     "declaration": true,
     "esModuleInterop": true /* Enables emit interoperability between CommonJS and ES Modules via creation of namespace objects for all imports. Implies 'allowSyntheticDefaultImports'. */ ,
     "jsx": "react",
-    
+
     "strict": true /* Enable all strict type-checking options. */ ,
 
     /* Strict Type-Checking Options */
@@ -45,6 +45,6 @@
     "src/**/*.ts",
     "node_modules/@types/puppeteer/index.d.ts"
   ],
-  "exclude": ["node_modules/**"],
+  "exclude": ["node_modules/**", "src/client/**"],
   "compileOnSave": true
 }
