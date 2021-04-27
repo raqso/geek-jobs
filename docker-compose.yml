@@ -26,7 +26,10 @@ services:
       context: ./server
       target: dev
     volumes:
-      - ./server/src:/app/src
+      - ./server/src:/app/
+      - ./server/package.json:/app/package.json
+      - ./server/tsconfig.json:/app/tsconfig.json
+      - ./server/nodemon.json:/app/nodemon.json
     command: yarn dev
     ports:
       - "5000:5000"
