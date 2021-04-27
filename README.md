@@ -9,17 +9,20 @@ Multisite IT Job searcher
 
 ## How to start
 
-### Requirements
-
-- [node.js](https://nodejs.org/en/) installed
-- [docker](https://docs.docker.com/get-docker/) installed
-- [ts-node](https://www.npmjs.com/package/ts-node) package installed
-
 ### Docker(quick) way
+
+Requirements:
+
+- [docker](https://docs.docker.com/get-docker/) installed
 
 1. `docker-compose up`
 
 ### Regular way
+
+Requirements:
+
+- [node.js](https://nodejs.org/en/) installed
+- [ts-node](https://www.npmjs.com/package/ts-node) package
 
 1. `yarn` - install dependencies
 2. `docker-compose up` - start database container
