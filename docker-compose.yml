@@ -8,10 +8,10 @@ services:
       - mongodb:/data/db
   frontend:
     build:
-      context: ./src/client
+      context: ./client
       target: dev
     volumes:
-      - ./src/client/src:/app/src
+      - ./client/src:/app/src
     command: yarn dev
     ports:
       - "3000:3000"
