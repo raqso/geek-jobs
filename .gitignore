@@ -9,7 +9,3 @@ src/**.js
 coverage
 .nyc_output
 *.log
-
-.*
-!.travis.yml
-!/.gitignore
