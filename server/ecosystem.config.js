@@ -2,7 +2,7 @@ module.exports = {
   apps: [
     {
       name: 'API',
-      script: './dist/back/server.js',
+      script: './dist/server.js',
       instances: 1,
       autorestart: true,
       env: {
