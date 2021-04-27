@@ -15,7 +15,8 @@ Requirements:
 
 - [docker](https://docs.docker.com/get-docker/) installed
 
-1. `docker-compose up`
+1. Duplicate the *example.env* and remove the 'example' prefix
+2. `docker-compose up`
 
 ### Regular way
 
@@ -26,7 +27,9 @@ Requirements:
 
 1. `yarn` - install dependencies
 2. `docker-compose up` - start database container
-3. `yarn dev` - start frontend dev and api servers
+3. Duplicate the *example.env* and remove the 'example' prefix
+4. Adjust `MONGO_URL` value to `mongodb://localhost/jobs`
+5. `yarn dev` - start frontend dev and api servers
 
 Then web app should be available under [http://localhost:3000/](http://localhost:3000/)
 
