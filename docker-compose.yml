@@ -26,7 +26,7 @@ services:
       context: ./server
       target: dev
     volumes:
-      - ./server/src:/app/
+      - ./server/src:/app/src
       - ./server/package.json:/app/package.json
       - ./server/tsconfig.json:/app/tsconfig.json
       - ./server/nodemon.json:/app/nodemon.json
