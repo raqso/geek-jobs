@@ -7,7 +7,7 @@
   "license": "MIT",
   "keywords": [],
   "scripts": {
-    "dev": "concurrently \"tsc --watch\" \"nodemon dist/server.js\"",
+    "dev": "nodemon",
     "build": "tsc",
     "start": "pm2-runtime start ecosystem.config.js --env production",
     "download": "ts-node src/jobs-scrapper/scripts/downloadOffers.ts"
@@ -46,7 +46,6 @@
     "@types/mongoose": "^5.5.6",
     "@types/node": "^12.0.8",
     "@types/puppeteer": "^1.12.4",
-    "concurrently": "^4.1.0",
     "nodemon": "^1.19.1",
     "prettier": "^1.18.2",
     "ts-node": "^8.3.0",
