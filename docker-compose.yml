@@ -15,9 +15,11 @@ services:
       - ./client/index.html:/app/index.html
       - ./client/package.json:/app/package.json
       - ./client/tsconfig.json:/app/tsconfig.json
+      - ./client/.storybook:/app/.storybook
     command: yarn dev
     ports:
       - "3000:3000"
+      - "6006:6006"
     environment:
       NODE_ENV: development
       VITE_API_URL:
