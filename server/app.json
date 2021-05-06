@@ -1,6 +1,8 @@
 {
   "buildpacks": [
-    { "url": "https://github.com/heroku/heroku-buildpack-nodejs" }
+    { "url": "https://github.com/heroku/heroku-buildpack-nodejs" },
+    { "url": "https://github.com/timanovsky/subdir-heroku-buildpack" },
+    { "url": "https://github.com/jontewks/puppeteer-heroku-buildpack" }
   ],
   "env": {
     "NODE_ENV": {
