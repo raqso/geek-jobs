@@ -13,7 +13,7 @@ export type OfferProps = {
   companyLogo?: string;
   link: string;
   position: string;
-  company: string;
+  companyName: string;
   tags?: string[];
   date?: string | Date;
   salary?: {
@@ -29,7 +29,7 @@ export const Offer = ({
   link,
   companyLogo,
   position,
-  company,
+  companyName,
   salary,
   location,
   isNew,
@@ -45,11 +45,15 @@ export const Offer = ({
     >
       {isNew && <NewTag />}
 
-      <CompanyLogo src={companyLogo} defaultLogo={defaultCompanyLogo} />
+      <CompanyLogo
+        src={companyLogo}
+        defaultLogo={defaultCompanyLogo}
+        companyName={companyName}
+      />
 
       <OfferDetails
         position={position}
-        company={company}
+        companyName={companyName}
         salary={salary}
         location={location}
         isNew={isNew}

@@ -10,7 +10,7 @@ import { OfferProps } from "../Offer";
 
 type Props = Pick<
   OfferProps,
-  "position" | "company" | "tags" | "date" | "salary" | "location" | "isNew"
+  "position" | "companyName" | "tags" | "date" | "salary" | "location" | "isNew"
 >;
 
 const theme = createMuiTheme({
@@ -23,9 +23,10 @@ const theme = createMuiTheme({
     },
   },
 });
+
 export const OfferDetails = ({
   position,
-  company,
+  companyName,
   salary,
   location,
   isNew,
@@ -36,14 +37,14 @@ export const OfferDetails = ({
     <div className={styles.detailsContainer}>
       <div className={styles.positionAndCompany}>
         <div className={styles.position}>{position}</div>
-        <div className={styles.company}>{company}</div>
+        <div className={styles.company}>{companyName}</div>
       </div>
 
       <div className={styles.positionDescription}>
         {tags && (
           <div className={styles.tags}>
-            {tags.map((tag, index) => (
-              <div key={index} className={styles.tag}>
+            {tags.map((tag) => (
+              <div key={tag} className={styles.tag}>
                 {tag}
               </div>
             ))}
