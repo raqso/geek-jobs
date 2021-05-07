@@ -1,0 +1,11 @@
+$newIconColor: rgb(230, 73, 0);
+$locationPin: darkorange;
+$dateIcon: rgb(70, 101, 240);
+
+@mixin stylesforDetails {
+  color: rgba(119, 119, 119, 0.664);
+  font-size: 0.8rem;
+  margin: 0.2rem;
+  display: flex;
+  align-items: center;
+}
