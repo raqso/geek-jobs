@@ -3,8 +3,9 @@ $locationPin: darkorange;
 $dateIcon: rgb(70, 101, 240);
 
 @mixin stylesforDetails {
-  color: rgba(119, 119, 119, 0.664);
-  font-size: 0.8rem;
+  color: rgba(145, 141, 141, 0.664);
+  font-size: 0.9rem;
+  font-weight: 800;
   margin: 0.2rem;
   display: flex;
   align-items: center;
