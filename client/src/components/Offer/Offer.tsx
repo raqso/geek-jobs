@@ -13,7 +13,7 @@ export type Props = {
   company: string;
   tags?: string[];
   date?: string | Date;
-  salary: {
+  salary?: {
     from: number;
     to: number;
     currency: string;
@@ -38,7 +38,7 @@ export const Offer = ({
 
   return (
     <a
-      className={isNew ? styles.offer + " " + styles.isNew : styles.offer}
+      className={isNew ? styles.offer + " " + styles.new : styles.offer}
       href={link}
       target="_blank"
       rel="noopener noreferrer"

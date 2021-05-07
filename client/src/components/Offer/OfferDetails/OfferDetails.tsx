@@ -7,7 +7,7 @@ type Props = {
   company: string;
   tags?: string[];
   date?: string | Date;
-  salary: {
+  salary?: {
     from: number;
     to: number;
     currency: string;
@@ -27,7 +27,7 @@ export const OfferDetails = ({
 }: Props) => {
   return (
     <div className={styles.detailsContainer}>
-      <div className={styles.positionAndCompoany}>
+      <div className={styles.positionAndCompany}>
         <div className={styles.position}>{position}</div>
         <div className={styles.company}>{company}</div>
       </div>
@@ -46,7 +46,9 @@ export const OfferDetails = ({
         )}
 
         <div className={styles.positionDetails}>
-          <div className={styles.salary}>{getNiceSalary(salary)}</div>
+          {salary && (
+            <div className={styles.salary}>{getNiceSalary(salary)}</div>
+          )}
 
           {date && (
             <div className={styles.date}>
