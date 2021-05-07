@@ -6,8 +6,6 @@ type Props = Pick<
   OfferProps,
   "position" | "company" | "tags" | "date" | "salary" | "location" | "isNew"
 >;
-{
-}
 
 export const OfferDetails = ({
   position,
