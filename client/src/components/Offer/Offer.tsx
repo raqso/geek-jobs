@@ -6,7 +6,7 @@ import { NewTag } from "./NewTag/NewTag";
 
 import styles from "./Offer.module.scss";
 
-export type Props = {
+export type OfferProps = {
   companyLogo?: string;
   link: string;
   position: string;
@@ -32,7 +32,7 @@ export const Offer = ({
   isNew,
   tags,
   date,
-}: Props) => {
+}: OfferProps) => {
   const defaultCompanyLogo =
     "https://www.gsr-technology.co.uk/wp-content/uploads/2015/10/partner-logo-placeholder-300x150.jpg";
 

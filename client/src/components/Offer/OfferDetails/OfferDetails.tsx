@@ -1,20 +1,13 @@
 import React from "react";
 import styles from "./OfferDetails.module.scss";
-import { getNiceSalary } from "../helpers/OfferHelper";
+import { OfferProps } from "../Offer";
 
-type Props = {
-  position: string;
-  company: string;
-  tags?: string[];
-  date?: string | Date;
-  salary?: {
-    from: number;
-    to: number;
-    currency: string;
-  };
-  location?: string;
-  isNew?: boolean;
-};
+type Props = Pick<
+  OfferProps,
+  "position" | "company" | "tags" | "date" | "salary" | "location" | "isNew"
+>;
+{
+}
 
 export const OfferDetails = ({
   position,

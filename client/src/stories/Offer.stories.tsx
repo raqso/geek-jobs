@@ -1,13 +1,13 @@
 import React from "react";
 import { Story, Meta } from "@storybook/react";
-import { Offer, Props } from "../components/Offer/Offer";
+import { Offer, OfferProps } from "../components/Offer/Offer";
 
 export default {
   title: "Offer stories",
   component: Offer,
 } as Meta;
 
-const Template: Story<Props> = (args: Props) => <Offer {...args} />;
+const Template: Story<OfferProps> = (args: OfferProps) => <Offer {...args} />;
 
 export const NewOffer = Template.bind({});
 NewOffer.args = {
