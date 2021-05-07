@@ -10,8 +10,8 @@ export const CompanyLogo = ({ src, defaultLogo }: Props) => {
   return (
     <div className={styles.logoContainer}>
       <img
-        src={src ? src : defaultLogo}
-        alt={"Company logo"}
+        src={src || defaultLogo}
+        alt={src || defaultLogo}
         className={styles.logo}
       />
     </div>
