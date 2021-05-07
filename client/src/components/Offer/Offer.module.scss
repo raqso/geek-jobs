@@ -50,13 +50,13 @@ $dateIcon: rgb(70, 101, 240);
     display: flex;
     align-items: center;
     justify-content: center;
+
     .logo {
       display: flex;
       justify-content: center;
       padding-right: 1rem;
       width: 60px;
       height: 60px;
-      display: flex;
       text-align: center;
     }
   }
@@ -77,9 +77,10 @@ $dateIcon: rgb(70, 101, 240);
       }
 
       .company {
+        @include stylesforDetails;
+
         color: rgb(119, 119, 119);
         font-size: 0.9rem;
-        @include stylesforDetails;
         display: flex;
         align-items: center;
         flex: 60%;
@@ -108,10 +109,12 @@ $dateIcon: rgb(70, 101, 240);
           margin-left: 0;
         }
       }
+
       .positionDetails {
         display: flex;
         justify-content: flex-end;
         flex-wrap: wrap;
+
         .salary,
         .location,
         .date {
@@ -148,9 +151,11 @@ $dateIcon: rgb(70, 101, 240);
     min-width: 250px;
     padding: 0.5rem;
     font-size: 0.9rem;
+
     .detailsContainer .positionDescription .tags {
       display: none;
     }
+
     .detailsContainer .positionDescription .positionDetails .date {
       display: none;
     }
