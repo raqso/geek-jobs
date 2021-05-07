@@ -1,8 +1,8 @@
 import React from "react";
 
-import { Logo } from "./Logo";
-import { OfferDetails } from "./OfferDetails";
-import { NewTag } from "./NewTag";
+import { CompanyLogo } from "./CompanyLogo/CompanyLogo";
+import { OfferDetails } from "./OfferDetails/OfferDetails";
+import { NewTag } from "./NewTag/NewTag";
 
 import styles from "./Offer.module.scss";
 
@@ -33,6 +33,9 @@ export const Offer = ({
   tags,
   date,
 }: Props) => {
+  const defaultCompanyLogo =
+    "https://www.gsr-technology.co.uk/wp-content/uploads/2015/10/partner-logo-placeholder-300x150.jpg";
+
   return (
     <a
       className={isNew ? styles.offer + " " + styles.isNew : styles.offer}
@@ -42,7 +45,7 @@ export const Offer = ({
     >
       {isNew && <NewTag />}
 
-      <Logo companyLogo={companyLogo} />
+      <CompanyLogo src={companyLogo} defaultLogo={defaultCompanyLogo} />
 
       <OfferDetails
         position={position}

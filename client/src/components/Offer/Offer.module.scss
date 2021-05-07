@@ -1,17 +1,7 @@
-$isNewMarkColor: rgb(230, 73, 0);
-$locationPin: darkorange;
-$dateIcon: rgb(70, 101, 240);
-
-@mixin stylesforDetails {
-  color: rgba(119, 119, 119, 0.664);
-  font-size: 0.8rem;
-  margin: 0.2rem;
-  display: flex;
-  align-items: center;
-}
+@use './helpers/stylesHelpers' as helper;
 
 .isNew {
-  border-left: $isNewMarkColor 3px solid;
+  border-left: helper.$newIconColor 3px solid;
 }
 
 .offer {
@@ -27,39 +17,7 @@ $dateIcon: rgb(70, 101, 240);
   text-decoration: none;
   transition: 0.3s;
   max-width: 1000px;
-
-  .newTag {
-    position: absolute;
-    border-radius: 50%;
-    height: 25px;
-    display: flex;
-    align-items: center;
-    background-color: $isNewMarkColor;
-    font-size: 0.7rem;
-    font-weight: bold;
-    color: white;
-    z-index: 1;
-    left: -18px;
-    padding: 0.2rem;
-    top: 50%;
-    -ms-transform: translateY(-50%);
-    transform: translateY(-50%);
-  }
-
-  .logoContainer {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    .logo {
-      display: flex;
-      justify-content: center;
-      padding-right: 1rem;
-      width: 60px;
-      height: 60px;
-      text-align: center;
-    }
-  }
+  min-height: 92px;
 
   .detailsContainer {
     width: 100%;
@@ -77,7 +35,7 @@ $dateIcon: rgb(70, 101, 240);
       }
 
       .company {
-        @include stylesforDetails;
+        @include helper.stylesforDetails;
 
         color: rgb(119, 119, 119);
         font-size: 0.9rem;
@@ -118,11 +76,11 @@ $dateIcon: rgb(70, 101, 240);
         .salary,
         .location,
         .date {
-          @include stylesforDetails;
+          @include helper.stylesforDetails;
         }
 
         .location {
-          fill: $locationPin;
+          fill: helper.$locationPin;
 
           svg {
             margin: 0 0 0 2px;
@@ -130,7 +88,7 @@ $dateIcon: rgb(70, 101, 240);
         }
 
         .date {
-          fill: $dateIcon;
+          fill: helper.$dateIcon;
 
           svg {
             margin: 0 2px 0 5px;
