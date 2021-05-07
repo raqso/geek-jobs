@@ -48,7 +48,7 @@ export const Offer = ({
       <CompanyLogo
         src={companyLogo}
         defaultLogo={defaultCompanyLogo}
-        companyName={companyName}
+        alt={companyName}
       />
 
       <OfferDetails
