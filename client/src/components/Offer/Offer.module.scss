@@ -1,0 +1,167 @@
+$isNewMarkColor: rgb(230, 73, 0);
+$locationPin: darkorange;
+$dateIcon: rgb(70, 101, 240);
+
+@mixin stylesforDetails {
+  color: rgba(119, 119, 119, 0.664);
+  font-size: 0.8rem;
+  margin: 0.2rem;
+  display: flex;
+  align-items: center;
+}
+
+.isNew {
+  border-left: $isNewMarkColor 3px solid;
+}
+
+.offer {
+  position: relative;
+  background-color: rgb(255, 255, 255);
+  padding: 1rem;
+  margin: 0.5rem;
+  display: flex;
+  flex-direction: row;
+  box-shadow: 0 4px 8px 0 rgb(0 0 0 / 10%), 0 6px 20px 0 rgb(0 0 0 / 5%);
+  border-radius: 2px;
+  color: rgba(0, 0, 0, 0.733);
+  text-decoration: none;
+  transition: 0.3s;
+  max-width: 1000px;
+
+  .newTag {
+    position: absolute;
+    border-radius: 50%;
+    height: 25px;
+    display: flex;
+    align-items: center;
+    background-color: $isNewMarkColor;
+    font-size: 0.7rem;
+    font-weight: bold;
+    color: white;
+    z-index: 1;
+    left: -18px;
+    padding: 0.2rem;
+    top: 50%;
+    -ms-transform: translateY(-50%);
+    transform: translateY(-50%);
+  }
+
+  .logoContainer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    .logo {
+      display: flex;
+      justify-content: center;
+      padding-right: 1rem;
+      width: 60px;
+      height: 60px;
+      display: flex;
+      text-align: center;
+    }
+  }
+
+  .detailsContainer {
+    width: 100%;
+
+    .positionAndCompoany {
+      display: flex;
+      justify-content: flex-start;
+      flex-wrap: wrap;
+
+      .position {
+        font-size: 1.2rem;
+        font-weight: bold;
+        word-spacing: 2px;
+        margin: 0.5rem 0;
+      }
+
+      .company {
+        color: rgb(119, 119, 119);
+        font-size: 0.9rem;
+        @include stylesforDetails;
+        display: flex;
+        align-items: center;
+        flex: 60%;
+      }
+    }
+
+    .positionDescription {
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      .tags {
+        display: flex;
+
+        .tag {
+          background-color: rgba(241, 241, 241, 0.767);
+          font-size: 0.6rem;
+          margin: 0.2rem;
+          padding: 0.4rem;
+          border-radius: 2px;
+          color: rgba(78, 78, 78, 0.836);
+          display: flex;
+          align-items: center;
+        }
+
+        :first-child {
+          margin-left: 0;
+        }
+      }
+      .positionDetails {
+        display: flex;
+        justify-content: flex-end;
+        flex-wrap: wrap;
+        .salary,
+        .location,
+        .date {
+          @include stylesforDetails;
+        }
+
+        .location {
+          fill: $locationPin;
+
+          svg {
+            margin: 0 0 0 2px;
+          }
+        }
+
+        .date {
+          fill: $dateIcon;
+
+          svg {
+            margin: 0 2px 0 5px;
+          }
+        }
+      }
+    }
+  }
+}
+
+.offer:hover {
+  background-color: rgba(229, 229, 245, 0.199);
+  transition: 0.3s;
+}
+
+@media only screen and (max-width: 480px) {
+  .offer {
+    min-width: 250px;
+    padding: 0.5rem;
+    font-size: 0.9rem;
+    .detailsContainer .positionDescription .tags {
+      display: none;
+    }
+    .detailsContainer .positionDescription .positionDetails .date {
+      display: none;
+    }
+
+    .detailsContainer .positionDescription .positionDetails .salary {
+      display: none;
+    }
+
+    .detailsContainer {
+      display: flex;
+      flex-wrap: wrap;
+    }
+  }
+}
