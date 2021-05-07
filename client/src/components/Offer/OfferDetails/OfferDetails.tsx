@@ -28,13 +28,11 @@ export const OfferDetails = ({
       <div className={styles.positionDescription}>
         {tags && (
           <div className={styles.tags}>
-            {tags.map((tag, index) => {
-              return (
-                <div key={index} className={styles.tag}>
-                  {tag}
-                </div>
-              );
-            })}
+            {tags.map((tag, index) => (
+              <div key={index} className={styles.tag}>
+                {tag}
+              </div>
+            ))}
           </div>
         )}
 
