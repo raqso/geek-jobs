@@ -15,6 +15,11 @@
   transition: 0.3s;
   max-width: 1000px;
   min-height: 122px;
+
+  &:hover {
+    background-color: rgba(229, 229, 245, 0.199);
+    transition: 0.3s;
+  }
 }
 
 .new {
@@ -25,16 +30,10 @@
   border-left: rgba(255, 255, 255, 0) 3px solid;
 }
 
-.offer:hover {
-  background-color: rgba(229, 229, 245, 0.199);
-  transition: 0.3s;
-}
-
 @media only screen and (max-width: 480px) {
   .offer {
     min-width: 250px;
     padding: 0.5rem;
     font-size: 0.9rem;
-    min-height: 92px;
   }
 }
