@@ -38,7 +38,11 @@ export const Offer = ({
 
   return (
     <a
-      className={isNew ? styles.offer + " " + styles.new : styles.offer}
+      className={
+        isNew
+          ? styles.offer + " " + styles.new
+          : styles.offer + " " + styles.old
+      }
       href={link}
       target="_blank"
       rel="noopener noreferrer"

@@ -1,10 +1,7 @@
 @use './helpers/stylesHelpers' as helper;
 
-.new {
-  border-left: helper.$newIconColor 3px solid;
-}
-
 .offer {
+  box-sizing: border-box;
   position: relative;
   background-color: rgb(255, 255, 255);
   padding: 1rem;
@@ -18,6 +15,14 @@
   transition: 0.3s;
   max-width: 1000px;
   min-height: 122px;
+}
+
+.new {
+  border-left: helper.$newIconColor 3px solid;
+}
+
+.old {
+  border-left: rgba(255, 255, 255, 0) 3px solid;
 }
 
 .offer:hover {
