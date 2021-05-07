@@ -6,6 +6,9 @@ import { NewTag } from "./NewTag/NewTag";
 
 import styles from "./Offer.module.scss";
 
+const defaultCompanyLogo =
+  "https://www.gsr-technology.co.uk/wp-content/uploads/2015/10/partner-logo-placeholder-300x150.jpg";
+
 export type OfferProps = {
   companyLogo?: string;
   link: string;
@@ -33,16 +36,9 @@ export const Offer = ({
   tags,
   date,
 }: OfferProps) => {
-  const defaultCompanyLogo =
-    "https://www.gsr-technology.co.uk/wp-content/uploads/2015/10/partner-logo-placeholder-300x150.jpg";
-
   return (
     <a
-      className={
-        isNew
-          ? styles.offer + " " + styles.new
-          : styles.offer + " " + styles.old
-      }
+      className={`${styles.offer} ${isNew ? styles.new : styles.old}`}
       href={link}
       target="_blank"
       rel="noopener noreferrer"
