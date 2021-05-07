@@ -87,11 +87,9 @@ type Salary = {
 };
 
 export const getNiceSalary = (salary: Salary) => {
-  if (salary?.from && salary?.to) {
-    return `${salary.currency || ""} ${salary.from} - ${salary.to}`;
-  }
-
-  if (salary) {
+  if (!salary) {
     return "";
   }
+
+  return `${salary.currency || ""} ${salary.from} - ${salary.to}`;
 };
