@@ -1,7 +1,5 @@
 import React from "react";
 
-import { createMuiTheme } from "@material-ui/core/styles";
-import { ThemeProvider } from "@material-ui/styles";
 import QueryBuilderIcon from "@material-ui/icons/QueryBuilder";
 import RoomIcon from "@material-ui/icons/Room";
 
@@ -12,17 +10,6 @@ type Props = Pick<
   OfferProps,
   "position" | "companyName" | "tags" | "date" | "salary" | "location" | "isNew"
 >;
-
-const theme = createMuiTheme({
-  palette: {
-    primary: {
-      main: "#03a9f4",
-    },
-    secondary: {
-      main: "#ffc400",
-    },
-  },
-});
 
 export const OfferDetails = ({
   position,
@@ -58,19 +45,14 @@ export const OfferDetails = ({
 
           {date && (
             <div className={styles.date}>
-              <ThemeProvider theme={theme}>
-                <QueryBuilderIcon color="primary" />
-              </ThemeProvider>
-
+              <QueryBuilderIcon color="primary" />
               {date}
             </div>
           )}
 
           {location && (
             <div className={styles.location}>
-              <ThemeProvider theme={theme}>
-                <RoomIcon color="secondary" />
-              </ThemeProvider>
+              <RoomIcon color="secondary" />
               {location}
             </div>
           )}

@@ -1,5 +1,8 @@
 import React from "react";
 
+import { createMuiTheme } from "@material-ui/core/styles";
+import { ThemeProvider } from "@material-ui/styles";
+
 import { CompanyLogo } from "./CompanyLogo/CompanyLogo";
 import { OfferDetails } from "./OfferDetails/OfferDetails";
 import { NewTag } from "./NewTag/NewTag";
@@ -25,6 +28,17 @@ export type OfferProps = {
   isNew?: boolean;
 };
 
+const theme = createMuiTheme({
+  palette: {
+    primary: {
+      main: "#03a9f4",
+    },
+    secondary: {
+      main: "#ffc400",
+    },
+  },
+});
+
 export const Offer = ({
   link,
   companyLogo,
@@ -37,29 +51,31 @@ export const Offer = ({
   date,
 }: OfferProps) => {
   return (
-    <a
-      className={`${styles.offer} ${isNew ? styles.new : styles.old}`}
-      href={link}
-      target="_blank"
-      rel="noopener noreferrer"
-    >
-      {isNew && <NewTag />}
+    <ThemeProvider theme={theme}>
+      <a
+        className={`${styles.offer} ${isNew ? styles.new : styles.old}`}
+        href={link}
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        {isNew && <NewTag />}
 
-      <CompanyLogo
-        src={companyLogo}
-        defaultLogo={defaultCompanyLogo}
-        alt={companyName}
-      />
+        <CompanyLogo
+          src={companyLogo}
+          defaultLogo={defaultCompanyLogo}
+          alt={companyName}
+        />
 
-      <OfferDetails
-        position={position}
-        companyName={companyName}
-        salary={salary}
-        location={location}
-        isNew={isNew}
-        tags={tags}
-        date={date}
-      />
-    </a>
+        <OfferDetails
+          position={position}
+          companyName={companyName}
+          salary={salary}
+          location={location}
+          isNew={isNew}
+          tags={tags}
+          date={date}
+        />
+      </a>
+    </ThemeProvider>
   );
 };
