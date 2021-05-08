@@ -10,11 +10,7 @@ type Props = {
 export const CompanyLogo = ({ src, defaultLogo, alt }: Props) => {
   return (
     <div className={styles.logoContainer}>
-      <img
-        src={src || defaultLogo}
-        alt={`${alt} logo`}
-        className={styles.logo}
-      />
+      <img src={src || defaultLogo} alt={alt} className={styles.logo} />
     </div>
   );
 };
