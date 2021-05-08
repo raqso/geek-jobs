@@ -1,9 +1,7 @@
-$newIconColor: rgb(230, 73, 0);
-$locationPin: darkorange;
-$dateIcon: rgb(70, 101, 240);
+$newBorderColor: rgba(68, 68, 68, 0.089);
 
 @mixin stylesforDetails {
-  color: rgba(145, 141, 141, 0.664);
+  color: rgb(119, 119, 119);
   font-size: 0.9rem;
   font-weight: 800;
   margin: 0.2rem;

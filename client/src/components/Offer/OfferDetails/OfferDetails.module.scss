@@ -18,11 +18,7 @@
     .company {
       @include helper.stylesforDetails;
 
-      color: rgb(119, 119, 119);
-      font-size: 0.9rem;
-      display: flex;
-      align-items: center;
-      flex: 60%;
+      flex: 40%;
     }
   }
 
@@ -53,14 +49,11 @@
     .positionDetails {
       display: flex;
       justify-content: flex-end;
-      flex-wrap: wrap;
 
       .salary,
       .date,
       .location {
         @include helper.stylesforDetails;
-
-        fill: helper.$locationPin;
 
         svg {
           margin: 0 0 0 2px;
@@ -68,8 +61,6 @@
       }
 
       .date {
-        fill: helper.$dateIcon;
-
         svg {
           margin: 0 2px 0 5px;
         }
@@ -78,7 +69,7 @@
   }
 }
 
-@media only screen and (max-width: 480px) {
+@media only screen and (max-width: 500px) {
   .detailsContainer {
     display: flex;
     flex-wrap: wrap;

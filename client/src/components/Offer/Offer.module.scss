@@ -23,11 +23,11 @@
 }
 
 .new {
-  border-left: helper.$newIconColor 3px solid;
+  border-left: helper.$newBorderColor 4px solid;
 }
 
 .old {
-  border-left: rgba(255, 255, 255, 0) 3px solid;
+  border-left: rgba(255, 255, 255, 0) 4px solid;
 }
 
 @media only screen and (max-width: 480px) {

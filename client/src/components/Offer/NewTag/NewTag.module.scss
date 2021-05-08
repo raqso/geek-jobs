@@ -1,19 +1,7 @@
-@use '../helpers/stylesHelpers' as helper;
-
-.newTag {
+.newIcon {
   position: absolute;
-  border-radius: 50%;
-  height: 25px;
-  display: flex;
-  align-items: center;
-  background-color: helper.$newIconColor;
-  font-size: 0.7rem;
-  font-weight: bold;
-  color: white;
+  width: 40px;
+  height: 40px;
   z-index: 1;
-  left: -18px;
-  padding: 0.2rem;
-  top: 50%;
-  -ms-transform: translateY(-50%);
-  transform: translateY(-50%);
+  left: -20px;
 }
