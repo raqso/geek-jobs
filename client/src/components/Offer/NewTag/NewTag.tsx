@@ -5,7 +5,7 @@ import newIcon from "../assets/newIcon.svg";
 export const NewTag = () => {
   return (
     <div className={styles.newIcon}>
-      <img src={newIcon} alt={newIcon} />
+      <img src={newIcon} alt="New Tag" />
     </div>
   );
 };
