@@ -1,0 +1,14 @@
+.logoContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  .logo {
+    display: flex;
+    justify-content: center;
+    padding-right: 1rem;
+    width: 60px;
+    height: 60px;
+    text-align: center;
+  }
+}
