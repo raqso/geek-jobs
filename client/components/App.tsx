@@ -1,11 +1,10 @@
 import React from "react";
-import "./App.css";
 import Fab from "@material-ui/core/Fab";
 import Offer from "../components/Offer";
 import SearchBox from "../components/SearchBox";
 import OffersCounter from "../components/OffersCounter";
 import Loading from "../components/Loading";
-import config from "./config";
+import config from "../config";
 
 interface AppState {
   offers: any[];
