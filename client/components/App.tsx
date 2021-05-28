@@ -1,11 +1,11 @@
-import React from 'react';
-import './App.css';
-import Fab from '@material-ui/core/Fab';
-import Offer from './components/Offer';
-import SearchBox from './components/SearchBox';
-import OffersCounter from './components/OffersCounter';
-import Loading from './components/Loading';
-import config from './config';
+import React from "react";
+import "./App.css";
+import Fab from "@material-ui/core/Fab";
+import Offer from "../components/Offer";
+import SearchBox from "../components/SearchBox";
+import OffersCounter from "../components/OffersCounter";
+import Loading from "../components/Loading";
+import config from "./config";
 
 interface AppState {
   offers: any[];
@@ -21,7 +21,7 @@ class App extends React.Component<any, AppState> {
     super(props);
     this.state = {
       offers: [],
-      isLoading: false
+      isLoading: false,
     };
   }
 
@@ -41,7 +41,7 @@ class App extends React.Component<any, AppState> {
             />
           </div>
         </section>
-          {this.renderOffersSection()}
+        {this.renderOffersSection()}
         <section id='footer' />
       </div>
     );
@@ -60,15 +60,14 @@ class App extends React.Component<any, AppState> {
           </a>
         </section>
       );
-    }
-    else {
+    } else {
       return null;
     }
   }
 
   private renderOffers() {
     const offers: any[] = [];
-    this.state.offers.forEach(offer => {
+    this.state.offers.forEach((offer) => {
       offers.push(
         <Offer
           position={offer.position}
@@ -88,20 +87,25 @@ class App extends React.Component<any, AppState> {
   }
 
   private async searchOffers() {
-    this.setState({isLoading: true}, async () => {
+    this.setState({ isLoading: true }, async () => {
       const address = `${
         this.offersApiAddress
       }?position=${this.searchbox.getPosition()}&location=${this.searchbox.getLocation()}`;
 
       await fetch(address)
-        .then(response => response.json())
-        .then(offers => this.setState({ offers }, () => {
-          if (this.offersList) {
-            this.offersList.scrollIntoView({ behavior: 'smooth', block: 'start' });
-          }
-        }));
+        .then((response) => response.json())
+        .then((offers) =>
+          this.setState({ offers }, () => {
+            if (this.offersList) {
+              this.offersList.scrollIntoView({
+                behavior: "smooth",
+                block: "start",
+              });
+            }
+          })
+        );
 
-      this.setState({isLoading: false});
+      this.setState({ isLoading: false });
     });
   }
 }
