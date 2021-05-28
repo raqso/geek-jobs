@@ -1,0 +1,39 @@
+@use './helpers/stylesHelpers' as helper;
+
+.offer {
+  box-sizing: border-box;
+  position: relative;
+  background-color: rgb(255, 255, 255);
+  padding: 1rem;
+  margin: 0.5rem;
+  display: flex;
+  flex-direction: row;
+  box-shadow: 0 4px 8px 0 rgb(0 0 0 / 10%), 0 6px 20px 0 rgb(0 0 0 / 5%);
+  border-radius: 2px;
+  color: rgba(0, 0, 0, 0.733);
+  text-decoration: none;
+  transition: 0.3s;
+  max-width: 1000px;
+  min-height: 122px;
+
+  &:hover {
+    background-color: rgba(229, 229, 245, 0.199);
+    transition: 0.3s;
+  }
+}
+
+.new {
+  border-left: helper.$newBorderColor 4px solid;
+}
+
+.old {
+  border-left: rgba(255, 255, 255, 0) 4px solid;
+}
+
+@media only screen and (max-width: 480px) {
+  .offer {
+    min-width: 250px;
+    padding: 0.5rem;
+    font-size: 0.9rem;
+  }
+}

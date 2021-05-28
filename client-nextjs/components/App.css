@@ -1,0 +1,142 @@
+body {
+  font-family: Nunito,sans-serif;
+  font-size: 16px;
+  line-height: 32px;
+  color: #7d93b2;
+  background-color: #fafcff;
+  font-weight: 200;
+}
+
+h2, h3 {
+  font-weight: 200;
+  color: #4c6280;
+  margin: 0;
+}
+
+h2 {
+  font-size: 48px;
+  line-height: 72px;
+}
+
+a {
+  text-decoration: none;
+}
+
+.App {
+  text-align: center;
+  font-family: Nunito,sans-serif;
+}
+
+#header {
+  width: 100%;
+  height: 38px;
+  z-index: 999999;
+  background-color: #0000002e;
+  position: absolute;
+}
+
+.searchbox ul {
+  list-style: none;
+  padding: 0px;
+  text-align: left;
+  background: rgba(0, 0, 0, 0.5);
+}
+
+.searchbox li {
+  padding: 0 0 2px 10px;
+}
+
+.searchbox ul li:hover {
+    cursor: pointer;
+    background-color: rgba(86, 86, 86, 0.44);
+}
+
+#offers-section {
+  background-color: #e5f0ff;
+}
+
+#offers {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* .offer {
+  display: inline-flex;
+  width: 75%;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 8px 15px rgba(125, 147, 178, .25);
+  transition: all .3s;
+  margin: 10px;
+  padding: 5px;
+  cursor: pointer;
+}
+
+.offer a {
+  display: inline-flex;
+  color: #7d93b2;
+  width: 100%;
+}
+
+.offer-content {
+  width: 60%;
+  text-align: left;
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
+.technologies {
+  list-style: none;
+  display: flex;
+  padding: 0;
+}
+
+.technologies li {
+  padding: 2px;
+  box-shadow: 0 3px 5px rgba(125, 147, 178, .25);
+  margin: 2px;
+  height: 28px;
+  font-size: x-small;
+}
+
+.position {
+  font-weight: 300;
+  font-size: 24px;
+  margin: 0;
+}
+
+.position:hover {
+  color: #ff5c72;
+}
+
+.company-logo {
+  padding-right: 90px;
+  width: 75px;
+  position: relative;
+}
+
+.company-logo img {
+  max-width: 75px;
+  max-height: 90%;
+  position: absolute;               
+  top: 50%;                        
+  transform: translate(0, -50%);
+}
+
+.salary {
+  min-width: 190px;
+}
+
+.portal-logo {
+  padding-left: 20px;
+}
+
+.portal-logo img {
+  max-width: 80px;
+}
+
+.location {
+  color: #a485f2;
+  font-weight: 800;
+} */
